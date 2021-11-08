@@ -11,13 +11,17 @@ public class CannonController : MonoBehaviour
     public Transform ShotPoint;
 
     public GameObject Explosion;
+
+    private void start() {
+      Destroy(Cannonball, 5.0f);
+    }
     private void Update()
     {
-      //  float HorizontalRotation = Input.GetAxis("Horizontal");
-        float VericalRotation = Input.GetAxis("Mouse ScrollWheel");
+        float HorizontalRotation = Input.GetAxis("Fire1");
+        float VericalRotation = Input.GetAxis("Fire2");
 
        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles +
-       new Vector3(0, 0, VericalRotation * rotationSpeed));
+       new Vector3(0, HorizontalRotation * rotationSpeed, VericalRotation * rotationSpeed));
 
         if (Input.GetKeyDown(KeyCode.F))
         {
