@@ -9,11 +9,12 @@ public class CannonController : MonoBehaviour
 
     public GameObject Cannonball;
     public Transform ShotPoint;
+    
 
     public GameObject Explosion;
 
     private void start() {
-      Destroy(Cannonball, 5.0f);
+
     }
     private void Update()
     {
@@ -26,15 +27,25 @@ public class CannonController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F))
         {
             GameObject CreatedCannonball = Instantiate(Cannonball, ShotPoint.position, ShotPoint.rotation);
+            Destroy(Instantiate(Explosion, ShotPoint.position, ShotPoint.rotation), 2);
             CreatedCannonball.GetComponent<Rigidbody>().velocity = ShotPoint.transform.up * BlastPower;
 
             // Added explosion for added effect
             Destroy(Instantiate(Explosion, ShotPoint.position, ShotPoint.rotation), 2);
+            Destroy(CreatedCannonball, 3.0f);
+
+
 
             // Shake the screen for added effect
             Screenshake.ShakeAmount = 5;
+            void onCollisionEnter(Collision col) {
+              if (col.gameObject.name == "Base 1") {
+                Destroy(col.gameObject);
+                Destroy(CreatedCannonball.gameObject, 4.0f);
+              }
         }
     }
 
 
+}
 }
