@@ -12,6 +12,5 @@ public class HealthbarScript : MonoBehaviour
     {
         health -= damage;
         healthbar.fillAmount = health / initialHealth;
-        Debug.Log(health);
     }
 }
