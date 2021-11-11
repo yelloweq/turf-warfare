@@ -32,18 +32,10 @@ public class CannonController : MonoBehaviour
 
             // Added explosion for added effect
             Destroy(Instantiate(Explosion, ShotPoint.position, ShotPoint.rotation), 2);
-            Destroy(CreatedCannonball, 3.0f);
-
 
 
             // Shake the screen for added effect
             Screenshake.ShakeAmount = 5;
-            void onCollisionEnter(Collision col) {
-              if (col.gameObject.name == "Base 1") {
-                Destroy(col.gameObject);
-                Destroy(CreatedCannonball.gameObject, 4.0f);
-              }
-        }
     }
 
 
