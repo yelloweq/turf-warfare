@@ -10,7 +10,9 @@ public class HealthbarScript : MonoBehaviour
     public float initialHealth = 100;
    public void damageTaken(int damage)
     {
+        //subtract the damage amount from the bases' health
         health -= damage;
+        //work out the percentage to fill healthbar
         healthbar.fillAmount = health / initialHealth;
     }
 }
