@@ -7,19 +7,29 @@ public class BaseHealth : MonoBehaviour
     public double health = 100;
     public GameObject Explosion;
     public HealthbarScript HealthbarScript;
+    public BattleSystem BattleSystemScript;
 
     public void OnCollisionEnter(Collision collision)
     {
-        
-        if (collision.gameObject.tag == "ball")
-      {
+      Debug.Log(health);
+      //  if (collision.gameObject.tag == "ball")
+
+    //  {
+         BattleSystemScript.PlayerSwitch();
+
             if (HealthbarScript)
             {
                 HealthbarScript.damageTaken(34);
                 health -= 34;
+                //if (BattleSystemScript) {
+                 Debug.Log(health);
+
+              //}
             }
-  
-       }
+
+      // }
+
+
     }
 
     private void Update()
