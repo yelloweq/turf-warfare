@@ -19,7 +19,15 @@ public class CannonController : MonoBehaviour
     private void OnEnable()
     {
         canShoot = true;
-        this.gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+
+        if (this.gameObject.name == "FriendlyCannon")
+        {
+            this.gameObject.transform.rotation = Quaternion.Euler(0, -90, -45);
+        }
+        else
+        {
+            this.gameObject.transform.rotation = Quaternion.Euler(0, 90, -45);
+        }
     }
 
     private void Update()
