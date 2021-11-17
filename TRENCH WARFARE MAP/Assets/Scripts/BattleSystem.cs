@@ -6,18 +6,14 @@ using UnityEngine;
 
 public class BattleSystem : MonoBehaviour
 {
-  public GameObject Player1Cannon;
-  public GameObject Player2Cannon;
-  public bool currentPlayer;
+    public GameObject Player1Cannon;
+    public GameObject Player2Cannon;
+    public bool currentPlayer;
 
-  public Component p1Controller;
-  public Component p2Controller;
-  public DrawProjection p1Projection;
-  public DrawProjection p2Projection;
-
-  public CannonController CannonControllerScript;
-
-
+    Component p1Controller;
+    Component p2Controller;
+    DrawProjection p1Projection;
+    DrawProjection p2Projection;
 
     void Start()
     {
@@ -26,7 +22,8 @@ public class BattleSystem : MonoBehaviour
         currentPlayer = true;
     }
 
-    void SetupBattle() {
+    void SetupBattle()
+    {
         //Spawns cannon 1 at given transform position
         GameObject spawnP1Cannon = Instantiate(Player1Cannon, new Vector3(29, 1, 147), Quaternion.identity);
         p1Controller = spawnP1Cannon.GetComponent<CannonController>();
@@ -41,9 +38,11 @@ public class BattleSystem : MonoBehaviour
         PlayerTurn();
 
     }
-    void PlayerTurn() {
+    void PlayerTurn()
+    {
         //if the current player is active
-        if (currentPlayer) {
+        if (currentPlayer)
+        {
             //Disable the scripts for cannon 1 and activate scripts for cannon 2
             p1Controller.GetComponent<CannonController>().enabled = false;
             p1Projection.GetComponent<DrawProjection>().enabled = false;
@@ -64,13 +63,14 @@ public class BattleSystem : MonoBehaviour
             p2Controller.GetComponent<LineRenderer>().enabled = false;
             p1Projection.GetComponent<LineRenderer>().enabled = true;
         }
-      }
+    }
 
 
-    public void PlayerSwitch() {
+    public void PlayerSwitch()
+    {
         //inverts the currentPlayer boolean
         currentPlayer = !currentPlayer;
         //runs PlayerTurn to check the new current player
         PlayerTurn();
-      }
     }
+}
