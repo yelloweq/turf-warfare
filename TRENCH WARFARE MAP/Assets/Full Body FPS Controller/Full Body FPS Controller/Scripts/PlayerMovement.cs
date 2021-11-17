@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 namespace EasySurvivalScripts
 {
@@ -12,7 +13,7 @@ namespace EasySurvivalScripts
         Jumping
     }
 
-    public class PlayerMovement : MonoBehaviour
+    public class PlayerMovement : MonoBehaviourPun
     {
         public PlayerStates playerStates;
 
@@ -54,6 +55,12 @@ namespace EasySurvivalScripts
         {
             characterController = GetComponent<CharacterController>();
             _audioSource = gameObject.AddComponent<AudioSource>();
+
+            if (!photonView.IsMine)
+            {
+                Destroy(GetComponent<PlayerMovement>());
+                Destroy(_audioSource.GetComponent<AudioSource>());
+            }
         }
 
         // Update is called once per frame
