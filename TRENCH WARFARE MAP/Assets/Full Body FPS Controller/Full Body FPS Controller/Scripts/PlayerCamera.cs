@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 namespace EasySurvivalScripts
 {
@@ -10,7 +11,7 @@ namespace EasySurvivalScripts
         ThirdPerson
     }
 
-    public class PlayerCamera : MonoBehaviour
+    public class PlayerCamera : MonoBehaviourPun
     {
 
         [Header("Input Settings")]
@@ -53,6 +54,10 @@ namespace EasySurvivalScripts
             {
                 Add_FPSCamPositionHelper();
                 Add_TPSCamPositionHelper();
+            }
+
+            if (!photonView.IsMine){
+                Destroy(GetComponent<PlayerCamera>());
             }
         }
 
