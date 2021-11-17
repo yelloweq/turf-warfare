@@ -9,12 +9,14 @@ public class cameraSwitch : MonoBehaviour
 
     public void sideCamera()
     {
+        //enables the side camera and disables player cam
         cam_side.SetActive(true);
         cam_player.SetActive(false);
     }
 
     public void mainCamera()
     {
+        //enables the player camera and disables side cam
         cam_side.SetActive(false);
         cam_player.SetActive(true);
     }

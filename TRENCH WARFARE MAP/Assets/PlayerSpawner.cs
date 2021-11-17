@@ -12,6 +12,7 @@ public class PlayerSpawner : MonoBehaviour
         GameObject _localPlayer = PhotonNetwork.Instantiate(player.name, spawnPoint.position, Quaternion.identity, 0);
 
         _localPlayer.GetComponent<PlayerSetup>().IsLocalPlayer();
+        Debug.Log("Player setup");
         
     }
    

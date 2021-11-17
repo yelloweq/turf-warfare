@@ -9,10 +9,8 @@ public class PlayerSetup : MonoBehaviour
 
     public void IsLocalPlayer()
     {
-        cameraHolder.SetActive(true);
-
-        Debug.Log("camera activated");
+        cameraHolder.GetComponent<Camera>().enabled = true;
         GetComponent<PlayerMovement>().enabled = true;
-        Debug.Log("movement activated");
+
     }
 }

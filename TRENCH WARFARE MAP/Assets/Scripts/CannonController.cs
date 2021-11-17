@@ -4,22 +4,28 @@ using UnityEngine;
 
 public class CannonController : MonoBehaviour
 {
-    public float rotationSpeed = 1;
+    //speed at which cannon rotates
+    public float rotationSpeed = 0.05f;
+    //blast power
     public float BlastPower = 200;
 
     public GameObject Cannonball;
     public Transform ShotPoint;
-
+    public cameraSwitch cameraSwitch;
+    private bool canShoot;
 
     public GameObject Explosion;
 
-    private void start() {
-
+    private void OnEnable()
+    {
+        canShoot = true;
+        this.gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
     }
+
     private void Update()
     {
-        float HorizontalRotation = Input.GetAxis("Fire1");
-        float VericalRotation = Input.GetAxis("Fire2");
+       float HorizontalRotation = Input.GetAxis("Fire1");
+       float VericalRotation = Input.GetAxis("Fire2");
 
        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles +
        new Vector3(0, HorizontalRotation * rotationSpeed, VericalRotation * rotationSpeed));
@@ -29,18 +35,23 @@ public class CannonController : MonoBehaviour
 
 }
   void fireCannon() {
-    if (Input.GetKeyDown(KeyCode.F))
+    //when the 'F' key is pressed
+    if (Input.GetKeyDown(KeyCode.F) && canShoot == true)
     {
+        canShoot = false;
+
+        //Spawn cannon ball at the shotpoint gameobject position
         GameObject CreatedCannonball = Instantiate(Cannonball, ShotPoint.position, ShotPoint.rotation);
+
+        //play explosion particle effect
         Destroy(Instantiate(Explosion, ShotPoint.position, ShotPoint.rotation), 2);
+
+        //add velocity to the balls rigidbody component to allow it to move
         CreatedCannonball.GetComponent<Rigidbody>().velocity = ShotPoint.transform.up * BlastPower;
 
         // Added explosion for added effect
         Destroy(Instantiate(Explosion, ShotPoint.position, ShotPoint.rotation), 2);
-
-
-        // Shake the screen for added effect
-        Screenshake.ShakeAmount = 5;
     }
   }
+
 }
