@@ -6,9 +6,10 @@ public class BaseHealth : MonoBehaviour
 {
     //Starting health when bases spawn
     public double health = 100;
+
     public GameObject Explosion;
+
     public HealthbarScript HealthbarScript;
-    public BattleSystem BattleSystemScript;
 
     public void OnCollisionEnter(Collision collision)
     {
@@ -22,13 +23,6 @@ public class BaseHealth : MonoBehaviour
                 //Calls the damageTaken method within HealthbarScript script
                 HealthbarScript.damageTaken(34);
                 health -= 34;
-            }
-
-            //if the BattleSystemScript is assigned in inspector
-            if (BattleSystemScript)
-            {
-                //Calls the PlayerSwitch method within BattleSystemScript script
-                BattleSystemScript.PlayerSwitch();
             }
         }
 

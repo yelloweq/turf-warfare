@@ -14,6 +14,9 @@ public class CannonController : MonoBehaviour
     public cameraSwitch cameraSwitch;
     private bool canShoot;
 
+    float HorizontalRotation = 0f;
+    float VericalRotation = 0f;
+
     public GameObject Explosion;
 
     private void OnEnable()
@@ -32,16 +35,13 @@ public class CannonController : MonoBehaviour
 
     private void Update()
     {
-       float HorizontalRotation = Input.GetAxis("Fire1");
-       float VericalRotation = Input.GetAxis("Fire2");
+        float HorizontalRotation = Input.GetAxis("Fire1");
+        float VericalRotation = Input.GetAxis("Fire2");
 
-       transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles +
-       new Vector3(0, HorizontalRotation * rotationSpeed, VericalRotation * rotationSpeed));
-       fireCannon();
-
-
-
-}
+        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles +
+        new Vector3(0, HorizontalRotation * rotationSpeed, VericalRotation * rotationSpeed));
+        fireCannon();
+    }
   void fireCannon() {
     //when the 'F' key is pressed
     if (Input.GetKeyDown(KeyCode.F) && canShoot == true)

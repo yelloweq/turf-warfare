@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -503621137003376326}
   m_Layer: 0
   m_Name: Base
-  m_TagString: Untagged
+  m_TagString: Base
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -129,4 +129,4 @@ MonoBehaviour:
   Explosion: {fileID: 2771661109152740402, guid: bfe66bccbf1de304695a06472a63da73,
     type: 3}
   HealthbarScript: {fileID: 0}
-  BattleSystemScript: {fileID: 0}
+  currencyScript: {fileID: 0}
