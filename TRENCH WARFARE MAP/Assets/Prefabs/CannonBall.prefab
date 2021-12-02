@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1985538825401212054}
   - component: {fileID: -9186656814902345108}
   - component: {fileID: 4233916855829300055}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: CannonBall
   m_TagString: ball
   m_Icon: {fileID: 0}
@@ -233,5 +233,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9730b7d66d39054fbec329b4eb8cbde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BattleSystemScript: {fileID: 0}
   Explosion: {fileID: 2771661109152740402, guid: bfe66bccbf1de304695a06472a63da73,
     type: 3}
