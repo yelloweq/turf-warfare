@@ -20,7 +20,7 @@ public class CannonBall : MonoBehaviour
     //if the ball collides this method is executed
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Boundaries")
+        if (collision.gameObject.tag == "Boundaries" || collision.gameObject.tag == "Cannon")
         {
            Physics.IgnoreCollision(collision.collider, GetComponent<Collider>());
         }

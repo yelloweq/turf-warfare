@@ -25,13 +25,13 @@ public class BattleSystem : MonoBehaviour
     void SetupBattle()
     {
         //Spawns cannon 1 at given transform position
-        GameObject spawnP1Cannon = Instantiate(Player1Cannon, new Vector3(29, 1, 147), Quaternion.identity);
+        GameObject spawnP1Cannon = Instantiate(Player1Cannon, new Vector3(133, 1, 250), Quaternion.identity);
         p1Controller = spawnP1Cannon.GetComponent<CannonController>();
         p1Projection = spawnP1Cannon.GetComponent<DrawProjection>();
         spawnP1Cannon.name = "EnemyCannon";
 
         //Spawns cannon 2 at given transform position
-        GameObject spawnP2Cannon = Instantiate(Player2Cannon, new Vector3(32, 1, 64), Quaternion.identity);
+        GameObject spawnP2Cannon = Instantiate(Player2Cannon, new Vector3(168, 1, 60), Quaternion.identity);
         p2Controller = spawnP2Cannon.GetComponent<CannonController>();
         p2Projection = spawnP2Cannon.GetComponent<DrawProjection>();
         spawnP2Cannon.name = "FriendlyCannon";

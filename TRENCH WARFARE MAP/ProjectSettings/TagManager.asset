@@ -8,6 +8,8 @@ TagManager:
   - Ground
   - Base
   - Boundaries
+  - Cannon
+  - Upgrade
   layers:
   - Default
   - TransparentFX
