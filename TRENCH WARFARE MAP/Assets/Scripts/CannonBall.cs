@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class CannonBall : MonoBehaviour
 {
@@ -26,21 +27,21 @@ public class CannonBall : MonoBehaviour
         }
         else
         {
-            CallSwitch();
+  //          CallSwitch();
 
             //Play explosion particle effect
-            Destroy(Instantiate(Explosion, this.transform.position, this.transform.rotation), 2);
+            Destroy(PhotonNetwork.Instantiate(Explosion.name, this.transform.position, this.transform.rotation), 2);
             //destroy the ball from the scene
             Destroy(this.gameObject);
         }
     }
 
-    void CallSwitch()
-    {
-        if (BattleSystemScript)
-        {
-            //Calls the PlayerSwitch method within BattleSystemScript script
-            BattleSystemScript.PlayerSwitch();
-        }
-    }
+ //   void CallSwitch()
+ //   {
+ //       if (BattleSystemScript)
+ //       {
+ //           //Calls the PlayerSwitch method within BattleSystemScript script
+ //           BattleSystemScript.PlayerSwitch();
+ //       }
+ // }
 }
