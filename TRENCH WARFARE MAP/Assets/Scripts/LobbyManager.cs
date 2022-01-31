@@ -12,6 +12,21 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     [SerializeField]
     GameObject searchingPanel;
 
+    public static LobbyManager instance;
+
+    void Awake() { 
+        if (instance != null && instance != this)
+        {
+            gameObject.SetActive(false);
+        }
+        else
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        
+    }
+
     void Start()
     {
         //disable menu buttons until connection to server established
