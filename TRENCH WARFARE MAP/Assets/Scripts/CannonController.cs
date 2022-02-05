@@ -14,25 +14,44 @@ public class CannonController : MonoBehaviourPun
     public Transform ShotPoint;
     public cameraSwitch cameraSwitch;
     private bool canShoot;
-    private bool active;
+    public bool active;
     float HorizontalRotation = 0f;
     float VericalRotation = 0f;
     
     public GameObject Explosion;
 
-    private void OnEnable()
+    public DrawProjection Projection;
+
+    private void Start()
     {
-        if (PhotonNetwork.IsMasterClient)
+        Projection = GetComponent<DrawProjection>();
+        if (photonView.IsMine)
         {
-            if (photonView.IsMine)
+            if (PhotonNetwork.IsMasterClient)
             {
+
                 active = true;
+                Projection.enabled = true;
+                canShoot = true;
+
+            }
+            else
+            {
+                active = false;
+                Projection.enabled = false;
+                canShoot = false;
             }
             
-            this.gameObject.GetComponent<DrawProjection>().enabled = true;
-        }
 
-        canShoot = true;
+            
+        }
+            
+    }
+
+    private void OnEnable()
+    {
+        
+       
 
             this.gameObject.transform.rotation = Quaternion.Euler(0, -90, -45);
 
@@ -43,7 +62,7 @@ public class CannonController : MonoBehaviourPun
     private void Update()
     {
         Debug.Log("active: " + active + " id: " + this.photonView.ViewID);
-        if (active)
+        if (active && photonView.IsMine == true)
         {
             float HorizontalRotation = Input.GetAxis("Fire1");
             float VericalRotation = Input.GetAxis("Fire2");
@@ -81,8 +100,9 @@ public class CannonController : MonoBehaviourPun
     [PunRPC]
     void SwitchCannons()
     {
-        this.active = !active;
-        this.gameObject.GetComponent<DrawProjection>().enabled = active;
+        active = !active;
+        Projection.enabled = active;
+        canShoot = !canShoot;
         
     }
 }

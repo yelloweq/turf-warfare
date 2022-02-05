@@ -220,15 +220,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.LocalPlayer.IsMasterClient)
         {
-            if (PhotonNetwork.CountOfPlayers < 2)
-            {
-                bottomText.text = "Not enough players...";
-                return;
-            } 
-            if (PhotonNetwork.CountOfPlayers > 2)
-            {
-                bottomText.text = "Error: Too many players.";
-            }
+            //TODO: ALLOW 2 PLAYERS PER ROOM
+            
              PhotonNetwork.LoadLevel(levelname);
         }
         
