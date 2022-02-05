@@ -35,6 +35,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public TextMeshProUGUI roomInfoText;
     public GameObject playerListPrefab;
     public GameObject playerListContent;
+    public Text bottomText;
 
     public Text connectionStatusText;
 
@@ -219,6 +220,15 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.LocalPlayer.IsMasterClient)
         {
+            if (PhotonNetwork.CountOfPlayers < 2)
+            {
+                bottomText.text = "Not enough players...";
+                return;
+            } 
+            if (PhotonNetwork.CountOfPlayers > 2)
+            {
+                bottomText.text = "Error: Too many players.";
+            }
              PhotonNetwork.LoadLevel(levelname);
         }
         
