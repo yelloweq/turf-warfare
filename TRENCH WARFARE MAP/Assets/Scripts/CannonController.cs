@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class CannonController : MonoBehaviour
 {
@@ -46,10 +47,10 @@ public class CannonController : MonoBehaviour
     //when the 'F' key is pressed
     if (Input.GetKeyDown(KeyCode.F) && canShoot == true)
     {
-        canShoot = false;
+       // canShoot = false;
 
         //Spawn cannon ball at the shotpoint gameobject position
-        GameObject CreatedCannonball = Instantiate(Cannonball, ShotPoint.position, ShotPoint.rotation);
+        GameObject CreatedCannonball = PhotonNetwork.Instantiate(Cannonball.name, ShotPoint.position, ShotPoint.rotation);
 
         //play explosion particle effect
         Destroy(Instantiate(Explosion, ShotPoint.position, ShotPoint.rotation), 2);

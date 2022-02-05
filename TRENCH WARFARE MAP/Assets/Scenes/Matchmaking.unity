@@ -1305,8 +1305,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4c17b2611ceb1f46a5b723da8a15cc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  findMatchBtn: {fileID: 1457406076}
-  searchingPanel: {fileID: 2003494535}
+  roomNameInputField: {fileID: 0}
+  errorText: {fileID: 0}
 --- !u!4 &1428801871
 Transform:
   m_ObjectHideFlags: 0

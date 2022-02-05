@@ -40,7 +40,7 @@ public class CannonBall : MonoBehaviour
         if (BattleSystemScript)
         {
             //Calls the PlayerSwitch method within BattleSystemScript script
-            BattleSystemScript.PlayerSwitch();
+            //BattleSystemScript.PlayerSwitch();
         }
     }
 }

@@ -3,11 +3,35 @@ using Photon.Pun;
 
 public class PlayerSpawner : MonoBehaviour
 {
-    public GameObject playerModel;
-    [SerializeField]
-    GameObject[] spawnPoints;
+    public GameObject player;
 
-    void SpawnPlayer()
+    [SerializeField]
+    Transform[] spawnPoints;
+
+
+    private void Start()
+    {
+        if (PhotonNetwork.IsConnectedAndReady)
+        {
+            GameObject playerGameobject = PhotonNetwork.Instantiate(player.name, spawnPoints[PhotonNetwork.LocalPlayer.ActorNumber-1].position, Quaternion.identity);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*void SpawnPlayer()
     {
         //spawn player based on host
         int player = 0;
@@ -30,6 +54,6 @@ public class PlayerSpawner : MonoBehaviour
         {
             SpawnPlayer();
         }
-    }
-   
+    }*/
+
 }
