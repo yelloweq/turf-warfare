@@ -8,11 +8,13 @@ using ExitGames.Client.Photon;
 using System.Collections.Generic;
 using System.Linq;
 
+//game states for checking conditions
 public enum GameState { Win, Loss, Player1Move, Player2Move, EMPTY };
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
     /*
+    
     #region Constants
     // Event: remote player has shot the cannon
     public const int EVENT_MOVE = 1;
@@ -52,7 +54,7 @@ public class GameManager : MonoBehaviourPunCallbacks
                         Debug.Log("Host wins");
                     } else
                     {
-                        Debug.Log("User wins");
+                        Debug.Log("Remote player wins");
                     }
                     
 
@@ -82,6 +84,11 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
+    public Player GetOpponent()
+    {
+        return PhotonNetwork.CurrentRoom.Players.Values.First(e => !e.IsLocal);
+    }
+
     void Update()
     {
         if (photonView.IsMine && Winner != GameState.EMPTY && Input.GetKeyDown(KeyCode.Space))
@@ -97,5 +104,5 @@ public class GameManager : MonoBehaviourPunCallbacks
             Application.Quit();
 #endif
         }
-    }*/
+    } */
 }
