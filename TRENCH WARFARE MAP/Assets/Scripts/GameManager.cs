@@ -1,3 +1,4 @@
+
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -11,6 +12,7 @@ public enum GameState { Win, Loss, Player1Move, Player2Move, EMPTY };
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
+    /*
     #region Constants
     // Event: remote player has shot the cannon
     public const int EVENT_MOVE = 1;
@@ -31,8 +33,8 @@ public class GameManager : MonoBehaviourPunCallbacks
 
             switch (value)
             {
-                case MarkType.O:
-                case MarkType.X:
+                case GameState.Loss:
+                case GameState.Win:
                     string winnerName;
                     if (PhotonNetwork.IsConnected)
                     {
@@ -45,16 +47,21 @@ public class GameManager : MonoBehaviourPunCallbacks
                         winnerName = value.ToString();
                     }
 
-                    turnText.text = photonView.IsMine
-                        ? $"Winner: {winnerName}! - SPACE to reset, ESC to quit"
-                        : $"Winner: {winnerName}! - ESC to quit";
+                    if (photonView.IsMine)
+                    {
+                        Debug.Log("Host wins");
+                    } else
+                    {
+                        Debug.Log("User wins");
+                    }
+                    
+
+                 //   turnText.text = photonView.IsMine
+                 //       ? $"Winner: {winnerName}! - SPACE to reset, ESC to quit"
+                 //       : $"Winner: {winnerName}! - ESC to quit";
                     break;
 
-                case MarkType.TIE:
-                    turnText.text = photonView.IsMine
-                        ? "Tied! - SPACE to reset, ESC to quit"
-                        : "Tied! - ESC to quit";
-                    break;
+                
             }
         }
     }
@@ -90,5 +97,5 @@ public class GameManager : MonoBehaviourPunCallbacks
             Application.Quit();
 #endif
         }
-    }
+    }*/
 }
