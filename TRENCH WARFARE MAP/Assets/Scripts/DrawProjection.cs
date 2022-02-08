@@ -44,4 +44,9 @@ public class DrawProjection : MonoBehaviour
 
         lineRenderer.SetPositions(points.ToArray());
     }
+
+    public void SetPoints(int points)
+    {
+        numPoints = points;
+    }
 }

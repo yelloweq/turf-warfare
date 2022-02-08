@@ -14,55 +14,41 @@ public class CannonController : MonoBehaviourPun
     public Transform ShotPoint;
     public cameraSwitch cameraSwitch;
     private bool canShoot;
-    public bool active;
-    float HorizontalRotation = 0f;
-    float VericalRotation = 0f;
-    
+    private bool active;
+
     public GameObject Explosion;
 
     public DrawProjection Projection;
 
+    private const byte CANNON_FIRED_EVENT = 0;
+
+    private PhotonView PV;
+
     private void Start()
     {
         Projection = GetComponent<DrawProjection>();
-        if (photonView.IsMine)
+        PV = PhotonView.Get(this);
+
+        PV.RPC("DisableCannon", RpcTarget.AllViaServer, "CANNONS DISABLED!");
+
+        if (!PhotonNetwork.IsMasterClient)
         {
-            if (PhotonNetwork.IsMasterClient)
-            {
-
-                active = true;
-                Projection.enabled = true;
-                canShoot = true;
-
-            }
-            else
-            {
-                active = false;
-                Projection.enabled = false;
-                canShoot = false;
-            }
-            
-
-            
+            PV.RPC("EnableCannon", RpcTarget.AllViaServer, "Master Cannon enabled!");
         }
-            
     }
 
     private void OnEnable()
     {
-        
-       
 
-            this.gameObject.transform.rotation = Quaternion.Euler(0, -90, -45);
+        this.gameObject.transform.rotation = Quaternion.Euler(0, -90, -45);
 
-           // this.gameObject.transform.rotation = Quaternion.Euler(0, 90, -45);
-           // TODO: Determine rotation based on PhotonView ID / Playerspawn point
     }
+
+
 
     private void Update()
     {
-        Debug.Log("active: " + active + " id: " + this.photonView.ViewID);
-        if (active && photonView.IsMine == true)
+        if (active && base.photonView.IsMine)
         {
             float HorizontalRotation = Input.GetAxis("Fire1");
             float VericalRotation = Input.GetAxis("Fire2");
@@ -72,37 +58,56 @@ public class CannonController : MonoBehaviourPun
             fireCannon();
 
         }
-        
     }
-  void fireCannon() {
-    //when the 'F' key is pressed
-    if (Input.GetKeyDown(KeyCode.F) && canShoot == true)
+
+    void fireCannon()
     {
+        //when the 'F' key is pressed
+        if (Input.GetKeyDown(KeyCode.F) && canShoot == true)
+        {
 
-        canShoot = false;
+            //Spawn cannon ball at the shotpoint gameobject position
+            GameObject CreatedCannonball = PhotonNetwork.Instantiate(Cannonball.name, ShotPoint.position, ShotPoint.rotation);
 
-        //Spawn cannon ball at the shotpoint gameobject position
-        GameObject CreatedCannonball = PhotonNetwork.Instantiate(Cannonball.name, ShotPoint.position, ShotPoint.rotation);
+            //play explosion particle effect
+            Destroy(PhotonNetwork.Instantiate(Explosion.name, ShotPoint.position, ShotPoint.rotation), 2);
 
-        //play explosion particle effect
-        Destroy(PhotonNetwork.Instantiate(Explosion.name, ShotPoint.position, ShotPoint.rotation), 2);
+            //add velocity to the balls rigidbody component to allow it to move
+            CreatedCannonball.GetComponent<Rigidbody>().velocity = ShotPoint.transform.up * BlastPower;
 
-        //add velocity to the balls rigidbody component to allow it to move
-        CreatedCannonball.GetComponent<Rigidbody>().velocity = ShotPoint.transform.up * BlastPower;
+            // Added explosion for added effect
+            Destroy(PhotonNetwork.Instantiate(Explosion.name, ShotPoint.position, ShotPoint.rotation), 2);
 
-        // Added explosion for added effect
-        Destroy(PhotonNetwork.Instantiate(Explosion.name, ShotPoint.position, ShotPoint.rotation), 2);
 
-        this.photonView.RPC("SwitchCannons", RpcTarget.All);
-            
+            PV.RPC("DisableCannon", RpcTarget.AllViaServer, "DISABLED AFTER SHOT");
+
+        }
     }
-  }
+
     [PunRPC]
-    void SwitchCannons()
+    private void DisableCannon(string str)
     {
-        active = !active;
-        Projection.enabled = active;
-        canShoot = !canShoot;
-        
+        Debug.Log(str + " =========id========== " + PV.ViewID);
+        active = false;
+        Projection.SetPoints(0);
+        canShoot = false;
     }
+
+    [PunRPC]
+    private void EnableCannon(string str)
+    {
+        Debug.Log(str + " =========id========== " + PV.ViewID);
+        active = true;
+        Projection.SetPoints(50);
+        canShoot = true;
+    }
+
+    //[PunRPC]
+    //private void SwitchCannon(string str)
+    //{
+    //    Debug.Log(str + " =========id========== " + PV.ViewID);
+    //    active = false;
+    //    Projection.SetPoints(0);
+    //    canShoot = false;
+    //}
 }

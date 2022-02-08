@@ -956,6 +956,7 @@ GameObject:
   - component: {fileID: 550134405}
   - component: {fileID: 550134404}
   - component: {fileID: 550134407}
+  - component: {fileID: 550134408}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -1024,6 +1025,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Cannon: {fileID: 4306046685308761417, guid: 58c5085605159ae43b535fa21f8d3474, type: 3}
+--- !u!114 &550134408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 550134403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 1
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!4 &555421103 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1326301935408908062, guid: 0fbb9e189b64bb943bc21b7a7b7651f6,

@@ -56,7 +56,6 @@ MonoBehaviour:
     type: 3}
   ShotPoint: {fileID: 2363300796860622522}
   cameraSwitch: {fileID: 0}
-  active: 0
   Explosion: {fileID: 2771661109152740402, guid: bfe66bccbf1de304695a06472a63da73,
     type: 3}
   Projection: {fileID: 0}

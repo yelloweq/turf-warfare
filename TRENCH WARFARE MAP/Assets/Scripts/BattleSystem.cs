@@ -20,6 +20,8 @@ public class BattleSystem : MonoBehaviour
         //Spawns in cannons when script is first executed
         SetupBattle();
 
+        
+
     }
 
     void SetupBattle()
@@ -36,16 +38,11 @@ public class BattleSystem : MonoBehaviour
         {
             P2Cannon = PhotonNetwork.Instantiate(Cannon.name, new Vector3(168, 1, 60), Quaternion.identity, 0);
         }
-        
-
-        P1PV = P1Cannon.GetComponent<PhotonView>();
-        P2PV = P2Cannon.GetComponent<PhotonView>();
-
-
         //TODO: ACTIVATE CANNON AT SPAWN
         //P1Cannon.GetComponent<CannonController>().ActivateCannon();    cant call rpc without photonview on battlesystem
         //this function does not seem to work, as log says false for both cannons after initiated.
     }
+
 
 
 }
