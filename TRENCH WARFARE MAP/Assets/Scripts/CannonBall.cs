@@ -5,18 +5,14 @@ using Photon.Pun;
 
 public class CannonBall : MonoBehaviour
 {
-    public BattleSystem BattleSystemScript;
+    public GameObject Explosion;
 
     private void Start()
     {
-       BattleSystemScript = GameObject.Find("EventSystem").GetComponent<BattleSystem>();
-
-       Invoke("CallSwitch", 10);
-      
        //destroys ball in 10s of spawning in case the ball goes outside the map
        Destroy(this.gameObject, 10f);
     }
-    public GameObject Explosion;
+    
 
     //if the ball collides this method is executed
     void OnCollisionEnter(Collision collision)
@@ -27,7 +23,6 @@ public class CannonBall : MonoBehaviour
         }
         else
         {
-  //          CallSwitch();
 
             //Play explosion particle effect
             Destroy(PhotonNetwork.Instantiate(Explosion.name, this.transform.position, this.transform.rotation), 2);
@@ -36,12 +31,4 @@ public class CannonBall : MonoBehaviour
         }
     }
 
- //   void CallSwitch()
- //   {
- //       if (BattleSystemScript)
- //       {
- //           //Calls the PlayerSwitch method within BattleSystemScript script
- //           BattleSystemScript.PlayerSwitch();
- //       }
- // }
 }

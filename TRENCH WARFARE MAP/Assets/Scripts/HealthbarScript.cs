@@ -8,7 +8,7 @@ public class HealthbarScript : MonoBehaviour
     public Image healthbar;
     public float health;
     public float initialHealth = 100;
-   public void damageTaken(int damage)
+    public void damageTaken(int damage)
     {
         //subtract the damage amount from the bases' health
         health -= damage;

@@ -572,6 +572,34 @@ PrefabInstance:
       objectReference: {fileID: 1395758331}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8e64accabe2cfa2488b110ac315b535e, type: 3}
+--- !u!1 &305527404 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3897219746225395105, guid: 8e64accabe2cfa2488b110ac315b535e,
+    type: 3}
+  m_PrefabInstance: {fileID: 305527403}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &305527405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 305527404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 3
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!4 &308138906 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000012379405242, guid: 7889b3e42b29881408a396ea8303773f,
@@ -2831,8 +2859,8 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 6181649298551731267}
   m_PrefabAsset: {fileID: 0}
---- !u!64 &1357803218
-MeshCollider:
+--- !u!65 &1357803218
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2841,10 +2869,31 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: b96e344fd1fb6c648855e68957d64a71, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 0.08, y: 0.1118794, z: 0.03802612}
+  m_Center: {x: 0, y: 0.015939709, z: 0.016837744}
+--- !u!114 &1357803219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1357803217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 2
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!4 &1366170835 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000012379405242, guid: 7889b3e42b29881408a396ea8303773f,
@@ -5076,6 +5125,7 @@ PrefabInstance:
       objectReference: {fileID: 1956132015}
     m_RemovedComponents:
     - {fileID: 0}
+    - {fileID: -1154393974406329670, guid: 8e64accabe2cfa2488b110ac315b535e, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 8e64accabe2cfa2488b110ac315b535e, type: 3}
 --- !u!4 &6212249360875718292 stripped
 Transform:

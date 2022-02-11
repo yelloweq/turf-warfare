@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Photon.Pun;
 public class BaseHealth : MonoBehaviour
 {
     //Starting health when bases spawn
@@ -11,18 +11,24 @@ public class BaseHealth : MonoBehaviour
 
     public HealthbarScript HealthbarScript;
 
+    private PhotonView PV;
+    
+
+    private void Start()
+    {
+        PV = PhotonView.Get(this);
+    }
     public void OnCollisionEnter(Collision collision)
     {
         //If the ball collides with the base
         if (collision.gameObject.tag == "ball")
-
         {
+            Debug.Log("Collision with ball");
             //if the healthbar is assigned in inspector
             if (HealthbarScript)
             {
                 //Calls the damageTaken method within HealthbarScript script
-                HealthbarScript.damageTaken(34);
-                health -= 34;
+                PV.RPC("TakeDamage", RpcTarget.AllViaServer, 34);
             }
         }
 
@@ -38,6 +44,14 @@ public class BaseHealth : MonoBehaviour
             //Destroys the base prefab
             Destroy(this.gameObject);
         }
+    }
+
+    [PunRPC]
+    void TakeDamage(int damage)
+    {
+        Debug.Log("[RPC] BASE TAKEN DAMAGE");
+        health -= damage;
+        HealthbarScript.damageTaken(34);
     }
 
 }
