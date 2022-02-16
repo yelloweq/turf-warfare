@@ -105,6 +105,7 @@ public class AuthManager : MonoBehaviour
       //Login succesful
       User = LoginTask.Result;
       Debug.LogFormat("User signed in successfully: {0} ({1})", User.DisplayName, User.Email);
+
       warningLoginText.text = "";
       confirmLoginText.text = "Logged in!";
       yield return new WaitForSeconds(3);
@@ -126,6 +127,7 @@ public class AuthManager : MonoBehaviour
     {
       //Register the user
       var RegisterTask = auth.CreateUserWithEmailAndPasswordAsync(_email, _password);
+
       yield return new WaitUntil(predicate: () => RegisterTask.IsCompleted);
 
       if (RegisterTask.Exception != null)
@@ -149,6 +151,7 @@ public class AuthManager : MonoBehaviour
           case AuthError.EmailAlreadyInUse:
             message = "Email already exists! Please log in.";
             break;
+
         }
         warningRegisterText.text = message;
         confirmRegisterText.text = "";

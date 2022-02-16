@@ -66,7 +66,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     ActivatePanel(GameOptionsUIPanel.name);
   }
 
-
   public override void OnJoinedRoom()
   {
     ActivatePanel(InsideRoomUIPanel.name);
@@ -95,7 +94,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
   }
 
-
   public override void OnPlayerEnteredRoom(Player newPlayer)
   {
     GameObject playerGameObject = Instantiate(playerListPrefab);
@@ -106,7 +104,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     playerListGameObjects.Add(newPlayer.ActorNumber, playerGameObject);
   }
-
 
   public override void OnPlayerLeftRoom(Player otherPlayer)
   {
@@ -128,6 +125,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
 
   }
+
   public override void OnJoinRandomFailed(short returnCode, string message)
   {
     ActivatePanel(CreateRoomUIPanel.name);
@@ -184,7 +182,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     PhotonNetwork.CreateRoom(roomName, roomOptions);
   }
 
-
   public void OnJoinRoomButtonClicked(bool isRandom)
   {
 
@@ -212,7 +209,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       PhotonNetwork.JoinRandomRoom();
     }
   }
-
 
   public void OnPlayGameButtonClicked(string levelname)
   {
