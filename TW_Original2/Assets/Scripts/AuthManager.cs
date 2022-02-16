@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Firebase;
@@ -7,18 +6,20 @@ using Firebase.Auth;
 using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
-using TMPro;
 
 public class AuthManager : MonoBehaviour
 {
-
-  // public GameObject JoinOrCreateRoom_LoggedIn;
   public GameObject ConnectingUIPanel;
-  // public Text playerName;
   public Text connectionStatusText;
   public GameObject MainMenuUIPanel;
   public Text WelcomeMessage;
   public GameObject InputName;
+  public bool loggedin;
+
+  [Header("Experiment")]
+  public InputField createRoomInput;
+  public InputField playerNameInput;
+  public InputField joinRoomInput;
 
   //Firebase variables
   [Header("Firebase")]
@@ -128,8 +129,8 @@ public class AuthManager : MonoBehaviour
       User = LoginTask.Result;
       Debug.LogFormat("User signed in successfully: {0} ({1})", User.DisplayName, User.Email);
 
-      warningLoginText.text = "";
       confirmLoginText.text = "Logged in!";
+      loggedin = true;
 
       OnLoginButtonClicked();
     }
@@ -217,27 +218,106 @@ public class AuthManager : MonoBehaviour
     PhotonNetwork.ConnectUsingSettings();
     WelcomeMessage.gameObject.SetActive(true);
     InputName.SetActive(false);
-    WelcomeMessage.text = "Welcome back" + User.DisplayName + "!";
+    WelcomeMessage.text = "Welcome back " + User.DisplayName + "!";
+
   }
 
   public void OnBackButtonClicked()
   {
+    auth.SignOut();
     if (PhotonNetwork.IsConnected)
     {
       PhotonNetwork.Disconnect();
     }
-    ActivatePanel(MainMenuUIPanel.name);
-    auth.SignOut();
 
+    ActivatePanel(MainMenuUIPanel.name);
+
+    loggedin = false;
+    Debug.Log("LOGGED OUT!");
   }
 
   public void ActivatePanel(string panelTobeActivated)
   {
     ConnectingUIPanel.SetActive(ConnectingUIPanel.name.Equals(panelTobeActivated));
-    // JoinOrCreateRoom_LoggedIn.SetActive(JoinOrCreateRoom_LoggedIn.name.Equals(panelTobeActivated));
     MainMenuUIPanel.SetActive(MainMenuUIPanel.name.Equals(panelTobeActivated));
   }
 
+  public void OnCreateRoomButtonClicked(bool isPublic)
+  {
+    ActivatePanel(ConnectingUIPanel.name);
+
+    string roomName = createRoomInput.text;
+
+    if (string.IsNullOrEmpty(roomName))
+    {
+      roomName = "Room" + Random.Range(100, 1000);
+    }
+
+    print(roomName);
+
+    string playerName;
+
+    if (loggedin == true)
+    {
+      playerName = User.DisplayName;
+    }
+    else
+    {
+      playerName = playerNameInput.text;
+
+      if (playerName == "")
+      {
+        playerName = "Player" + Random.Range(100, 1000);
+      }
+    }
+
+    PhotonNetwork.LocalPlayer.NickName = playerName;
+
+    RoomOptions roomOptions = new RoomOptions();
+    roomOptions.MaxPlayers = 2;
+    roomOptions.IsVisible = isPublic;
+
+    PhotonNetwork.CreateRoom(roomName, roomOptions);
+  }
+
+  public void OnJoinRoomButtonClicked(bool isRandom)
+  {
+
+    string playerName;
+    if (loggedin == true)
+    {
+      playerName = User.DisplayName;
+    }
+    else
+    {
+      playerName = playerNameInput.text;
+      if (playerName == "")
+      {
+        playerName = "Player" + Random.Range(100, 1000);
+      }
+    }
+
+    PhotonNetwork.LocalPlayer.NickName = playerName;
+
+    if (!isRandom)
+    {
+      string roomName = joinRoomInput.text;
+      if (!string.IsNullOrEmpty(roomName))
+      {
+        ActivatePanel(ConnectingUIPanel.name);
+        PhotonNetwork.JoinRoom(roomName);
+      }
+    }
+    else if (isRandom)
+    {
+      ActivatePanel(ConnectingUIPanel.name);
+      PhotonNetwork.JoinRandomRoom();
+    }
+  }
 
 }
+
+
+
+
 

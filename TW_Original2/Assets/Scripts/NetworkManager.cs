@@ -5,9 +5,13 @@ using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
+using Firebase;
+using Firebase.Auth;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
+  public FirebaseUser User;
+
   [Header("MainMenu Panel")]
   public GameObject MainMenuUIPanel;
   public GameObject RegisterMenu;
@@ -21,7 +25,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
   public GameObject GameOptionsUIPanel;
   public InputField playerNameInput;
   public GameObject WelcomeMessage;
-
 
   [Header("Create Room Panel")]
   public GameObject CreateRoomUIPanel;
@@ -65,6 +68,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
   public override void OnConnectedToMaster()
   {
     ActivatePanel(GameOptionsUIPanel.name);
+
   }
 
   public override void OnJoinedRoom()
@@ -100,7 +104,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     playerGameObject.transform.localScale = Vector3.one;
     playerGameObject.GetComponent<Initializer>().setUpName(newPlayer.NickName);
 
-
     playerListGameObjects.Add(newPlayer.ActorNumber, playerGameObject);
   }
 
@@ -133,7 +136,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
   public override void OnJoinRoomFailed(short returnCode, string message)
   {
-    ActivatePanel(CreateRoomUIPanel.name);
     StartCoroutine(ShowErrorMessage());
   }
 
@@ -150,6 +152,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     connectionStatusText.gameObject.SetActive(true);
     PhotonNetwork.ConnectUsingSettings();
     WelcomeMessage.SetActive(false);
+    playerNameInput.gameObject.SetActive(true);
   }
 
   public void OnCreateRoomButtonClicked(bool isPublic)
@@ -169,10 +172,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     string playerName = playerNameInput.text;
 
-    if (string.IsNullOrEmpty(playerName))
+    playerName = playerNameInput.text;
+    if (playerName == "")
     {
       playerName = "Player" + Random.Range(100, 1000);
+
     }
+
     PhotonNetwork.LocalPlayer.NickName = playerName;
 
     RoomOptions roomOptions = new RoomOptions();
@@ -182,33 +188,30 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     PhotonNetwork.CreateRoom(roomName, roomOptions);
   }
 
-  public void OnJoinRoomButtonClicked(bool isRandom)
-  {
+  // public void OnJoinRoomButtonClicked(bool isRandom)
+  // {
+  //   string playerName = playerNameInput.text;
 
+  //   if (string.IsNullOrEmpty(playerName))
+  //   {
+  //     playerName = "Player" + Random.Range(100, 1000);
+  //   }
+  //   PhotonNetwork.LocalPlayer.NickName = playerName;
 
-    string playerName = playerNameInput.text;
-
-    if (string.IsNullOrEmpty(playerName))
-    {
-      playerName = "Player" + Random.Range(100, 1000);
-    }
-    PhotonNetwork.LocalPlayer.NickName = playerName;
-
-
-    if (!isRandom)
-    {
-      string roomName = joinRoomInput.text;
-      if (!string.IsNullOrEmpty(roomName))
-      {
-        ActivatePanel(ConnectingUIPanel.name);
-        PhotonNetwork.JoinRoom(roomName);
-      }
-    }
-    else if (isRandom)
-    {
-      PhotonNetwork.JoinRandomRoom();
-    }
-  }
+  //   if (!isRandom)
+  //   {
+  //     string roomName = joinRoomInput.text;
+  //     if (!string.IsNullOrEmpty(roomName))
+  //     {
+  //       ActivatePanel(ConnectingUIPanel.name);
+  //       PhotonNetwork.JoinRoom(roomName);
+  //     }
+  //   }
+  //   else if (isRandom)
+  //   {
+  //     PhotonNetwork.JoinRandomRoom();
+  //   }
+  // }
 
   public void OnPlayGameButtonClicked(string levelname)
   {
@@ -279,4 +282,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
   #endregion
 
+  #region menu Back Buttons
+
+  public void toJoinOrCreateRoom()
+  {
+    ActivatePanel(GameOptionsUIPanel.name);
+  }
+
+  #endregion
 }
