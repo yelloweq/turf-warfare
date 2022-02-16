@@ -20,6 +20,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
   [Header("GameOptions Panel")]
   public GameObject GameOptionsUIPanel;
   public InputField playerNameInput;
+  public GameObject WelcomeMessage;
 
 
   [Header("Create Room Panel")]
@@ -70,8 +71,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
   {
     ActivatePanel(InsideRoomUIPanel.name);
     roomInfoText.text = "Room Name : " + PhotonNetwork.CurrentRoom.Name;
-
-
 
     if (playerListGameObjects == null)
     {
@@ -145,11 +144,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
   #region UI Methods
 
-  public void OnPlayButtonClicked()
+  public void OnPlayAsGuestButtonClicked()
   {
     ActivatePanel(ConnectingUIPanel.name);
     connectionStatusText.gameObject.SetActive(true);
     PhotonNetwork.ConnectUsingSettings();
+    WelcomeMessage.SetActive(false);
   }
 
   public void OnCreateRoomButtonClicked(bool isPublic)

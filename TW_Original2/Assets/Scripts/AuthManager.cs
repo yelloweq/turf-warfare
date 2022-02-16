@@ -5,9 +5,19 @@ using UnityEngine.UI;
 using Firebase;
 using Firebase.Auth;
 using TMPro;
+using Photon.Pun;
+using Photon.Realtime;
 
 public class AuthManager : MonoBehaviour
 {
+
+  // public GameObject JoinOrCreateRoom_LoggedIn;
+  public GameObject ConnectingUIPanel;
+  // public Text playerName;
+  public Text connectionStatusText;
+  public GameObject MainMenuUIPanel;
+  public GameObject WelcomeMessage;
+  public GameObject InputName;
 
   //Firebase variables
   [Header("Firebase")]
@@ -30,6 +40,17 @@ public class AuthManager : MonoBehaviour
   public InputField passwordRegisterVerifyField;
   public TMP_Text warningRegisterText;
   public TMP_Text confirmRegisterText;
+
+  void Start()
+  {
+    connectionStatusText.gameObject.SetActive(false);
+    PhotonNetwork.AutomaticallySyncScene = true;  //This line will synchronise scenes between all players inside the room
+  }
+
+  void Update()
+  {
+    connectionStatusText.text = PhotonNetwork.NetworkClientState.ToString();
+  }
 
   private void Awake()
   {
@@ -108,8 +129,8 @@ public class AuthManager : MonoBehaviour
 
       warningLoginText.text = "";
       confirmLoginText.text = "Logged in!";
-      yield return new WaitForSeconds(3);
-      confirmLoginText.text = "";
+
+      OnLoginButtonClicked();
     }
   }
 
@@ -181,9 +202,39 @@ public class AuthManager : MonoBehaviour
             confirmRegisterText.text = "User created! You can now login :)";
             yield return new WaitForSeconds(5);
             confirmRegisterText.text = "";
+
           }
         }
       }
     }
   }
+
+  public void OnLoginButtonClicked()
+  {
+    ActivatePanel(ConnectingUIPanel.name);
+    connectionStatusText.gameObject.SetActive(true);
+    PhotonNetwork.ConnectUsingSettings();
+    WelcomeMessage.SetActive(true);
+    InputName.SetActive(false);
+  }
+
+  public void OnBackButtonClicked()
+  {
+    if (PhotonNetwork.IsConnected)
+    {
+      PhotonNetwork.Disconnect();
+    }
+    ActivatePanel(MainMenuUIPanel.name);
+    auth.SignOut();
+  }
+
+  public void ActivatePanel(string panelTobeActivated)
+  {
+    ConnectingUIPanel.SetActive(ConnectingUIPanel.name.Equals(panelTobeActivated));
+    // JoinOrCreateRoom_LoggedIn.SetActive(JoinOrCreateRoom_LoggedIn.name.Equals(panelTobeActivated));
+    MainMenuUIPanel.SetActive(MainMenuUIPanel.name.Equals(panelTobeActivated));
+  }
+
+
 }
+
