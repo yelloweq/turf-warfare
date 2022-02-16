@@ -7,6 +7,7 @@ using Firebase.Auth;
 using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
+using TMPro;
 
 public class AuthManager : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class AuthManager : MonoBehaviour
   // public Text playerName;
   public Text connectionStatusText;
   public GameObject MainMenuUIPanel;
-  public GameObject WelcomeMessage;
+  public Text WelcomeMessage;
   public GameObject InputName;
 
   //Firebase variables
@@ -214,8 +215,9 @@ public class AuthManager : MonoBehaviour
     ActivatePanel(ConnectingUIPanel.name);
     connectionStatusText.gameObject.SetActive(true);
     PhotonNetwork.ConnectUsingSettings();
-    WelcomeMessage.SetActive(true);
+    WelcomeMessage.gameObject.SetActive(true);
     InputName.SetActive(false);
+    WelcomeMessage.text = "Welcome back" + User.DisplayName + "!";
   }
 
   public void OnBackButtonClicked()
@@ -226,6 +228,7 @@ public class AuthManager : MonoBehaviour
     }
     ActivatePanel(MainMenuUIPanel.name);
     auth.SignOut();
+
   }
 
   public void ActivatePanel(string panelTobeActivated)
