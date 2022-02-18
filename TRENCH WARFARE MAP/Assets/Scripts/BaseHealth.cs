@@ -9,6 +9,8 @@ public class BaseHealth : MonoBehaviour
 
     public GameObject Explosion;
 
+    public GameObject gameCompleteScreen;
+
     public HealthbarScript HealthbarScript;
 
     public void OnCollisionEnter(Collision collision)
@@ -37,6 +39,7 @@ public class BaseHealth : MonoBehaviour
             Destroy(Instantiate(Explosion, this.transform.position, this.transform.rotation), 2);
             //Destroys the base prefab
             Destroy(this.gameObject);
+            gameCompleteScreen.SetActive(true);
         }
     }
 
