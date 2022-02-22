@@ -40,7 +40,7 @@ public class BaseHealth : MonoBehaviour
         if (health <= 0)
         {
             //Starts exploding particle effect
-            Destroy(Instantiate(Explosion, this.transform.position, this.transform.rotation), 2);
+            Destroy(PhotonNetwork.Instantiate(Explosion.name, this.transform.position, this.transform.rotation), 2);
             //Destroys the base prefab
             Destroy(this.gameObject);
         }
