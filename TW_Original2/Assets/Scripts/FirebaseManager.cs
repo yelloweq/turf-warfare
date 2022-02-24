@@ -6,6 +6,8 @@ using Firebase.Auth;
 using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
+using Firebase;
+using Firebase.Database;
 
 public class FirebaseManager : MonoBehaviour
 {
@@ -26,6 +28,7 @@ public class FirebaseManager : MonoBehaviour
   public DependencyStatus dependencyStatus;
   public FirebaseAuth auth;
   public FirebaseUser User;
+  public DatabaseReference DBreference;
 
   //Login variables
   [Header("Login")]
@@ -75,6 +78,7 @@ public class FirebaseManager : MonoBehaviour
   {
     Debug.Log("Setting up Firebase Auth");
     auth = FirebaseAuth.DefaultInstance;
+    DBreference = FirebaseDatabase.DefaultInstance.RootReference;
   }
 
   //LoginButton function
@@ -205,6 +209,9 @@ public class FirebaseManager : MonoBehaviour
             yield return new WaitForSeconds(5);
             confirmRegisterText.text = "";
 
+            StartCoroutine(UpdateUsernameAuth(usernameRegisterField.text));
+            StartCoroutine(UpdateUsernameDatabase(usernameRegisterField.text));
+
           }
         }
       }
@@ -315,6 +322,38 @@ public class FirebaseManager : MonoBehaviour
     }
   }
 
+  private IEnumerator UpdateUsernameAuth(string _username)
+  {
+    UserProfile profile = new UserProfile { DisplayName = _username };
+
+    var ProfileTask = User.UpdateUserProfileAsync(profile);
+
+    yield return new WaitUntil(predicate: () => ProfileTask.IsCompleted);
+
+    if (ProfileTask.Exception != null)
+    {
+      Debug.LogWarning(message: $"Failed to register task with {ProfileTask.Exception}");
+    }
+    else
+    {
+      //update succesful
+    }
+  }
+
+  private IEnumerator UpdateUsernameDatabase(string _username)
+  {
+    var DBTask = DBreference.Child("users").Child(User.UserId).Child("username").SetValueAsync(_username);
+
+    yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
+    if (DBTask.Exception != null)
+    {
+      Debug.LogWarning(message: $"Failed to register task with {DBTask.Exception}");
+    }
+    else
+    {
+      //update succesful
+    }
+  }
 }
 
 
