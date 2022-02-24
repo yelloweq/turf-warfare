@@ -7,7 +7,7 @@ using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class AuthManager : MonoBehaviour
+public class FirebaseManager : MonoBehaviour
 {
   public GameObject ConnectingUIPanel;
   public Text connectionStatusText;

@@ -188,31 +188,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     PhotonNetwork.CreateRoom(roomName, roomOptions);
   }
 
-  // public void OnJoinRoomButtonClicked(bool isRandom)
-  // {
-  //   string playerName = playerNameInput.text;
-
-  //   if (string.IsNullOrEmpty(playerName))
-  //   {
-  //     playerName = "Player" + Random.Range(100, 1000);
-  //   }
-  //   PhotonNetwork.LocalPlayer.NickName = playerName;
-
-  //   if (!isRandom)
-  //   {
-  //     string roomName = joinRoomInput.text;
-  //     if (!string.IsNullOrEmpty(roomName))
-  //     {
-  //       ActivatePanel(ConnectingUIPanel.name);
-  //       PhotonNetwork.JoinRoom(roomName);
-  //     }
-  //   }
-  //   else if (isRandom)
-  //   {
-  //     PhotonNetwork.JoinRandomRoom();
-  //   }
-  // }
-
   public void OnPlayGameButtonClicked(string levelname)
   {
     if (PhotonNetwork.LocalPlayer.IsMasterClient)
