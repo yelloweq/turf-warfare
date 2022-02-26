@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager1 : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class GameManager1 : MonoBehaviour
     public GameObject p2;
     public GameObject p1Camera;
     public GameObject p2Camera;
+    public Text PersonPlaying;
 
     void Start()
     {
@@ -47,6 +49,7 @@ public class GameManager1 : MonoBehaviour
         //if the current player is active
         if (p1Turn)
         {
+            PersonPlaying.text = "Player1:"; //Changes text at the top of screen
             EnableP1Cannon();
             EnableP1Movement();
         }
@@ -54,6 +57,7 @@ public class GameManager1 : MonoBehaviour
         //if the current player is not active
         else
         {
+            PersonPlaying.text = "Player2:";//Changes text at the top of screen
             EnableP2Cannon();
             EnableP2Movement();
         }
