@@ -17,16 +17,14 @@ public class HealthbarScript : MonoBehaviour
     }
     public void increaseHealth(int damage)
     {
-        //subtract the damage amount from the bases' health
+        //Adds health to user's base and fills the healthbar 
         health += damage;
-        //work out the percentage to fill healthbar
         healthbar.fillAmount = health / initialHealth;
     }
     public void restoreHealth()
     {
-        //subtract the damage amount from the bases' health
+        //maxs out base's health and healthbar
         health = 100;
-        //work out the percentage to fill healthbar
         healthbar.fillAmount = health / initialHealth;
     }
 }

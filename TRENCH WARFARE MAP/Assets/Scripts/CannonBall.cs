@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class CannonBall : MonoBehaviour
 {
-    public BattleSystem BattleSystemScript;
+    public GameManager1 gameManager1;
 
     private void Start()
     {
-       BattleSystemScript = GameObject.Find("EventSystem").GetComponent<BattleSystem>();
+       gameManager1 = GameObject.Find("GameManager").GetComponent<GameManager1>();
 
        Invoke("CallSwitch", 10);
       
@@ -37,10 +37,10 @@ public class CannonBall : MonoBehaviour
 
     void CallSwitch()
     {
-        if (BattleSystemScript)
+        if (gameManager1)
         {
-            //Calls the PlayerSwitch method within BattleSystemScript script
-            BattleSystemScript.PlayerSwitch();
+            //Calls the PlayerSwitch method within gameManager1 script
+            gameManager1.PlayerSwitch();
         }
     }
 }

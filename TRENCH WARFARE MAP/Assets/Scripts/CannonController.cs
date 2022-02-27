@@ -42,7 +42,7 @@ public class CannonController : MonoBehaviour
         new Vector3(0, HorizontalRotation * rotationSpeed, VericalRotation * rotationSpeed));
         fireCannon();
     }
-  void fireCannon() {
+    void fireCannon() {
     //when the 'F' key is pressed
     if (Input.GetKeyDown(KeyCode.F) && canShoot == true)
     {
