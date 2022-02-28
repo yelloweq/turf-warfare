@@ -6,8 +6,8 @@ using Firebase.Auth;
 using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
-using Firebase;
 using Firebase.Database;
+using Firebase.Extensions;
 
 public class FirebaseManager : MonoBehaviour
 {
@@ -33,7 +33,7 @@ public class FirebaseManager : MonoBehaviour
   //Login variables
   [Header("Login")]
   public InputField emailLoginField;
-  public InputField paswordLoginField;
+  public InputField passwordLoginField;
   public TMP_Text warningLoginText;
   public TMP_Text confirmLoginText;
 
@@ -84,7 +84,7 @@ public class FirebaseManager : MonoBehaviour
   //LoginButton function
   public void LoginButton()
   {
-    StartCoroutine(Login(emailLoginField.text, paswordLoginField.text));
+    StartCoroutine(Login(emailLoginField.text, passwordLoginField.text));
   }
 
   //RegisterButton function
@@ -206,7 +206,7 @@ public class FirebaseManager : MonoBehaviour
             Debug.Log("User created!");
             warningRegisterText.text = "";
             confirmRegisterText.text = "User created! You can now login :)";
-            yield return new WaitForSeconds(5);
+            yield return new WaitForSeconds(3);
             confirmRegisterText.text = "";
 
             StartCoroutine(UpdateUsernameAuth(usernameRegisterField.text));
@@ -342,9 +342,12 @@ public class FirebaseManager : MonoBehaviour
 
   private IEnumerator UpdateUsernameDatabase(string _username)
   {
-    var DBTask = DBreference.Child("users").Child(User.UserId).Child("username").SetValueAsync(_username);
+    var DBTask = DBreference.Child("listOfUsernames").SetValueAsync(_username);
+    var DBTask2 = DBreference.Child("players").Child(_username).Child("Wins").SetValueAsync(0);
 
     yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
+    yield return new WaitUntil(predicate: () => DBTask2.IsCompleted);
+
     if (DBTask.Exception != null)
     {
       Debug.LogWarning(message: $"Failed to register task with {DBTask.Exception}");
@@ -353,7 +356,22 @@ public class FirebaseManager : MonoBehaviour
     {
       //update succesful
     }
+
+    if (DBTask2.Exception != null)
+    {
+      Debug.LogWarning(message: $"Failed to register task with {DBTask2.Exception}");
+    }
+    else
+    {
+      //update succesful
+    }
   }
+
+  // private bool usernameExists(string _username)
+  // {
+  //   DataSnapshot ds = 
+  // }
+
 }
 
 
