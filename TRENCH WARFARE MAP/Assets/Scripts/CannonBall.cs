@@ -1,17 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CannonBall : MonoBehaviour
 {
-    public GameManager1 gameManager1;
+    public BattleSystem BattleSystemScript;
+    public GameManager1 OfflineSystemScript;
 
     private void Start()
     {
-       gameManager1 = GameObject.Find("GameManager").GetComponent<GameManager1>();
-
+       SetCorrectTurnSwitcher();
        Invoke("CallSwitch", 10);
-      
+       
        //destroys ball in 10s of spawning in case the ball goes outside the map
        Destroy(this.gameObject, 10f);
     }
@@ -33,14 +34,44 @@ public class CannonBall : MonoBehaviour
             //destroy the ball from the scene
             Destroy(this.gameObject);
         }
+        
     }
 
     void CallSwitch()
-    {
-        if (gameManager1)
+    {   
+        Debug.Log("addw");
+        if(SceneManager.GetActiveScene().name == "MainScene")
         {
-            //Calls the PlayerSwitch method within gameManager1 script
-            gameManager1.PlayerSwitch();
+            
+            if (BattleSystemScript)
+            {
+                //Calls the PlayerSwitch method within script MainScene scene
+                BattleSystemScript.PlayerSwitch();
+            }
+        }
+        else
+        {
+            if (OfflineSystemScript)
+            {
+                Debug.Log("Made it here!!");
+                //Calls the PlayerSwitch method within the script for the offline scene
+                OfflineSystemScript.PlayerSwitch();
+            }
         }
     }
+    void SetCorrectTurnSwitcher()
+    {
+        
+        if(SceneManager.GetActiveScene().name == "MainScene") //When in the mainscene we get the BattleSystem script which is used to switch canons in that scene
+        {
+            BattleSystemScript = GameObject.Find("EventSystem").GetComponent<BattleSystem>();
+            OfflineSystemScript = null;
+        }
+        else //When in the offline scene we use the gameManager1 script which is used to switch players and canons in that scene
+        {
+            OfflineSystemScript = GameObject.Find("GameManager").GetComponent<GameManager1>();
+            BattleSystemScript = null;
+        }
+    }
+    
 }

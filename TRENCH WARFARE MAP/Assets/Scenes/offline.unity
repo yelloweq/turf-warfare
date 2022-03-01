@@ -1228,7 +1228,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &550134404
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1289,6 +1289,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eefe24a0b40ec174a9cdf42d8a77c152, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Player1Cannon: {fileID: 4306046685308761417, guid: 58c5085605159ae43b535fa21f8d3474,
+    type: 3}
+  Player2Cannon: {fileID: 4306046685308761417, guid: 58c5085605159ae43b535fa21f8d3474,
+    type: 3}
+  currentPlayer: 0
 --- !u!4 &555421103 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1326301935408908062, guid: 0fbb9e189b64bb943bc21b7a7b7651f6,
