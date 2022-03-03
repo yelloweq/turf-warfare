@@ -9803,7 +9803,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2107081794}
         m_TargetAssemblyTypeName: FirebaseManager, Assembly-CSharp
-        m_MethodName: OnLoginButtonClicked
+        m_MethodName: LoginButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -12465,7 +12465,7 @@ MonoBehaviour:
   joinRoomInput: {fileID: 693217880}
   dependencyStatus: 0
   emailLoginField: {fileID: 1891786289}
-  paswordLoginField: {fileID: 1622078900}
+  passwordLoginField: {fileID: 0}
   warningLoginText: {fileID: 1788391992}
   confirmLoginText: {fileID: 1882827022}
   usernameRegisterField: {fileID: 333946896}
