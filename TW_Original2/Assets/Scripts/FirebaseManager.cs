@@ -137,7 +137,23 @@ public class FirebaseManager : MonoBehaviour
       loggedin = true;
 
       OnLoginButtonClicked();
+      clearLoginFields();
     }
+  }
+
+  public void clearLoginFields()
+  {
+    emailLoginField.text = "";
+    passwordLoginField.text = "";
+    confirmLoginText.text = "";
+  }
+
+  public void clearRegisterFields()
+  {
+    usernameRegisterField.text = "";
+    emailRegisteredField.text = "";
+    passwordRegisteredField.text = "";
+    passwordRegisterVerifyField.text = "";
   }
 
   private IEnumerator Register(string _email, string _password, string _username)
@@ -210,7 +226,7 @@ public class FirebaseManager : MonoBehaviour
             confirmRegisterText.text = "";
 
             StartCoroutine(UpdateUsernameAuth(usernameRegisterField.text));
-            StartCoroutine(UpdateUsernameDatabase(usernameRegisterField.text));
+            StartCoroutine(UpdateUsernameDatabase(usernameRegisterField.text, emailRegisteredField.text));
 
           }
         }
@@ -340,37 +356,21 @@ public class FirebaseManager : MonoBehaviour
     }
   }
 
-  private IEnumerator UpdateUsernameDatabase(string _username)
+  private IEnumerator UpdateUsernameDatabase(string usernameToAdd, string emailToAdd)
   {
-    var DBTask = DBreference.Child("listOfUsernames").SetValueAsync(_username);
-    var DBTask2 = DBreference.Child("players").Child(_username).Child("Wins").SetValueAsync(0);
+    var DBTask2 = DBreference.Child("users").Child(User.UserId).Child("username").SetValueAsync(usernameToAdd);
+    var DBTask3 = DBreference.Child("users").Child(User.UserId).Child("wins").SetValueAsync(0);
+    var DBTask4 = DBreference.Child("users").Child(User.UserId).Child("email").SetValueAsync(emailToAdd);
 
-    yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
     yield return new WaitUntil(predicate: () => DBTask2.IsCompleted);
+    yield return new WaitUntil(predicate: () => DBTask3.IsCompleted);
+    yield return new WaitUntil(predicate: () => DBTask4.IsCompleted);
 
-    if (DBTask.Exception != null)
-    {
-      Debug.LogWarning(message: $"Failed to register task with {DBTask.Exception}");
-    }
-    else
-    {
-      //update succesful
-    }
 
-    if (DBTask2.Exception != null)
-    {
-      Debug.LogWarning(message: $"Failed to register task with {DBTask2.Exception}");
-    }
-    else
-    {
-      //update succesful
-    }
+
   }
 
-  // private bool usernameExists(string _username)
-  // {
-  //   DataSnapshot ds = 
-  // }
+
 
 }
 
