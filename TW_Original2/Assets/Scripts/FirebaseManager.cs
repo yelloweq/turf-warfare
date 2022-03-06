@@ -204,9 +204,16 @@ public class FirebaseManager : MonoBehaviour
             break;
 
         }
+
         warningRegisterText.text = message;
         confirmRegisterText.text = "";
       }
+      // else if (checkExistingUsername(_username))
+      // {
+      //   warningRegisterText.text = "Username already taken!";
+      //   yield return new WaitForSeconds(3);
+      //   warningRegisterText.text = "";
+      // }
       else
       {
         //User created!
@@ -448,6 +455,22 @@ public class FirebaseManager : MonoBehaviour
   {
     StartCoroutine(LoadScoreboardData());
   }
+
+  // public bool checkExistingUsername(string _username)
+  // {
+  //   var DBTask = DBreference.Child("users").Child("username").GetValueAsync();
+
+  //   DataSnapshot snapshot = DBTask.Result;
+
+  //   foreach (DataSnapshot ds in snapshot.Children)
+  //   {
+  //     if (ds.Child("username").Value.Equals(_username))
+  //     {
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // }
 }
 
 
