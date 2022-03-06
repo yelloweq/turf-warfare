@@ -5441,8 +5441,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: AuthManager, Assembly-CSharp
+      - m_Target: {fileID: 2107081794}
+        m_TargetAssemblyTypeName: FirebaseManager, Assembly-CSharp
         m_MethodName: OnCreateRoomButtonClicked
         m_Mode: 6
         m_Arguments:
@@ -7759,7 +7759,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1454741614
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9150,7 +9150,7 @@ GameObject:
   - component: {fileID: 1562346853}
   - component: {fileID: 1562346852}
   m_Layer: 5
-  m_Name: JoinRoomButton
+  m_Name: JoinPrivateRoomButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9220,8 +9220,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: AuthManager, Assembly-CSharp
+      - m_Target: {fileID: 2107081794}
+        m_TargetAssemblyTypeName: FirebaseManager, Assembly-CSharp
         m_MethodName: OnJoinRoomButtonClicked
         m_Mode: 6
         m_Arguments:
@@ -9623,7 +9623,7 @@ GameObject:
   - component: {fileID: 1615787773}
   - component: {fileID: 1615787772}
   m_Layer: 5
-  m_Name: JoinPublicButton
+  m_Name: JoinPublicRoomButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9693,8 +9693,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: AuthManager, Assembly-CSharp
+      - m_Target: {fileID: 2107081794}
+        m_TargetAssemblyTypeName: FirebaseManager, Assembly-CSharp
         m_MethodName: OnJoinRoomButtonClicked
         m_Mode: 6
         m_Arguments:
@@ -10374,8 +10374,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: AuthManager, Assembly-CSharp
+      - m_Target: {fileID: 2107081794}
+        m_TargetAssemblyTypeName: FirebaseManager, Assembly-CSharp
         m_MethodName: OnCreateRoomButtonClicked
         m_Mode: 6
         m_Arguments:
