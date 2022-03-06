@@ -11,17 +11,10 @@ using Firebase.Extensions;
 
 public class FirebaseManager : MonoBehaviour
 {
+  [Header("Panels")]
   public GameObject ConnectingUIPanel;
-  public Text connectionStatusText;
   public GameObject MainMenuUIPanel;
-  public Text WelcomeMessage;
-  public GameObject InputName;
-  public bool loggedin;
-
-  [Header("Experiment")]
-  public InputField createRoomInput;
-  public InputField playerNameInput;
-  public InputField joinRoomInput;
+  public GameObject LeaderboardUIPanel;
 
   //Firebase variables
   [Header("Firebase")]
@@ -45,6 +38,15 @@ public class FirebaseManager : MonoBehaviour
   public InputField passwordRegisterVerifyField;
   public TMP_Text warningRegisterText;
   public TMP_Text confirmRegisterText;
+
+  [Header("Experiment")]
+  public InputField createRoomInput;
+  public InputField playerNameInput;
+  public InputField joinRoomInput;
+  public Text connectionStatusText;
+  public Text WelcomeMessage;
+  public GameObject InputName;
+  public bool loggedin;
 
   void Start()
   {
@@ -257,12 +259,20 @@ public class FirebaseManager : MonoBehaviour
 
     loggedin = false;
     Debug.Log("LOGGED OUT!");
+    clearLoginFields();
+    clearRegisterFields();
+  }
+
+  public void OnLeaderboardButtonClicked()
+  {
+    ActivatePanel(LeaderboardUIPanel.name);
   }
 
   public void ActivatePanel(string panelTobeActivated)
   {
     ConnectingUIPanel.SetActive(ConnectingUIPanel.name.Equals(panelTobeActivated));
     MainMenuUIPanel.SetActive(MainMenuUIPanel.name.Equals(panelTobeActivated));
+    LeaderboardUIPanel.SetActive(LeaderboardUIPanel.name.Equals(panelTobeActivated));
   }
 
   public void OnCreateRoomButtonClicked(bool isPublic)
@@ -366,11 +376,32 @@ public class FirebaseManager : MonoBehaviour
     yield return new WaitUntil(predicate: () => DBTask3.IsCompleted);
     yield return new WaitUntil(predicate: () => DBTask4.IsCompleted);
 
-
+    if (DBTask2.Exception != null)
+    {
+      Debug.LogWarning(message: $"Failed to register task with {DBTask2.Exception}");
+    }
+    else
+    {
+      //update succesful
+    }
+    if (DBTask3.Exception != null)
+    {
+      Debug.LogWarning(message: $"Failed to register task with {DBTask3.Exception}");
+    }
+    else
+    {
+      //update succesful
+    }
+    if (DBTask4.Exception != null)
+    {
+      Debug.LogWarning(message: $"Failed to register task with {DBTask4.Exception}");
+    }
+    else
+    {
+      //update succesful
+    }
 
   }
-
-
 
 }
 

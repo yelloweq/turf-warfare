@@ -20,6 +20,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
   [Header("Connecting Panel")]
   public GameObject ConnectingUIPanel;
 
+  [Header("Leaderboard")]
+  public GameObject LeaderboardUIPanel;
 
   [Header("GameOptions Panel")]
   public GameObject GameOptionsUIPanel;
@@ -253,6 +255,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     InsideRoomUIPanel.SetActive(InsideRoomUIPanel.name.Equals(panelTobeActivated));
     LoginMenu.SetActive(LoginMenu.name.Equals(panelTobeActivated));
     RegisterMenu.SetActive(RegisterMenu.name.Equals(panelTobeActivated));
+    LeaderboardUIPanel.SetActive(LeaderboardUIPanel.name.Equals(panelTobeActivated));
+
   }
 
   #endregion
