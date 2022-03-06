@@ -7,94 +7,27 @@ using ExitGames.Client.Photon;
 using System.Collections.Generic;
 using System.Linq;
 
-// Current issue: 
-
 public class GameManager : MonoBehaviourPunCallbacks
 {
     
     #region Constants
     // Event: remote player has shot the cannon
-    public const int END_TURN = 1;
+    private const byte END_TURN = 1;
 
     #endregion
     //Issue: MyTurn and Turn are being set to default GameState (first value = Player1Move) on both clients
     public enum GameState { Player1Move, Player2Move, EMPTY, WIN };
 
-    private GameState _winner;
-    public GameState Winner
-    {
-        get
-        {
-            return _winner;
-        }
-        private set
-        {
-            _winner = value;
-
-            switch (value)
-            {
-                case GameState.Player1Move:
-                case GameState.Player2Move:
-                    string winnerName;
-                    if (PhotonNetwork.IsConnected)
-                    {
-                        winnerName = MyTurn == value
-                            ? PhotonNetwork.NickName
-                            : GetOpponent().NickName;
-                    }
-                    else
-                    {
-                        winnerName = value.ToString();
-                    }
-
-                    if (photonView.IsMine)
-                    {
-                        Debug.Log("Host wins");
-                    } else
-                    {
-                        Debug.Log("Remote player wins");
-                    }
-                    
-
-                 //   turnText.text = photonView.IsMine
-                 //       ? $"Winner: {winnerName}! - SPACE to reset, ESC to quit"
-                 //       : $"Winner: {winnerName}! - ESC to quit";
-                    break;
-
-                
-            }
-        }
-    }
-
-    // Current turn in the game
-    private GameState _turn;
-    public GameState Turn
-    {
-        get
-        {
-            return _turn;
-        }
-        private set
-        {
-            _turn = value;
-            if (Winner == GameState.EMPTY)
-            {
-                if (PhotonNetwork.IsConnected)
-                {
-                    //turnText.text = MyTurn == Turn
-                    //    ? $"Your turn, {PhotonNetwork.NickName}"
-                    //    : $"Waiting for {GetOpponent().NickName}";
-                    Debug.Log(MyTurn == Turn ? "my turn" : "waiting for opponent");
-                }
-            }
-        }
-    }
-
+    private GameState Winner;
+    private GameState Turn;
     private GameState MyTurn;
 
+    public GameState GetCurrentTurn(){
+        return Turn;
+    }
     void Start()
     {
-        if (photonView.IsMine && PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient)
         {
             Winner = GameState.EMPTY;
             MyTurn = GameState.Player1Move;
@@ -102,8 +35,13 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
         else
         {
+            Winner = GameState.EMPTY;
             MyTurn = GameState.Player2Move;
+            Turn = GameState.Player1Move;
         }
+        Debug.Log("Winner: " + Winner.ToString() + ", MyTurn: " + MyTurn.ToString()
+        + ", CurrentTurn: " + Turn.ToString());
+
     }
 
     public Player GetOpponent()
@@ -129,14 +67,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         //    //PhotonNetwork.LoadLevel(SceneManager.GetActiveScene().buildIndex);
         //    Debug.Log("RETURN TO LOBBY AFTER WINNER CHOSEN");
         //}
-        else if (Input.GetKeyDown(KeyCode.Escape))
-        {
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-#else
-            Application.Quit();
-#endif
-        }
+        
     }
 
     public void EndTurn()
@@ -164,11 +95,11 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
         else
         {
-            Debug.Log("RAISING EVENT");
+            Debug.Log("RAISING ENDTURN EVENT");
             // Send the move, but don't change the cell:
             // we do not own the game state.
             PhotonNetwork.RaiseEvent(END_TURN,
-                new object[] { },
+                null,
                 RaiseEventOptions.Default,
                 SendOptions.SendReliable);
         }
@@ -183,9 +114,13 @@ public class GameManager : MonoBehaviourPunCallbacks
             switch (photonEvent.Code)
             {
                 case END_TURN:
-                    if (Turn != MyTurn)
+                    if (Turn == GameState.Player1Move)
                     {
-                        Turn = MyTurn;
+                        Turn = GameState.Player2Move;
+                    } 
+                    else 
+                    {
+                        Turn = GameState.Player1Move;
                     }
                     break;
             }
