@@ -8,6 +8,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using Firebase.Database;
 using Firebase.Extensions;
+using System.Linq;
 
 public class FirebaseManager : MonoBehaviour
 {
@@ -47,6 +48,11 @@ public class FirebaseManager : MonoBehaviour
   public Text WelcomeMessage;
   public GameObject InputName;
   public bool loggedin;
+
+  [Header("Scoreboard")]
+  public GameObject scoreElement;
+  public Transform scoreboardContent;
+
 
   void Start()
   {
@@ -403,6 +409,45 @@ public class FirebaseManager : MonoBehaviour
 
   }
 
+  private IEnumerator LoadScoreboardData()
+  {
+    //Get all the users data ordered by kills amount
+    var DBTask = DBreference.Child("users").OrderByChild("wins").GetValueAsync();
+
+    yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
+
+    if (DBTask.Exception != null)
+    {
+      Debug.LogWarning(message: $"Failed to register task with {DBTask.Exception}");
+    }
+    else
+    {
+      //Data has been retrieved
+      DataSnapshot snapshot = DBTask.Result;
+
+      //Destroy any existing scoreboard elements
+      foreach (Transform child in scoreboardContent.transform)
+      {
+        Destroy(child.gameObject);
+      }
+
+      //Loop through every users UID
+      foreach (DataSnapshot childSnapshot in snapshot.Children.Reverse<DataSnapshot>())
+      {
+        string username = childSnapshot.Child("username").Value.ToString();
+        int wins = int.Parse(childSnapshot.Child("wins").Value.ToString());
+
+        //Instantiate new scoreboard elements
+        GameObject scoreboardElement = Instantiate(scoreElement, scoreboardContent);
+        scoreboardElement.GetComponent<ScoreElement>().NewScoreElement(username, wins);
+      }
+    }
+  }
+
+  public void ScoreboardButton()
+  {
+    StartCoroutine(LoadScoreboardData());
+  }
 }
 
 
