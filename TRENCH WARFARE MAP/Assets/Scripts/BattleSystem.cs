@@ -26,14 +26,14 @@ public class BattleSystem : MonoBehaviour
 
     void SetupBattle()
     {
-        //Spawns cannon 1 at given transform position
+        //Spawns cannon 2 at given transform position
         if (!PhotonNetwork.IsMasterClient)
         {
-           P1Cannon = PhotonNetwork.Instantiate(Cannon.name, new Vector3(133, 1, 250), Quaternion.identity, 0);
+            P1Cannon = PhotonNetwork.Instantiate(Cannon.name, new Vector3(133, 1, 250), Quaternion.identity, 0);
         }
         
 
-        //Spawns cannon 2 at given transform position
+        //Spawns cannon 1 at given transform position
         if (PhotonNetwork.IsMasterClient)
         {
             P2Cannon = PhotonNetwork.Instantiate(Cannon.name, new Vector3(168, 1, 60), Quaternion.identity, 0);

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
+using ExitGames.Client.Photon;
 
 public class CannonController : MonoBehaviourPun
 {
@@ -16,6 +18,8 @@ public class CannonController : MonoBehaviourPun
     private bool canShoot;
     private bool active;
 
+    private int projectiles = 1;
+
     public GameObject Explosion;
 
     public DrawProjection Projection;
@@ -24,17 +28,22 @@ public class CannonController : MonoBehaviourPun
 
     private PhotonView PV;
 
+    private GameManager gameManager;
+
+    private const int projectionLength = 50;
     private void Start()
     {
         Projection = GetComponent<DrawProjection>();
         PV = PhotonView.Get(this);
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        
 
-        PV.RPC("DisableCannon", RpcTarget.AllViaServer, "CANNONS DISABLED!");
+        PV.RPC("DisableCannon", RpcTarget.AllViaServer, "CANNON DISABLED");
 
-        if (!PhotonNetwork.IsMasterClient)
-        {
-            PV.RPC("EnableCannon", RpcTarget.AllViaServer, "Master Cannon enabled!");
-        }
+        // if (!PhotonNetwork.IsMasterClient)
+        // {
+        //     PV.RPC("EnableCannon", RpcTarget.AllViaServer, "Master Cannon enabled!");
+        // }
     }
 
     private void OnEnable()
@@ -44,28 +53,47 @@ public class CannonController : MonoBehaviourPun
 
     }
 
+    private bool CheckTurn(){
+        return gameManager.GetCurrentTurn() == gameManager.GetMyTurn();
+    }
 
+    public void ResetCannon()
+    {
+        this.gameObject.transform.rotation = Quaternion.Euler(0, -90, -45);
+        projectiles = 1;
+    }
 
     private void Update()
     {
-        if (active && base.photonView.IsMine)
-        {
+        if (!photonView.IsMine){
+            return;
+        }
+
+        if (CheckTurn()){
+            active = true;
+            Projection.SetPoints(projectionLength);
+
+        }
+
+        if (active){
             float HorizontalRotation = Input.GetAxis("Fire1");
             float VericalRotation = Input.GetAxis("Fire2");
 
             transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles +
             new Vector3(0, HorizontalRotation * rotationSpeed, VericalRotation * rotationSpeed));
-            fireCannon();
-
+            fireCannon(); 
         }
+        
+
+        
     }
 
     void fireCannon()
     {
         //when the 'F' key is pressed
-        if (Input.GetKeyDown(KeyCode.F) && canShoot == true)
+        if (Input.GetKeyDown(KeyCode.F) && System.Convert.ToBoolean(projectiles))
         {
-
+            projectiles = 0;
             //Spawn cannon ball at the shotpoint gameobject position
             GameObject CreatedCannonball = PhotonNetwork.Instantiate(Cannonball.name, ShotPoint.position, ShotPoint.rotation);
 
@@ -79,18 +107,21 @@ public class CannonController : MonoBehaviourPun
             Destroy(PhotonNetwork.Instantiate(Explosion.name, ShotPoint.position, ShotPoint.rotation), 2);
 
 
-            PV.RPC("DisableCannon", RpcTarget.AllViaServer, "DISABLED AFTER SHOT");
+            PV.RPC("DisableCannon", RpcTarget.All, "DISABLED CANNON -> SHOT");
 
         }
     }
 
+    private void DisableAfterTurn(){
+        PV.RPC("DisableCannon", RpcTarget.All, "DISABLED CANNON -> END OF TURN");
+    }
     [PunRPC]
     private void DisableCannon(string str)
     {
         Debug.Log(str + " =========id========== " + PV.ViewID);
         active = false;
         Projection.SetPoints(0);
-        canShoot = false;
+        projectiles = 0;
     }
 
     [PunRPC]
@@ -98,16 +129,7 @@ public class CannonController : MonoBehaviourPun
     {
         Debug.Log(str + " =========id========== " + PV.ViewID);
         active = true;
-        Projection.SetPoints(50);
-        canShoot = true;
+        Projection.SetPoints(projectionLength);
+        projectiles = 0;
     }
-
-    //[PunRPC]
-    //private void SwitchCannon(string str)
-    //{
-    //    Debug.Log(str + " =========id========== " + PV.ViewID);
-    //    active = false;
-    //    Projection.SetPoints(0);
-    //    canShoot = false;
-    //}
 }

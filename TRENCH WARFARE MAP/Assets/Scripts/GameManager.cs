@@ -7,13 +7,16 @@ using ExitGames.Client.Photon;
 using System.Collections.Generic;
 using System.Linq;
 
-public class GameManager : MonoBehaviourPunCallbacks
+//TODO: GET CANNON CONTROLLER FOR MASTER AND CLIENT
+// USE RESETCANNON FUNC AFTER CALLING PLAYER SWITCH
+// DISABLE CANNON AFTER CHANGE OF TURN
+public class GameManager : MonoBehaviourPunCallbacks, IPunObservable, IOnEventCallback
 {
     
     #region Constants
     // Event: remote player has shot the cannon
     private const byte END_TURN = 1;
-
+    private const byte WIN_MATCH = 2;
     #endregion
     //Issue: MyTurn and Turn are being set to default GameState (first value = Player1Move) on both clients
     public enum GameState { Player1Move, Player2Move, EMPTY, WIN };
@@ -22,8 +25,29 @@ public class GameManager : MonoBehaviourPunCallbacks
     private GameState Turn;
     private GameState MyTurn;
 
+    private CannonController cannonController;
+
     public GameState GetCurrentTurn(){
         return Turn;
+    }
+
+    public GameState GetMyTurn(){
+        return MyTurn;
+    }
+
+    private bool CheckTurn()
+    {
+        return Turn == MyTurn;
+    }
+
+    public void OnEnable()
+    {
+        PhotonNetwork.AddCallbackTarget(this);
+    }
+
+    public void OnDisable()
+    {
+        PhotonNetwork.RemoveCallbackTarget(this);
     }
     void Start()
     {
@@ -53,12 +77,9 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         if (Input.GetKeyDown(KeyCode.Tab) && Turn == MyTurn)
         {
-            Debug.Log("my turn: " + MyTurn.ToString());
-            Debug.Log("Current turn: " + Turn.ToString());
+            Debug.Log("MyTrun: " + MyTurn.ToString() + " Currently: " +  Turn.ToString() + "Winner: " + Winner.ToString());
             EndTurn();
-            Debug.Log("Changing turn");
-            Debug.Log("my turn: " + MyTurn.ToString());
-            Debug.Log("Current turn: " + Turn.ToString());
+            Debug.Log("MyTrun: " + MyTurn.ToString() + " Currently: " +  Turn.ToString() + "Winner: " + Winner.ToString());
 
         }
         //if (photonView.IsMine && Winner != GameState.EMPTY && Input.GetKeyDown(KeyCode.Return))
@@ -72,7 +93,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void EndTurn()
     {
-        Debug.Log("Ending turn");
+        Debug.Log("============= TURN END ============");
         if (Winner != GameState.EMPTY)
         {
             // Game has finished, do nothing
@@ -89,56 +110,91 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         if (photonView.IsMine)
         {
-            // Really change the cell
+            // Change state
             Turn = GameState.Player2Move;
-            Debug.Log("Turn changed");
         }
         else
         {
-            Debug.Log("RAISING ENDTURN EVENT");
-            // Send the move, but don't change the cell:
-            // we do not own the game state.
+            //Debug.Log(">>>>>>>>>>>>>>>>>>>>> END_TURN EVENT <<<<<<<<<<<<<<<<<<");
+            // Send event, dont change state:
+            object[] content = new object[] {MyTurn};
             PhotonNetwork.RaiseEvent(END_TURN,
-                null,
+                content,
                 RaiseEventOptions.Default,
                 SendOptions.SendReliable);
+
+           // Debug.Log(">>>>>>>>>>>>>>>>>>>>> EVENT SENT <<<<<<<<<<<<<<<<<<");
         }
-        Debug.Log("end of endturn function");
     }
 
     public void OnEvent(EventData photonEvent)
     {
-        if (photonView.IsMine)
+        object[] data = (object[])photonEvent.CustomData;
+        if (PhotonNetwork.IsMasterClient)
         {
-            Debug.Log("On event triggered");
             switch (photonEvent.Code)
             {
+                //CONVERTING data[0] causes InvalidCastException
+                //Tried casting Int normally and passing it as GameState but doesnt work
+                //The turn does change...
+
                 case END_TURN:
-                    if (Turn == GameState.Player1Move)
-                    {
-                        Turn = GameState.Player2Move;
-                    } 
-                    else 
-                    {
+                try
+                {
+                    if (GameState.Player2Move == (GameState)System.Convert.ToInt32(data[0])){
                         Turn = GameState.Player1Move;
                     }
+                    if ((GameState)System.Convert.ToInt32(data[0]) == GameState.Player1Move){
+                        Turn = GameState.Player2Move;
+                        
+                    }
+                }
+                catch (System.InvalidCastException ex)
+                {
+                     Debug.Log("Casting data to gamestate err: " + ex);
+                }
+                    
+                    
+                    break;
+                case WIN_MATCH:
                     break;
             }
         }
+        if (CheckTurn() && photonView.IsMine)
+            {
+                cannonController.ResetCannon();
+            }
+        //Debug.Log("MyTurn:   " + MyTurn.ToString() + "   Currently: " +  Turn.ToString() + "    Winner:     " + Winner.ToString());
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
         {
-            stream.SendNext(this.Winner);
-            stream.SendNext(this.Turn);
+            try
+            {
+                stream.SendNext((int)Winner);
+                stream.SendNext((int)Turn);
+            }
+            catch (System.Exception ex)
+            {
+                 Debug.Log("WRITING: " + ex);
+            }
+            
 
         }
-        else
+        if (stream.IsReading)
         {
-            this.Winner = (GameState)stream.ReceiveNext();
-            this.Turn = (GameState)stream.ReceiveNext();
+            try
+            {
+               this.Winner = (GameState)System.Convert.ToInt16(stream.ReceiveNext());
+                this.Turn = (GameState)System.Convert.ToInt16(stream.ReceiveNext()); 
+            }
+            catch (System.InvalidCastException ex)
+            {
+                 Debug.Log("READING: " + ex);
+            }
+            
 
         }
     }
