@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "110498318893",
+    "project_id": "trenchwarfare-25108",
+    "firebase_url": "https://trenchwarfare-25108-default-rtdb.firebaseio.com/",
+    "storage_bucket": "trenchwarfare-25108.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:110498318893:android:156ae058fb38fbe5b346a4",
+        "android_client_info": {
+          "package_name": "com.DefaultCompany.TRENCHWARFARE"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "110498318893-i4g5gr5b3jmdit573nimvojtdm07aari.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsafohFSFRumAx99GcRz7Q8oCYu3ENSHU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "110498318893-i4g5gr5b3jmdit573nimvojtdm07aari.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
