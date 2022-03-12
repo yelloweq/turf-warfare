@@ -15,8 +15,7 @@ public class CannonController : MonoBehaviourPun
     public GameObject Cannonball;
     public Transform ShotPoint;
     public cameraSwitch cameraSwitch;
-    private bool canShoot;
-    private bool active;
+    private bool active = false;
 
     private int projectiles = 1;
 
@@ -24,43 +23,52 @@ public class CannonController : MonoBehaviourPun
 
     public DrawProjection Projection;
 
-    private const byte CANNON_FIRED_EVENT = 0;
-
     private PhotonView PV;
 
     private GameManager gameManager;
 
     private const int projectionLength = 50;
+
     private void Start()
     {
         Projection = GetComponent<DrawProjection>();
         PV = PhotonView.Get(this);
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+      
+        PV.RPC("DisableCannon", RpcTarget.All, "DISABLED CANNON -> GAME START");
+        
         
 
-        PV.RPC("DisableCannon", RpcTarget.AllViaServer, "CANNON DISABLED");
 
-        // if (!PhotonNetwork.IsMasterClient)
-        // {
-        //     PV.RPC("EnableCannon", RpcTarget.AllViaServer, "Master Cannon enabled!");
-        // }
+       if (photonView.IsMine && PhotonNetwork.IsMasterClient)
+       {
+           this.gameObject.name = "CannonHost";
+           ResetCannon();
+       }
+       else
+       {
+           this.gameObject.name = "CannonClient";
+        }
     }
 
-    private void OnEnable()
-    {
-
-        this.gameObject.transform.rotation = Quaternion.Euler(0, -90, -45);
-
-    }
 
     private bool CheckTurn(){
-        return gameManager.GetCurrentTurn() == gameManager.GetMyTurn();
+        if (gameManager)
+        {
+            bool isMyTurn = gameManager.GetCurrentTurn() == gameManager.GetMyTurn();
+            return isMyTurn;
+        }
+        
+        return false;
     }
 
-    public void ResetCannon()
+    public  IEnumerator ResetCannon()
     {
-        this.gameObject.transform.rotation = Quaternion.Euler(0, -90, -45);
-        projectiles = 1;
+        if (CheckTurn())
+        {
+            yield return new WaitForSeconds(3);
+            PV.RPC("EnableCannon", RpcTarget.All, "ENABLED CANNON -> TURN CHANGED");
+        }
     }
 
     private void Update()
@@ -69,23 +77,22 @@ public class CannonController : MonoBehaviourPun
             return;
         }
 
-        if (CheckTurn()){
-            active = true;
-            Projection.SetPoints(projectionLength);
+        if (!CheckTurn()){
+            return;
 
         }
 
-        if (active){
-            float HorizontalRotation = Input.GetAxis("Fire1");
-            float VericalRotation = Input.GetAxis("Fire2");
-
-            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles +
-            new Vector3(0, HorizontalRotation * rotationSpeed, VericalRotation * rotationSpeed));
-            fireCannon(); 
+        if (!active)
+        {
+            return;
         }
-        
 
-        
+        float HorizontalRotation = Input.GetAxis("Fire1");
+        float VericalRotation = Input.GetAxis("Fire2");
+
+        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles +
+        new Vector3(0, HorizontalRotation * rotationSpeed, VericalRotation * rotationSpeed));
+        fireCannon(); 
     }
 
     void fireCannon()
@@ -122,6 +129,7 @@ public class CannonController : MonoBehaviourPun
         active = false;
         Projection.SetPoints(0);
         projectiles = 0;
+        this.gameObject.transform.rotation = Quaternion.Euler(0, -90, -45);
     }
 
     [PunRPC]
@@ -130,6 +138,8 @@ public class CannonController : MonoBehaviourPun
         Debug.Log(str + " =========id========== " + PV.ViewID);
         active = true;
         Projection.SetPoints(projectionLength);
-        projectiles = 0;
+        projectiles = 1;
+        this.gameObject.transform.rotation = Quaternion.Euler(0, -90, -45);
     }
+
 }

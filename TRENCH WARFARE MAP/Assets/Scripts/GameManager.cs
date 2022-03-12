@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 using Photon.Pun;
 using Photon.Realtime;
 using ExitGames.Client.Photon;
-using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 
 //TODO: GET CANNON CONTROLLER FOR MASTER AND CLIENT
@@ -43,6 +43,24 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable, IOnEventCa
     public void OnEnable()
     {
         PhotonNetwork.AddCallbackTarget(this);
+        
+        
+    }
+
+    public IEnumerator FindController()
+    {
+        yield return new WaitForSeconds(2);
+
+        if(PhotonNetwork.IsMasterClient)
+        {
+            cannonController = GameObject.Find("CannonHost").GetComponent<CannonController>();
+            Debug.Log("Looking for CannonHost Controller");
+        }
+        else
+        {
+            cannonController = GameObject.Find("CannonClient").GetComponent<CannonController>();
+            Debug.Log("Looking for CannonClient Controller");
+        }
     }
 
     public void OnDisable()
@@ -56,6 +74,7 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable, IOnEventCa
             Winner = GameState.EMPTY;
             MyTurn = GameState.Player1Move;
             Turn = GameState.Player1Move;
+
         }
         else
         {
@@ -66,6 +85,7 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable, IOnEventCa
         Debug.Log("Winner: " + Winner.ToString() + ", MyTurn: " + MyTurn.ToString()
         + ", CurrentTurn: " + Turn.ToString());
 
+        StartCoroutine(FindController());
     }
 
     public Player GetOpponent()
@@ -112,6 +132,11 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable, IOnEventCa
         {
             // Change state
             Turn = GameState.Player2Move;
+            if (!cannonController){
+                cannonController = GameObject.Find("CannonHost").GetComponent<CannonController>();
+            }
+            StartCoroutine(cannonController.ResetCannon());
+            
         }
         else
         {
@@ -123,6 +148,10 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable, IOnEventCa
                 RaiseEventOptions.Default,
                 SendOptions.SendReliable);
 
+                if (!cannonController){
+                cannonController = GameObject.Find("CannonClient").GetComponent<CannonController>();
+            }
+               StartCoroutine(cannonController.ResetCannon());
            // Debug.Log(">>>>>>>>>>>>>>>>>>>>> EVENT SENT <<<<<<<<<<<<<<<<<<");
         }
     }
@@ -156,14 +185,9 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable, IOnEventCa
                     
                     
                     break;
-                case WIN_MATCH:
-                    break;
             }
         }
-        if (CheckTurn() && photonView.IsMine)
-            {
-                cannonController.ResetCannon();
-            }
+        
         //Debug.Log("MyTurn:   " + MyTurn.ToString() + "   Currently: " +  Turn.ToString() + "    Winner:     " + Winner.ToString());
     }
 
