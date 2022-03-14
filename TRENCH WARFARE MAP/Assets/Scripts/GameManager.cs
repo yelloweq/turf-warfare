@@ -133,10 +133,10 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable, IOnEventCa
             // Change state
             Turn = GameState.Player2Move;
             if (!cannonController){
-                cannonController = GameObject.Find("CannonHost").GetComponent<CannonController>();
+                cannonController = GameObject.Find("CannonClient").GetComponent<CannonController>();
             }
             StartCoroutine(cannonController.ResetCannon());
-            
+            Debug.Log("STARTING COROUTINE: RESET CLIENT CANNON");
         }
         else
         {
@@ -149,9 +149,10 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable, IOnEventCa
                 SendOptions.SendReliable);
 
                 if (!cannonController){
-                cannonController = GameObject.Find("CannonClient").GetComponent<CannonController>();
+                cannonController = GameObject.Find("CannonHost").GetComponent<CannonController>();
             }
                StartCoroutine(cannonController.ResetCannon());
+               Debug.Log("STARTING COROUTINE: RESET HOST CANNON");
            // Debug.Log(">>>>>>>>>>>>>>>>>>>>> EVENT SENT <<<<<<<<<<<<<<<<<<");
         }
     }

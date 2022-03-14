@@ -15,7 +15,7 @@ public class CannonController : MonoBehaviourPun
     public GameObject Cannonball;
     public Transform ShotPoint;
     public cameraSwitch cameraSwitch;
-    private bool active = false;
+    private bool active = true;
 
     private int projectiles = 1;
 
@@ -36,19 +36,19 @@ public class CannonController : MonoBehaviourPun
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
       
         PV.RPC("DisableCannon", RpcTarget.All, "DISABLED CANNON -> GAME START");
-        
-        
 
-
-       if (photonView.IsMine && PhotonNetwork.IsMasterClient)
+       if (photonView.IsMine)
        {
            this.gameObject.name = "CannonHost";
-           ResetCannon();
+           StartCoroutine(ResetCannon());
        }
        else
        {
            this.gameObject.name = "CannonClient";
         }
+
+        
+       
     }
 
 
@@ -64,11 +64,14 @@ public class CannonController : MonoBehaviourPun
 
     public  IEnumerator ResetCannon()
     {
-        if (CheckTurn())
-        {
-            yield return new WaitForSeconds(3);
-            PV.RPC("EnableCannon", RpcTarget.All, "ENABLED CANNON -> TURN CHANGED");
-        }
+        yield return new WaitForSeconds(1);
+        Debug.Log("ResetCannon calling");
+        
+            
+            PV.RPC("EnableCannon", RpcTarget.All, "ENABLED CANNON -> CANNON RESET");
+            Debug.Log("RESET CANNON RPC REQUEST SENT");
+        
+        
     }
 
     private void Update()
@@ -86,7 +89,8 @@ public class CannonController : MonoBehaviourPun
         {
             return;
         }
-
+        
+        Projection.SetPoints(projectionLength);
         float HorizontalRotation = Input.GetAxis("Fire1");
         float VericalRotation = Input.GetAxis("Fire2");
 
@@ -98,7 +102,7 @@ public class CannonController : MonoBehaviourPun
     void fireCannon()
     {
         //when the 'F' key is pressed
-        if (Input.GetKeyDown(KeyCode.F) && System.Convert.ToBoolean(projectiles))
+        if (Input.GetKeyDown(KeyCode.F) && projectiles == 1)
         {
             projectiles = 0;
             //Spawn cannon ball at the shotpoint gameobject position
@@ -119,9 +123,7 @@ public class CannonController : MonoBehaviourPun
         }
     }
 
-    private void DisableAfterTurn(){
-        PV.RPC("DisableCannon", RpcTarget.All, "DISABLED CANNON -> END OF TURN");
-    }
+ 
     [PunRPC]
     private void DisableCannon(string str)
     {
