@@ -48,6 +48,7 @@ public class FirebaseManager : MonoBehaviour
   public Text WelcomeMessage;
   public GameObject InputName;
   public bool loggedin;
+  public Text currentWinsText;
 
   [Header("Scoreboard")]
   public GameObject scoreElement;
@@ -93,6 +94,7 @@ public class FirebaseManager : MonoBehaviour
   public void LoginButton()
   {
     StartCoroutine(Login(emailLoginField.text, passwordLoginField.text));
+
   }
 
   //RegisterButton function
@@ -143,9 +145,10 @@ public class FirebaseManager : MonoBehaviour
 
       confirmLoginText.text = "Logged in!";
       loggedin = true;
+      StartCoroutine(LoadUserWins());
 
       OnLoginButtonClicked();
-      clearLoginFields();
+
     }
   }
 
@@ -471,6 +474,75 @@ public class FirebaseManager : MonoBehaviour
   //   }
   //   return false;
   // }
+
+  private IEnumerator LoadUserWins()
+  {
+    //Get the currently logged in user data
+    var DBTask = DBreference.Child("users").Child(User.UserId).GetValueAsync();
+
+    yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
+
+    if (DBTask.Exception != null)
+    {
+      Debug.LogWarning(message: $"Failed to register task with {DBTask.Exception}");
+    }
+    else if (DBTask.Result.Value == null)
+    {
+      //No data exists yet
+      currentWinsText.text = "no data found";
+    }
+    else
+    {
+      //Data has been retrieved
+      DataSnapshot snapshot = DBTask.Result;
+
+      currentWinsText.text = "Current wins: " + snapshot.Child("wins").Value.ToString();
+
+    }
+  }
+
+  private IEnumerator incrementWins()
+  {
+    if (loggedin == true)
+    {
+      var DBTask = DBreference.Child("users").Child(User.UserId).GetValueAsync();
+
+      yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
+
+      if (DBTask.Result != null)
+      {
+        DataSnapshot snapshot = DBTask.Result;
+
+        int currentWins = int.Parse(snapshot.Child("wins").Value.ToString());
+
+        var DBTask2 = DBreference.Child("users").Child(User.UserId).Child("wins").SetValueAsync(currentWins + 1);
+
+        yield return new WaitUntil(predicate: () => DBTask2.IsCompleted);
+        Debug.Log("Win added! Check leaderboard.");
+        if (DBTask.Exception != null)
+        {
+          Debug.LogWarning(message: $"Failed to register task with {DBTask.Exception}");
+        }
+        else
+        {
+
+        }
+      }
+    }
+    else
+    {
+      Debug.Log("Not logged in! Leaderboard wins only available for logged in users.");
+    }
+    StartCoroutine(LoadUserWins());
+  }
+
+  public void IncrementWinsButton()
+  {
+    StartCoroutine(incrementWins());
+
+
+  }
+
 }
 
 

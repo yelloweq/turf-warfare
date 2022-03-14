@@ -44,6 +44,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
   public GameObject playerListContent;
 
   public Text connectionStatusText;
+  public Text currentWinsText;
 
   private Dictionary<int, GameObject> playerListGameObjects;
 
@@ -155,6 +156,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     PhotonNetwork.ConnectUsingSettings();
     WelcomeMessage.SetActive(false);
     playerNameInput.gameObject.SetActive(true);
+    currentWinsText.gameObject.SetActive(false);
   }
 
   public void OnCreateRoomButtonClicked(bool isPublic)
