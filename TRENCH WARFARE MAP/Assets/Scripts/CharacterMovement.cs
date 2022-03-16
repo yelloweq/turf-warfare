@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Pun;
 
-public class CharacterMovement : MonoBehaviourPun
+public class CharacterMovement : MonoBehaviour
 {
     public CharacterController CharacterController;
 
@@ -21,21 +20,13 @@ public class CharacterMovement : MonoBehaviourPun
     // Update is called once per frame
     void Update()
     {
-        if (photonView.IsMine)
-        {
-            Move();
-        }
-    }
-
-    void Move()
-    {
         onGround = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
-
+        
         if (onGround && velocity.y < 0)
         {
             velocity.y = -2f;
         }
-
+        
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
 
@@ -50,6 +41,6 @@ public class CharacterMovement : MonoBehaviourPun
 
         velocity.y += gravity * Time.deltaTime;
 
-        CharacterController.Move(velocity * Time.deltaTime);
+        CharacterController.Move(velocity * Time.deltaTime); 
     }
 }

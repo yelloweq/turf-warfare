@@ -18,7 +18,9 @@ public class PlayerSpawner : MonoBehaviour
         GameObject _localPlayer = PhotonNetwork.Instantiate(playerModel.name, spawnPoints[player].transform.position, Quaternion.identity, 0);
 
         //enable camera and movement for player
-        _localPlayer.GetComponent<PlayerSetup>().IsLocalPlayer(); 
+        _localPlayer.GetComponent<PlayerSetup>().IsLocalPlayer();
+        Debug.Log("Player setup");
+        
     }
 
     void Start()

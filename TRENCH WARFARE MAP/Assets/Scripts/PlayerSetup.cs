@@ -12,7 +12,7 @@ public class PlayerSetup : MonoBehaviour
         //turn on local player camera and movement
         //prevents from one player controlling both characters
         cameraHolder.GetComponent<Camera>().enabled = true;
-        GetComponent<CharacterMovement>().enabled = true;
+        GetComponent<PlayerMovement>().enabled = true;
 
     }
 }
