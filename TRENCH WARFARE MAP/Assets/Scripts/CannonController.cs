@@ -87,6 +87,7 @@ public class CannonController : MonoBehaviourPun
 
         if (!active)
         {
+            Projection.SetPoints(0);
             return;
         }
         
