@@ -19,7 +19,7 @@ public class BaseTrigger : MonoBehaviour
     void Start()
     {
         bought = false;
-        originalText = message.text;
+        //originalText = message.text;
     }
 
     // Update is called once per frame

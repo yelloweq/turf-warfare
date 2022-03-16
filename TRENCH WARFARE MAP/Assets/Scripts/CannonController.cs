@@ -1,8 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+using Photon.Realtime;
+using ExitGames.Client.Photon;
 
-public class CannonController : MonoBehaviour
+public class CannonController : MonoBehaviourPun
 {
     //speed at which cannon rotates
     public float rotationSpeed = 0.05f;
@@ -11,54 +14,135 @@ public class CannonController : MonoBehaviour
 
     public GameObject Cannonball;
     public Transform ShotPoint;
-    private bool canShoot;
+    public cameraSwitch cameraSwitch;
+    private bool active = true;
 
-    float HorizontalRotation = 0f;
-    float VericalRotation = 0f;
+    private int projectiles = 1;
 
     public GameObject Explosion;
 
-    private void OnEnable()
-    {
-        canShoot = true;
+    public DrawProjection Projection;
 
-        if (this.gameObject.name == "FriendlyCannon")
-        {
-            this.gameObject.transform.rotation = Quaternion.Euler(0, -90, -45);
+    private PhotonView PV;
+
+    private GameManager gameManager;
+
+    private const int projectionLength = 50;
+
+    private void Start()
+    {
+        Projection = GetComponent<DrawProjection>();
+        PV = PhotonView.Get(this);
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+      
+        PV.RPC("DisableCannon", RpcTarget.All, "DISABLED CANNON -> GAME START");
+
+       if (photonView.IsMine)
+       {
+           this.gameObject.name = "CannonHost";
+           StartCoroutine(ResetCannon());
+       }
+       else
+       {
+           this.gameObject.name = "CannonClient";
         }
-        else
+
+        
+       
+    }
+
+
+    private bool CheckTurn(){
+        if (gameManager)
         {
-            this.gameObject.transform.rotation = Quaternion.Euler(0, 90, -45);
+            bool isMyTurn = gameManager.GetCurrentTurn() == gameManager.GetMyTurn();
+            return isMyTurn;
         }
+        
+        return false;
+    }
+
+    public  IEnumerator ResetCannon()
+    {
+        yield return new WaitForSeconds(1);
+        Debug.Log("ResetCannon calling");
+        
+            
+            PV.RPC("EnableCannon", RpcTarget.All, "ENABLED CANNON -> CANNON RESET");
+            Debug.Log("RESET CANNON RPC REQUEST SENT");
+        
+        
     }
 
     private void Update()
     {
+        if (!photonView.IsMine){
+            return;
+        }
+
+        if (!CheckTurn()){
+            return;
+
+        }
+
+        if (!active)
+        {
+            Projection.SetPoints(0);
+            return;
+        }
+        
+        Projection.SetPoints(projectionLength);
         float HorizontalRotation = Input.GetAxis("Fire1");
         float VericalRotation = Input.GetAxis("Fire2");
 
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles +
         new Vector3(0, HorizontalRotation * rotationSpeed, VericalRotation * rotationSpeed));
-        fireCannon();
+        fireCannon(); 
     }
-    void fireCannon() {
-        //when the 'F' key is pressed
-        if (Input.GetKeyDown(KeyCode.F) && canShoot == true)
-        {
-            canShoot = false;
 
+    void fireCannon()
+    {
+        //when the 'F' key is pressed
+        if (Input.GetKeyDown(KeyCode.F) && projectiles == 1)
+        {
+            projectiles = 0;
             //Spawn cannon ball at the shotpoint gameobject position
-            GameObject CreatedCannonball = Instantiate(Cannonball, ShotPoint.position, ShotPoint.rotation);
+            GameObject CreatedCannonball = PhotonNetwork.Instantiate(Cannonball.name, ShotPoint.position, ShotPoint.rotation);
 
             //play explosion particle effect
-            Destroy(Instantiate(Explosion, ShotPoint.position, ShotPoint.rotation), 2);
+            Destroy(PhotonNetwork.Instantiate(Explosion.name, ShotPoint.position, ShotPoint.rotation), 2);
 
             //add velocity to the balls rigidbody component to allow it to move
             CreatedCannonball.GetComponent<Rigidbody>().velocity = ShotPoint.transform.up * BlastPower;
 
             // Added explosion for added effect
-            Destroy(Instantiate(Explosion, ShotPoint.position, ShotPoint.rotation), 2);
+            Destroy(PhotonNetwork.Instantiate(Explosion.name, ShotPoint.position, ShotPoint.rotation), 2);
+
+
+            PV.RPC("DisableCannon", RpcTarget.All, "DISABLED CANNON -> SHOT");
+
         }
-  }
+    }
+
+ 
+    [PunRPC]
+    private void DisableCannon(string str)
+    {
+        Debug.Log(str + " =========id========== " + PV.ViewID);
+        active = false;
+        Projection.SetPoints(0);
+        projectiles = 0;
+        this.gameObject.transform.rotation = Quaternion.Euler(0, -90, -45);
+    }
+
+    [PunRPC]
+    private void EnableCannon(string str)
+    {
+        Debug.Log(str + " =========id========== " + PV.ViewID);
+        active = true;
+        Projection.SetPoints(projectionLength);
+        projectiles = 1;
+        this.gameObject.transform.rotation = Quaternion.Euler(0, -90, -45);
+    }
 
 }
