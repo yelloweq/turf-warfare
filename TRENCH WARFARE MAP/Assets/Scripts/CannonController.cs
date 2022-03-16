@@ -14,8 +14,8 @@ public class CannonController : MonoBehaviour
     public cameraSwitch cameraSwitch;
     private bool canShoot;
 
-    float HorizontalRotation = 0f;
-    float VericalRotation = 0f;
+    float HorizontalRotation;
+    float VericalRotation;
 
     public GameObject Explosion;
 
