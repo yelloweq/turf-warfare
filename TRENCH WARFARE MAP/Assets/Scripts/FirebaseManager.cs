@@ -26,17 +26,17 @@ public class FirebaseManager : MonoBehaviour
 
   //Login variables
   [Header("Login")]
-  public InputField emailLoginField;
-  public InputField passwordLoginField;
+  public TMP_InputField emailLoginField;
+  public TMP_InputField passwordLoginField;
   public TMP_Text warningLoginText;
   public TMP_Text confirmLoginText;
 
   //Register variables
   [Header("Register")]
-  public InputField usernameRegisterField;
-  public InputField emailRegisteredField;
-  public InputField passwordRegisteredField;
-  public InputField passwordRegisterVerifyField;
+  public TMP_InputField usernameRegisterField;
+  public TMP_InputField emailRegisteredField;
+  public TMP_InputField passwordRegisteredField;
+  public TMP_InputField passwordRegisterVerifyField;
   public TMP_Text warningRegisterText;
   public TMP_Text confirmRegisterText;
 
@@ -148,7 +148,6 @@ public class FirebaseManager : MonoBehaviour
       StartCoroutine(LoadUserWins());
 
       OnLoginButtonClicked();
-
     }
   }
 
@@ -171,11 +170,15 @@ public class FirebaseManager : MonoBehaviour
   {
     if (_username == "")
     {
-      warningRegisterText.text = "Please insert your username!";
+      warningRegisterText.text = "Please insert a username!";
+      yield return new WaitForSeconds(3);
+      warningRegisterText.text = "";
     }
     else if (passwordRegisteredField.text != passwordRegisterVerifyField.text)
     {
-      warningRegisterText.text = "Passwords do not match!!";
+      warningRegisterText.text = "Passwords do not match!";
+      yield return new WaitForSeconds(3);
+      warningRegisterText.text = "";
     }
     else
     {
@@ -209,6 +212,8 @@ public class FirebaseManager : MonoBehaviour
         }
 
         warningRegisterText.text = message;
+        yield return new WaitForSeconds(3);
+        warningRegisterText.text = "";
         confirmRegisterText.text = "";
       }
       // else if (checkExistingUsername(_username))
@@ -528,12 +533,13 @@ public class FirebaseManager : MonoBehaviour
 
         }
       }
+      StartCoroutine(LoadUserWins());
     }
     else
     {
       Debug.Log("Not logged in! Leaderboard wins only available for logged in users.");
     }
-    StartCoroutine(LoadUserWins());
+
   }
 
   public void IncrementWinsButton()
