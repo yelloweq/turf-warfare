@@ -45,10 +45,12 @@ public class FirebaseManager : MonoBehaviour
   public InputField playerNameInput;
   public InputField joinRoomInput;
   public Text connectionStatusText;
-  public Text WelcomeMessage;
+  public TMP_Text WelcomeMessage;
   public GameObject InputName;
   public bool loggedin;
-  public Text currentWinsText;
+  public TMP_Text currentWinsText;
+  public TMP_Text waitingMessage;
+
 
   [Header("Scoreboard")]
   public GameObject scoreElement;

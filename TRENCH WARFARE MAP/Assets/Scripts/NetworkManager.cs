@@ -42,9 +42,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
   public TextMeshProUGUI roomInfoText;
   public GameObject playerListPrefab;
   public GameObject playerListContent;
+  public TMP_Text waitingMessage;
+
 
   public Text connectionStatusText;
-  public Text currentWinsText;
+  public TMP_Text currentWinsText;
 
   private Dictionary<int, GameObject> playerListGameObjects;
 
@@ -108,6 +110,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     playerGameObject.GetComponent<Initializer>().setUpName(newPlayer.NickName);
 
     playerListGameObjects.Add(newPlayer.ActorNumber, playerGameObject);
+
   }
 
   public override void OnPlayerLeftRoom(Player otherPlayer)
@@ -198,7 +201,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
       PhotonNetwork.LoadLevel(levelname);
     }
-
   }
 
   public void OnLeaveGameButtonClicked()
