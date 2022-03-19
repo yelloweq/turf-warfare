@@ -49,8 +49,6 @@ public class FirebaseManager : MonoBehaviour
   public GameObject InputName;
   public bool loggedin;
   public TMP_Text currentWinsText;
-  public TMP_Text waitingMessage;
-
 
   [Header("Scoreboard")]
   public GameObject scoreElement;

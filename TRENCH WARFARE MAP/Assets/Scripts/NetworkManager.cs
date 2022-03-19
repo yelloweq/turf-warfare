@@ -25,7 +25,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
   [Header("GameOptions Panel")]
   public GameObject GameOptionsUIPanel;
-  public InputField playerNameInput;
+  public TMP_InputField playerNameInput;
   public GameObject WelcomeMessage;
 
   [Header("Create Room Panel")]
