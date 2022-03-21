@@ -11,55 +11,103 @@ public class CannonController : MonoBehaviour
 
     public GameObject Cannonball;
     public Transform ShotPoint;
-    public cameraSwitch cameraSwitch;
+    public cannonEnterTrigger cannonEnterTrigger;
     private bool canShoot;
+    public bool horizontalSet;
+    public bool verticalSet;
 
-    float HorizontalRotation;
-    float VericalRotation;
+    //float HorizontalRotation = 0f;
+    //float VerticalRotation = 0f;
 
     public GameObject Explosion;
+    public GameObject cannonTop;
 
     private void OnEnable()
     {
         canShoot = true;
+        horizontalSet = false;
+        verticalSet = false;
 
+        GameObject cannonTopPrefab = transform.GetChild(1).gameObject;
+        cannonTop = cannonTopPrefab.transform.GetChild(0).gameObject;
+
+        Debug.Log(cannonTop.gameObject.name);
         if (this.gameObject.name == "FriendlyCannon")
         {
-            this.gameObject.transform.rotation = Quaternion.Euler(0, -90, -45);
+            this.gameObject.transform.rotation = Quaternion.Euler(0, 270, 0);
         }
         else
         {
-            this.gameObject.transform.rotation = Quaternion.Euler(0, 90, -45);
+            this.gameObject.transform.rotation = Quaternion.Euler(0, 90, 0);
         }
     }
 
     private void Update()
     {
         float HorizontalRotation = Input.GetAxis("Fire1");
-        float VericalRotation = Input.GetAxis("Fire2");
+        float VerticalRotation = Input.GetAxis("Fire2");
 
-        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles +
-        new Vector3(0, HorizontalRotation * rotationSpeed, VericalRotation * rotationSpeed));
-        fireCannon();
+        
+        if(cannonEnterTrigger.entered == true && horizontalSet == false)
+        {
+            setHorizontal(HorizontalRotation);
+        }
+
+        if(cannonEnterTrigger.entered == true && horizontalSet == true && verticalSet == false)
+        {
+            setVertical(VerticalRotation);
+        }
+
     }
-    void fireCannon() {
-    //when the 'F' key is pressed
-    if (Input.GetKeyDown(KeyCode.F) && canShoot == true)
+
+    public void setHorizontal(float HorizontalRotation)
     {
-        canShoot = false;
+        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles +
+            new Vector3(0, HorizontalRotation * rotationSpeed, 0));
 
-        //Spawn cannon ball at the shotpoint gameobject position
-        GameObject CreatedCannonball = Instantiate(Cannonball, ShotPoint.position, ShotPoint.rotation);
-
-        //play explosion particle effect
-        Destroy(Instantiate(Explosion, ShotPoint.position, ShotPoint.rotation), 2);
-
-        //add velocity to the balls rigidbody component to allow it to move
-        CreatedCannonball.GetComponent<Rigidbody>().velocity = ShotPoint.transform.up * BlastPower;
-
-        // Added explosion for added effect
-        Destroy(Instantiate(Explosion, ShotPoint.position, ShotPoint.rotation), 2);
+        if (Input.GetMouseButtonDown(0))
+        {
+            horizontalSet = true;
+            cannonEnterTrigger.SetCam("sideCamera");
+        }
+        
     }
+
+    public void setVertical(float VerticalRotation)
+    {
+        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles +
+            new Vector3(0, 0, VerticalRotation * rotationSpeed));
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            verticalSet = true;
+            fireCannon();
+        }
+    }
+
+    void fireCannon() {
+ 
+        if (canShoot == true)
+        {
+          
+            canShoot = false;
+            horizontalSet = false;
+            verticalSet = false;
+            cannonEnterTrigger.entered = false;
+            cannonEnterTrigger.SetCam("mainCamera");
+
+            //Spawn cannon ball at the shotpoint gameobject position
+            GameObject CreatedCannonball = Instantiate(Cannonball, ShotPoint.position, ShotPoint.rotation);
+
+            //play explosion particle effect
+            Destroy(Instantiate(Explosion, ShotPoint.position, ShotPoint.rotation), 2);
+
+            //add velocity to the balls rigidbody component to allow it to move
+            CreatedCannonball.GetComponent<Rigidbody>().velocity = ShotPoint.transform.up * BlastPower;
+
+            // Added explosion for added effect
+            Destroy(Instantiate(Explosion, ShotPoint.position, ShotPoint.rotation), 2);
+        }
   }
 
 }
