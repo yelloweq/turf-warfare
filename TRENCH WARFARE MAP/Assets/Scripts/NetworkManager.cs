@@ -25,7 +25,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
   [Header("GameOptions Panel")]
   public GameObject GameOptionsUIPanel;
-  public TMP_InputField playerNameInput;
+  public InputField playerNameInput;
   public GameObject WelcomeMessage;
 
   [Header("Create Room Panel")]
@@ -42,11 +42,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
   public TextMeshProUGUI roomInfoText;
   public GameObject playerListPrefab;
   public GameObject playerListContent;
-  public TMP_Text waitingMessage;
-
 
   public Text connectionStatusText;
-  public TMP_Text currentWinsText;
 
   private Dictionary<int, GameObject> playerListGameObjects;
 
@@ -110,7 +107,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     playerGameObject.GetComponent<Initializer>().setUpName(newPlayer.NickName);
 
     playerListGameObjects.Add(newPlayer.ActorNumber, playerGameObject);
-
   }
 
   public override void OnPlayerLeftRoom(Player otherPlayer)
@@ -159,7 +155,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     PhotonNetwork.ConnectUsingSettings();
     WelcomeMessage.SetActive(false);
     playerNameInput.gameObject.SetActive(true);
-    currentWinsText.gameObject.SetActive(false);
   }
 
   public void OnCreateRoomButtonClicked(bool isPublic)
@@ -201,6 +196,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
       PhotonNetwork.LoadLevel(levelname);
     }
+
   }
 
   public void OnLeaveGameButtonClicked()

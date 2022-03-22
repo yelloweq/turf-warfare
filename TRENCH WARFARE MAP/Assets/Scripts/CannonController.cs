@@ -11,103 +11,55 @@ public class CannonController : MonoBehaviour
 
     public GameObject Cannonball;
     public Transform ShotPoint;
-    public cannonEnterTrigger cannonEnterTrigger;
+    public cameraSwitch cameraSwitch;
     private bool canShoot;
-    public bool horizontalSet;
-    public bool verticalSet;
 
-    //float HorizontalRotation = 0f;
-    //float VerticalRotation = 0f;
+    float HorizontalRotation;
+    float VericalRotation;
 
     public GameObject Explosion;
-    public GameObject cannonTop;
 
     private void OnEnable()
     {
         canShoot = true;
-        horizontalSet = false;
-        verticalSet = false;
 
-        GameObject cannonTopPrefab = transform.GetChild(1).gameObject;
-        cannonTop = cannonTopPrefab.transform.GetChild(0).gameObject;
-
-        Debug.Log(cannonTop.gameObject.name);
         if (this.gameObject.name == "FriendlyCannon")
         {
-            this.gameObject.transform.rotation = Quaternion.Euler(0, 270, 0);
+            this.gameObject.transform.rotation = Quaternion.Euler(0, -90, -45);
         }
         else
         {
-            this.gameObject.transform.rotation = Quaternion.Euler(0, 90, 0);
+            this.gameObject.transform.rotation = Quaternion.Euler(0, 90, -45);
         }
     }
 
     private void Update()
     {
         float HorizontalRotation = Input.GetAxis("Fire1");
-        float VerticalRotation = Input.GetAxis("Fire2");
+        float VericalRotation = Input.GetAxis("Fire2");
 
-        
-        if(cannonEnterTrigger.entered == true && horizontalSet == false)
-        {
-            setHorizontal(HorizontalRotation);
-        }
-
-        if(cannonEnterTrigger.entered == true && horizontalSet == true && verticalSet == false)
-        {
-            setVertical(VerticalRotation);
-        }
-
-    }
-
-    public void setHorizontal(float HorizontalRotation)
-    {
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles +
-            new Vector3(0, HorizontalRotation * rotationSpeed, 0));
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            horizontalSet = true;
-            cannonEnterTrigger.SetCam("sideCamera");
-        }
-        
+        new Vector3(0, HorizontalRotation * rotationSpeed, VericalRotation * rotationSpeed));
+        fireCannon();
     }
-
-    public void setVertical(float VerticalRotation)
-    {
-        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles +
-            new Vector3(0, 0, VerticalRotation * rotationSpeed));
-
-        if (Input.GetMouseButtonDown(1))
-        {
-            verticalSet = true;
-            fireCannon();
-        }
-    }
-
     void fireCannon() {
- 
-        if (canShoot == true)
-        {
-          
-            canShoot = false;
-            horizontalSet = false;
-            verticalSet = false;
-            cannonEnterTrigger.entered = false;
-            cannonEnterTrigger.SetCam("mainCamera");
+    //when the 'F' key is pressed
+    if (Input.GetKeyDown(KeyCode.F) && canShoot == true)
+    {
+        canShoot = false;
 
-            //Spawn cannon ball at the shotpoint gameobject position
-            GameObject CreatedCannonball = Instantiate(Cannonball, ShotPoint.position, ShotPoint.rotation);
+        //Spawn cannon ball at the shotpoint gameobject position
+        GameObject CreatedCannonball = Instantiate(Cannonball, ShotPoint.position, ShotPoint.rotation);
 
-            //play explosion particle effect
-            Destroy(Instantiate(Explosion, ShotPoint.position, ShotPoint.rotation), 2);
+        //play explosion particle effect
+        Destroy(Instantiate(Explosion, ShotPoint.position, ShotPoint.rotation), 2);
 
-            //add velocity to the balls rigidbody component to allow it to move
-            CreatedCannonball.GetComponent<Rigidbody>().velocity = ShotPoint.transform.up * BlastPower;
+        //add velocity to the balls rigidbody component to allow it to move
+        CreatedCannonball.GetComponent<Rigidbody>().velocity = ShotPoint.transform.up * BlastPower;
 
-            // Added explosion for added effect
-            Destroy(Instantiate(Explosion, ShotPoint.position, ShotPoint.rotation), 2);
-        }
+        // Added explosion for added effect
+        Destroy(Instantiate(Explosion, ShotPoint.position, ShotPoint.rotation), 2);
+    }
   }
 
 }
