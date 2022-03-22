@@ -467,7 +467,7 @@ public class FirebaseManager : MonoBehaviour
   // public bool checkExistingUsername(string _username)
   // {
   //   var DBTask = DBreference.Child("users").Child("username").GetValueAsync();
-
+  //   yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
   //   DataSnapshot snapshot = DBTask.Result;
 
   //   foreach (DataSnapshot ds in snapshot.Children)
