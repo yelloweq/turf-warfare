@@ -12343,7 +12343,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 2107081794}
         m_TargetAssemblyTypeName: FirebaseManager, Assembly-CSharp
-        m_MethodName: clearLoginFields
+        m_MethodName: OnBackButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -15974,11 +15974,11 @@ MonoBehaviour:
   warningRegisterText: {fileID: 1310952914}
   confirmRegisterText: {fileID: 1214703682}
   createRoomInput: {fileID: 1469820322}
-  playerNameInput: {fileID: 0}
+  playerNameInput: {fileID: 725201922}
   joinRoomInput: {fileID: 693217880}
   connectionStatusText: {fileID: 1454741615}
   WelcomeMessage: {fileID: 1314411972}
-  InputName: {fileID: 0}
+  InputName: {fileID: 725201921}
   loggedin: 0
   currentWinsText: {fileID: 1481055767}
   scoreElement: {fileID: 1879445940651037232, guid: 829cd42e5df49e047a3a4afb1ba6859d,
