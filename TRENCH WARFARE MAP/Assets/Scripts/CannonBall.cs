@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class CannonBall : MonoBehaviour
 {
@@ -8,9 +9,9 @@ public class CannonBall : MonoBehaviour
 
     private void Start()
     {
-       gameManager1 = GameObject.Find("GameManager").GetComponent<GameManager1>();
+    //    gameManager1 = GameObject.Find("GameManager").GetComponent<GameManager1>();
 
-       Invoke("CallSwitch", 10);
+    //    Invoke("CallSwitch", 10);
       
        //destroys ball in 10s of spawning in case the ball goes outside the map
        Destroy(this.gameObject, 10f);
@@ -26,21 +27,21 @@ public class CannonBall : MonoBehaviour
         }
         else
         {
-            CallSwitch();
+            // CallSwitch();
 
             //Play explosion particle effect
-            Destroy(Instantiate(Explosion, this.transform.position, this.transform.rotation), 2);
+            Destroy(PhotonNetwork.Instantiate(Explosion.name, this.transform.position, this.transform.rotation), 2);
             //destroy the ball from the scene
             Destroy(this.gameObject);
         }
     }
 
-    void CallSwitch()
-    {
-        if (gameManager1)
-        {
-            //Calls the PlayerSwitch method within gameManager1 script
-            gameManager1.PlayerSwitch();
-        }
-    }
+    // void CallSwitch()
+    // {
+    //     if (gameManager1)
+    //     {
+    //         //Calls the PlayerSwitch method within gameManager1 script
+    //         gameManager1.PlayerSwitch();
+    //     }
+    // }
 }

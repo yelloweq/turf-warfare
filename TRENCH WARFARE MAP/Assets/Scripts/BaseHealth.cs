@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class BaseHealth : MonoBehaviour
 {
@@ -9,11 +10,17 @@ public class BaseHealth : MonoBehaviour
 
   public GameObject Explosion;
 
-  public GameObject gameCompleteScreen;
+  // public GameObject gameCompleteScreen;
 
   public HealthbarScript HealthbarScript;
+  private PhotonView PV;
 
-  public void OnCollisionEnter(Collision collision)
+  private void Start() 
+  {
+    PV = PhotonView.Get(this);
+  }
+
+  public IEnumerator OnCollisionEnter(Collision collision)
   {
     //If the ball collides with the base
     if (collision.gameObject.tag == "ball")
@@ -23,10 +30,12 @@ public class BaseHealth : MonoBehaviour
       if (HealthbarScript)
       {
         //Calls the damageTaken method within HealthbarScript script
-        HealthbarScript.damageTaken(34);
-        health -= 34;
+        PV.RPC("TakeDamage", RpcTarget.AllViaServer, 20);
       }
+
+      
     }
+    yield return new WaitForSeconds(2);
 
   }
 
@@ -36,11 +45,19 @@ public class BaseHealth : MonoBehaviour
     if (health <= 0)
     {
       //Starts exploding particle effect
-      Destroy(Instantiate(Explosion, this.transform.position, this.transform.rotation), 2);
+      Destroy(PhotonNetwork.Instantiate(Explosion.name, this.transform.position, this.transform.rotation), 2);
       //Destroys the base prefab
       Destroy(this.gameObject);
-      gameCompleteScreen.SetActive(true);
+      // gameCompleteScreen.SetActive(true);
     }
   }
+
+  [PunRPC]
+    void TakeDamage(int damage)
+    {
+        Debug.Log("[RPC] BASE TAKEN DAMAGE");
+        health -= damage;
+        HealthbarScript.damageTaken(damage);
+    }
 
 }
