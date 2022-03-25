@@ -217,6 +217,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
 
     ActivatePanel(MainMenuUIPanel.name);
+    playerNameInput.text = "";
   }
 
   public void OnLoginButtonClicked()
