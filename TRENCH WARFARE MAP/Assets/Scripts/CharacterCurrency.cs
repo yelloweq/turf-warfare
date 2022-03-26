@@ -12,7 +12,7 @@ public class CharacterCurrency : MonoBehaviour
     private void Start()
     {
         funds = GameObject.Find("Funds").GetComponent<Text>();
-        funds.text = "Funds: �" + currency;
+        funds.text = "Funds: £" + currency;
     }
 
     // Update is called once per frame

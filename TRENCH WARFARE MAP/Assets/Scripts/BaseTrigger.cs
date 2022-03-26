@@ -28,6 +28,7 @@ public class BaseTrigger : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
+        monney = other.gameObject.GetComponent<CharacterCurrency>();
         if (other.gameObject.tag == "Player" && bought == false && monney.GetComponent<CharacterCurrency>().getCurrency() >= 500)
         {
             message.gameObject.SetActive(true);
@@ -35,13 +36,12 @@ public class BaseTrigger : MonoBehaviour
             {
                 bought = true;
                 wall.SetActive(true);
-                monney = other.gameObject.GetComponent<CharacterCurrency>();
                 monney.GetComponent<CharacterCurrency>().updateCurrency(-500);
             }
         }
         else
         {
-            message.text = "You have already upgraded!";
+            message.text = "Unavailable!";
             message.gameObject.SetActive(true);
         }
     }

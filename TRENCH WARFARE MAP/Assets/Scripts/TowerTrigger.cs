@@ -27,6 +27,7 @@ public class TowerTrigger : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
+        monney = other.gameObject.GetComponent<CharacterCurrency>();
         if(other.gameObject.tag == "Player" && monney.GetComponent<CharacterCurrency>().getCurrency() >= 500){ // if the trigger was a player that is me
             if (bought == false)
             {
@@ -39,11 +40,12 @@ public class TowerTrigger : MonoBehaviour
                     monney.GetComponent<CharacterCurrency>().updateCurrency(-500);
                 }
             }
-            else
-            {
-                message.text = "You have already upgraded!";
-                message.gameObject.SetActive(true);
-            }
+            
+        }
+        else
+        {
+            message.text = "Unavailable!";
+            message.gameObject.SetActive(true);
         }
     }
 

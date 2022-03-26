@@ -31,7 +31,7 @@ public class CannonController : MonoBehaviour
         GameObject cannonTopPrefab = transform.GetChild(1).gameObject;
         cannonTop = cannonTopPrefab.transform.GetChild(0).gameObject;
 
-        Debug.Log(cannonTop.gameObject.name);
+        //Debug.Log(cannonTop.gameObject.name);
         if (this.gameObject.name == "FriendlyCannon")
         {
             this.gameObject.transform.rotation = Quaternion.Euler(0, 270, 0);
