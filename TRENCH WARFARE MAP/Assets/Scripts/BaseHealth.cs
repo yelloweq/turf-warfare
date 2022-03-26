@@ -15,9 +15,12 @@ public class BaseHealth : MonoBehaviour
   public HealthbarScript HealthbarScript;
   private PhotonView PV;
 
+  public TurnTracking gameManager;
+
   private void Start() 
   {
     PV = PhotonView.Get(this);
+    gameManager = GameObject.Find("GameManager").GetComponent<TurnTracking>();
   }
 
   public IEnumerator OnCollisionEnter(Collision collision)
@@ -49,6 +52,8 @@ public class BaseHealth : MonoBehaviour
       //Destroys the base prefab
       Destroy(this.gameObject);
       // gameCompleteScreen.SetActive(true);
+      gameManager.EndGame();
+
     }
   }
 

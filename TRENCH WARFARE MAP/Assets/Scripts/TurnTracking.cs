@@ -70,6 +70,16 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
             Debug.Log("Looking for CannonClient Controller");
         }
     }
+
+    public void Player1Win()
+    {
+        Winner = GameState.Player1Move;
+    }
+
+    public void Player2Win()
+    {
+        Winner = GameState.Player2Move;
+    }
     #endregion
 
     void Start()
@@ -161,14 +171,14 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
             Debug.Log("Game is still in progress");
             return;
         }
-        if (photonView.IsMine && Winner == GameState.WIN)
+        if (photonView.IsMine && Winner == GameState.Player1Move)
         {
             // Show win screen
             WinScreen.SetActive(true);
         }
         else
         {
-            object[] content = new object[] {GameState.WIN};
+            object[] content = new object[] {GameState.Player2Move};
             PhotonNetwork.RaiseEvent(GAME_OVER,
                 content,
                 RaiseEventOptions.Default,
@@ -193,9 +203,9 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
                         StartCoroutine(cannonController.ResetCannon());
                         Debug.Log("STARTING COROUTINE: RESET HOST CANNON");
                     }
-                    if ((int)GameState.Player1Move == (int)data[0]){
-                        Turn = GameState.Player2Move;
-                    }
+                    // if ((int)GameState.Player1Move == (int)data[0]){
+                    //     Turn = GameState.Player2Move;
+                    // }
                     break;
                 }
                 catch (System.Exception ex)
@@ -249,7 +259,7 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
             }
             catch (System.InvalidCastException ex)
             {
-                 Debug.Log("READING: " + ex);
+                 Debug.Log("ERROR WHILE TRYING TO RECEIVE GAME TURN: " + ex);
             }
             
 
