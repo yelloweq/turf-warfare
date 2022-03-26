@@ -18,7 +18,8 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
     private const byte END_TURN = 1;
     private const byte WIN_MATCH = 2;
     #endregion
-    //Issue: MyTurn and Turn are being set to default GameState (first value = Player1Move) on both clients
+    
+    #region Variables
     public enum GameState { Player1Move, Player2Move, EMPTY, WIN };
 
     private GameState Winner;
@@ -27,6 +28,12 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
 
     private CannonController cannonController;
 
+    [SerializeField]
+    private GameObject winScreen;
+
+    #endregion
+    
+    #region TurnGettingAndSetting
     public GameState GetCurrentTurn(){
         return Turn;
     }
@@ -42,9 +49,12 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
 
     public void OnEnable()
     {
-        PhotonNetwork.AddCallbackTarget(this);
-        
-        
+        PhotonNetwork.AddCallbackTarget(this);        
+    }
+
+    public void OnDisable()
+    {
+        PhotonNetwork.RemoveCallbackTarget(this);
     }
 
     public IEnumerator FindController()
@@ -62,11 +72,8 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
             Debug.Log("Looking for CannonClient Controller");
         }
     }
+    #endregion
 
-    public void OnDisable()
-    {
-        PhotonNetwork.RemoveCallbackTarget(this);
-    }
     void Start()
     {
         if (PhotonNetwork.IsMasterClient)
@@ -111,6 +118,7 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
         
     }
 
+    #region EventTracking
     public void EndTurn()
     {
         Debug.Log("============= TURN END ============");
@@ -165,7 +173,8 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
                 case END_TURN:
                 try
                 {
-                    if (GameState.Player2Move == (GameState)System.Convert.ToInt32(data[0])){
+                    if (GameState.Player2Move == (GameState)System.Convert.ToInt32(data[0]))
+                    {
                         Turn = GameState.Player1Move;
                         cannonController = GameObject.Find("CannonHost").GetComponent<CannonController>();
                         StartCoroutine(cannonController.ResetCannon());
@@ -176,10 +185,24 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
                         
                         
                     }
+                    break;
                 }
-                catch (System.InvalidCastException ex)
+                catch (System.Exception ex)
                 {
-                     Debug.Log("Casting data to gamestate err: " + ex);
+                     Debug.Log("END_TURN ERROR: " + ex);
+                     break;
+                }
+                case GAME_OVER:
+                try
+                {
+                    if (GameState.WIN == (GameState)System.Convert.ToInt32(data[0]))
+                    {
+                        Debug.Log("LOCAL PLAYER WINS!");
+
+                    }
+                }
+                catch (System.Exception ex){
+                    Debug.Log("GAME_OVER ERROR: " + ex);
                 }
                     
                     
@@ -221,4 +244,5 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
 
         }
     }
+    #endregion
 }
