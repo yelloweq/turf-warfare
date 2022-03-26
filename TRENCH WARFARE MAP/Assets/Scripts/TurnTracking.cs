@@ -16,20 +16,18 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
     #region Constants
     // Event: remote player has shot the cannon
     private const byte END_TURN = 1;
-    private const byte WIN_MATCH = 2;
+    private const byte GAME_OVER = 2;
     #endregion
     
     #region Variables
-    public enum GameState { Player1Move, Player2Move, EMPTY, WIN };
+    public enum GameState { Player1Move = 0, Player2Move = 1, EMPTY = 3, WIN = 4};
 
     private GameState Winner;
     private GameState Turn;
     private GameState MyTurn;
 
     private CannonController cannonController;
-
-    [SerializeField]
-    private GameObject winScreen;
+    private GameObject WinScreen;
 
     #endregion
     
@@ -89,8 +87,8 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
             MyTurn = GameState.Player2Move;
             Turn = GameState.Player1Move;
         }
-        Debug.Log("Winner: " + Winner.ToString() + ", MyTurn: " + MyTurn.ToString()
-        + ", CurrentTurn: " + Turn.ToString());
+        
+        WinScreen = GameObject.FindWithTag("WinScreen");
 
         StartCoroutine(FindController());
     }
@@ -146,16 +144,35 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
         }
         else
         {
-            //Debug.Log(">>>>>>>>>>>>>>>>>>>>> END_TURN EVENT <<<<<<<<<<<<<<<<<<");
-            // Send event, dont change state:
-            object[] content = new object[] {MyTurn};
+            object[] content = new object[] {GameState.Player2Move};
             PhotonNetwork.RaiseEvent(END_TURN,
                 content,
                 RaiseEventOptions.Default,
                 SendOptions.SendReliable);
+        }
+    }
 
-                
-           // Debug.Log(">>>>>>>>>>>>>>>>>>>>> EVENT SENT <<<<<<<<<<<<<<<<<<");
+    public void EndGame() 
+    {
+        Debug.Log("============= GAME ENDED ============");
+        if (Winner == GameState.EMPTY)
+        {
+            // Game has not finished, do nothing
+            Debug.Log("Game is still in progress");
+            return;
+        }
+        if (photonView.IsMine && Winner == GameState.WIN)
+        {
+            // Show win screen
+            WinScreen.SetActive(true);
+        }
+        else
+        {
+            object[] content = new object[] {GameState.WIN};
+            PhotonNetwork.RaiseEvent(GAME_OVER,
+                content,
+                RaiseEventOptions.Default,
+                SendOptions.SendReliable);
         }
     }
 
@@ -166,24 +183,18 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
         {
             switch (photonEvent.Code)
             {
-                //CONVERTING data[0] causes InvalidCastException
-                //Tried casting Int normally and passing it as GameState but doesnt work
-                //The turn does change...
-
                 case END_TURN:
                 try
                 {
-                    if (GameState.Player2Move == (GameState)System.Convert.ToInt32(data[0]))
+                    if ((int)GameState.Player2Move == (int)data[0])
                     {
                         Turn = GameState.Player1Move;
                         cannonController = GameObject.Find("CannonHost").GetComponent<CannonController>();
                         StartCoroutine(cannonController.ResetCannon());
                         Debug.Log("STARTING COROUTINE: RESET HOST CANNON");
                     }
-                    if ((GameState)System.Convert.ToInt32(data[0]) == GameState.Player1Move){
+                    if ((int)GameState.Player1Move == (int)data[0]){
                         Turn = GameState.Player2Move;
-                        
-                        
                     }
                     break;
                 }
@@ -195,9 +206,9 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
                 case GAME_OVER:
                 try
                 {
-                    if (GameState.WIN == (GameState)System.Convert.ToInt32(data[0]))
+                    if ((int)GameState.WIN == (int)data[0])
                     {
-                        Debug.Log("LOCAL PLAYER WINS!");
+                        Debug.Log("=================LOCAL PLAYER WINS!=========================");
 
                     }
                 }
@@ -233,8 +244,8 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
         {
             try
             {
-               this.Winner = (GameState)System.Convert.ToInt16(stream.ReceiveNext());
-                this.Turn = (GameState)System.Convert.ToInt16(stream.ReceiveNext()); 
+                this.Winner = (GameState)(stream.ReceiveNext());
+                this.Turn = (GameState)(stream.ReceiveNext()); 
             }
             catch (System.InvalidCastException ex)
             {

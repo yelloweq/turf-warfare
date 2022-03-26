@@ -474,9 +474,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 185618850}
-  - component: {fileID: 185618849}
   - component: {fileID: 185618848}
   - component: {fileID: 185618847}
+  - component: {fileID: 185618849}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -536,6 +536,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 291c5fe88771dee4aa31ef10df631890, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  winScreen: {fileID: 0}
 --- !u!4 &185618850
 Transform:
   m_ObjectHideFlags: 0
@@ -3733,7 +3734,7 @@ GameObject:
   - component: {fileID: 1349843513}
   m_Layer: 5
   m_Name: WinScreen
-  m_TagString: Untagged
+  m_TagString: WinScreen
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
