@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using Photon.Pun;
 public class cannonEnterTrigger : MonoBehaviour
 {
     public cameraSwitch cameraSwitch;
@@ -26,7 +26,7 @@ public class cannonEnterTrigger : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.tag == "Player" && entered == false)
+        if (other.gameObject.tag == "Player" && entered == false && photonView.IsMine)
         {
             message.text = "Press 'E' to enter cannon";
             if (Input.GetKeyDown(KeyCode.E))
