@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class CannonBall : MonoBehaviour
 {
-    public GameManager1 gameManager1;
+    public BattleSystem gameManager1;
 
     private void Start()
     {
-       gameManager1 = GameObject.Find("GameManager").GetComponent<GameManager1>();
+       gameManager1 = GameObject.Find("EventSystem").GetComponent<BattleSystem>();
 
        Invoke("CallSwitch", 10);
       

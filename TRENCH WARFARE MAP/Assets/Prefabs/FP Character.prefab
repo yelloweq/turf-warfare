@@ -41,9 +41,10 @@ GameObject:
   - component: {fileID: 3178409831180390983}
   - component: {fileID: 3178409831180390982}
   - component: {fileID: 3178409831180390980}
+  - component: {fileID: -4504701400742057514}
   m_Layer: 0
   m_Name: FP Character
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -79,7 +80,7 @@ CharacterController:
   m_Height: 2
   m_Radius: 0.6
   m_SlopeLimit: 45
-  m_StepOffset: 0.3
+  m_StepOffset: 0.5
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
@@ -103,7 +104,20 @@ MonoBehaviour:
   groundDistance: 0.4
   groundMask:
     serializedVersion: 2
-    m_Bits: 160
+    m_Bits: 128
+--- !u!114 &-4504701400742057514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3178409831180390977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4c42b2c1d0b4b04293686d2a19c31ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  funds: {fileID: 0}
 --- !u!1 &3178409831732696996
 GameObject:
   m_ObjectHideFlags: 0

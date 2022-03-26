@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class TowerTrigger : MonoBehaviour
 {
-    public GameObject tower;
     public Text message;
-    public Currency currency;
-
+    Component monney;
     public bool bought;
 
     string originalText;
@@ -28,20 +27,23 @@ public class TowerTrigger : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.tag == "Player" && bought == false)
-        {
-            message.gameObject.SetActive(true);
-            if (Input.GetKeyDown(KeyCode.E))
+        if(other.gameObject.tag == "Player" && monney.GetComponent<CharacterCurrency>().getCurrency() >= 500){ // if the trigger was a player that is me
+            if (bought == false)
             {
-                bought = true;
-                tower.SetActive(true);
-                currency.updateCurrency(-500);
+                message.gameObject.SetActive(true);
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    bought = true;
+
+                    monney = other.gameObject.GetComponent<CharacterCurrency>();
+                    monney.GetComponent<CharacterCurrency>().updateCurrency(-500);
+                }
             }
-        }
-        else
-        {
-            message.text = "You have already upgraded!";
-            message.gameObject.SetActive(true);
+            else
+            {
+                message.text = "You have already upgraded!";
+                message.gameObject.SetActive(true);
+            }
         }
     }
 
