@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
 using Photon.Realtime;
@@ -28,6 +29,8 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
 
     private CannonController cannonController;
     private GameObject WinScreen;
+    private Text WinnerName;
+   
 
     #endregion
     
@@ -99,6 +102,8 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
         }
         
         WinScreen = GameObject.FindWithTag("WinScreen");
+        WinScreen.SetActive(false);
+        WinnerName = GameObject.FindWithTag("WinnerName").GetComponent<Text>();
 
         StartCoroutine(FindController());
     }
@@ -165,20 +170,17 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
     public void EndGame() 
     {
         Debug.Log("============= GAME ENDED ============");
-        if (Winner == GameState.EMPTY)
+        if (photonView.IsMine)
         {
-            // Game has not finished, do nothing
-            Debug.Log("Game is still in progress");
-            return;
-        }
-        if (photonView.IsMine && Winner == GameState.Player1Move)
-        {
-            // Show win screen
+            // player1 base destroyed, set winner to player2
+            Winner = GameState.Player2Move;
+            WinnerName.text = "Host";
             WinScreen.SetActive(true);
         }
         else
         {
-            object[] content = new object[] {GameState.Player2Move};
+            // player2 base destroyed, send winner to be set to player1
+            object[] content = new object[] {GameState.Player1Move};
             PhotonNetwork.RaiseEvent(GAME_OVER,
                 content,
                 RaiseEventOptions.Default,
@@ -203,9 +205,6 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
                         StartCoroutine(cannonController.ResetCannon());
                         Debug.Log("STARTING COROUTINE: RESET HOST CANNON");
                     }
-                    // if ((int)GameState.Player1Move == (int)data[0]){
-                    //     Turn = GameState.Player2Move;
-                    // }
                     break;
                 }
                 catch (System.Exception ex)
@@ -216,10 +215,11 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
                 case GAME_OVER:
                 try
                 {
-                    if ((int)GameState.WIN == (int)data[0])
+                    if ((int)GameState.Player1Move == (int)data[0])
                     {
                         Debug.Log("=================LOCAL PLAYER WINS!=========================");
-
+                        WinnerName.text = "Local Player";
+                        WinScreen.SetActive(true);
                     }
                 }
                 catch (System.Exception ex){
