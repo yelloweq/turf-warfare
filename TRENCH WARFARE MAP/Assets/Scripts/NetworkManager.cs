@@ -23,7 +23,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
   [Header("Leaderboard")]
   public GameObject LeaderboardUIPanel;
 
-  [Header("GameOptions Panel")]
+  [Header("Settings")]
+  public GameObject SettingsUIPanel;
+
+  [Header("RoomOptions Panel")]
   public GameObject GameOptionsUIPanel;
   public TMP_InputField playerNameInput;
   public GameObject WelcomeMessage;
@@ -217,6 +220,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
 
     ActivatePanel(MainMenuUIPanel.name);
+    playerNameInput.text = "";
   }
 
   public void OnLoginButtonClicked()
@@ -260,6 +264,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     LoginMenu.SetActive(LoginMenu.name.Equals(panelTobeActivated));
     RegisterMenu.SetActive(RegisterMenu.name.Equals(panelTobeActivated));
     LeaderboardUIPanel.SetActive(LeaderboardUIPanel.name.Equals(panelTobeActivated));
+    SettingsUIPanel.SetActive(SettingsUIPanel.name.Equals(panelTobeActivated));
 
   }
 
