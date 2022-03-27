@@ -52,8 +52,6 @@ public class CannonController : MonoBehaviourPun
 
         GameObject cannonTopPrefab = transform.GetChild(1).gameObject;
         cannonTop = cannonTopPrefab.transform.GetChild(0).gameObject;
-
-        Debug.Log(cannonTop.gameObject.name);
     }
     private bool CheckTurn(){
         if (gameManager)
@@ -121,25 +119,25 @@ public class CannonController : MonoBehaviourPun
             return;
         }
 
-        // float HorizontalRotation = Input.GetAxis("Fire1");
-        // float VerticalRotation = Input.GetAxis("Fire2");
+        float HorizontalRotation = Input.GetAxis("Fire1");
+        float VerticalRotation = Input.GetAxis("Fire2");
 
         
-        // if(cannonEnterTrigger.entered == true && horizontalSet == false)
-        // {
-        //     setHorizontal(HorizontalRotation);
-        // }
+        if(cannonEnterTrigger.entered == true && horizontalSet == false)
+        {
+            setHorizontal(HorizontalRotation);
+        }
 
-        // if(cannonEnterTrigger.entered == true && horizontalSet == true && verticalSet == false)
-        // {
-        //     setVertical(VerticalRotation);
-        // }
+        if(cannonEnterTrigger.entered == true && horizontalSet == true && verticalSet == false)
+        {
+            setVertical(VerticalRotation);
+        }
         Projection.SetPoints(projectionLength);
-        float HorizontalRotation = Input.GetAxis("Fire1");
-        float VericalRotation = Input.GetAxis("Fire2");
+        // float HorizontalRotation = Input.GetAxis("Fire1");
+        // float VericalRotation = Input.GetAxis("Fire2");
 
-        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles +
-        new Vector3(0, HorizontalRotation * rotationSpeed, VericalRotation * rotationSpeed));
+        // transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles +
+        // new Vector3(0, HorizontalRotation * rotationSpeed, VericalRotation * rotationSpeed));
         fireCannon(); 
 
     }
@@ -148,10 +146,10 @@ public class CannonController : MonoBehaviourPun
  
         if (Input.GetKeyDown(KeyCode.F) && projectiles == 1)
         {
-            // horizontalSet = false;
-            // verticalSet = false;
-            // cannonEnterTrigger.entered = false;
-            // cannonEnterTrigger.SetCam("mainCamera");
+            horizontalSet = false;
+            verticalSet = false;
+            cannonEnterTrigger.entered = false;
+            cannonEnterTrigger.SetCam("mainCamera");
             projectiles = 0;
 
             //Spawn cannon ball at the shotpoint gameobject position

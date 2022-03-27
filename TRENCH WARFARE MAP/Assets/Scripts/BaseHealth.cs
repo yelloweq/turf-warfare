@@ -65,4 +65,20 @@ public class BaseHealth : MonoBehaviour
         HealthbarScript.damageTaken(damage);
     }
 
+     [PunRPC]
+    void increaseHealth(int amount)
+    {
+        Debug.Log("[RPC] BASE HEALED");
+        health += amount;
+        HealthbarScript.increaseHealth(amount);
+    }
+
+     [PunRPC]
+    void restoreHealth()
+    {
+        Debug.Log("[RPC] BASE MAX HEALTH RESTORED");
+        health = 100;
+        HealthbarScript.restoreHealth();
+    }
+
 }
