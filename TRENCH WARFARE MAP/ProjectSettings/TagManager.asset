@@ -10,6 +10,7 @@ TagManager:
   - Boundaries
   - Cannon
   - Upgrade
+  - WindRegion
   layers:
   - Default
   - TransparentFX

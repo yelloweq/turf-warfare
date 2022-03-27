@@ -4,16 +4,25 @@ using UnityEngine;
 
 public class CannonBall : MonoBehaviour
 {
-    public BattleSystem gameManager1;
+    public GameManager1 gameManager1;
+    public Rigidbody rb;
+    public bool inWindRegion;
+    public GameObject windRegion;
+
+    float strenth;
+    Vector3 direction;
 
     private void Start()
     {
-       gameManager1 = GameObject.Find("EventSystem").GetComponent<BattleSystem>();
+        rb = GetComponent<Rigidbody>();
 
-       Invoke("CallSwitch", 10);
-      
-       //destroys ball in 10s of spawning in case the ball goes outside the map
-       Destroy(this.gameObject, 10f);
+        //gameManager1 = GameObject.Find("GameManager").GetComponent<GameManager1>();
+
+        Invoke("CallSwitch", 10);
+
+        //destroys ball in 10s of spawning in case the ball goes outside the map
+        Destroy(this.gameObject, 10f);
+
     }
     public GameObject Explosion;
 
@@ -22,7 +31,7 @@ public class CannonBall : MonoBehaviour
     {
         if (collision.gameObject.tag == "Boundaries" || collision.gameObject.tag == "Cannon")
         {
-           Physics.IgnoreCollision(collision.collider, GetComponent<Collider>());
+            Physics.IgnoreCollision(collision.collider, GetComponent<Collider>());
         }
         else
         {
@@ -35,12 +44,41 @@ public class CannonBall : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "WindRegion")
+        {
+            inWindRegion = true;
+            windRegion = other.gameObject;
+
+            strenth = windRegion.GetComponent<WindRegion>().setStrength();
+         
+            direction = windRegion.GetComponent<WindRegion>().setDirection();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "WindRegion")
+        {
+            inWindRegion = false;
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (inWindRegion)
+        {
+            rb.AddForce(direction * strenth);
+        }
+    }
+
     void CallSwitch()
     {
-        if (gameManager1)
-        {
-            //Calls the PlayerSwitch method within gameManager1 script
-            gameManager1.PlayerSwitch();
-        }
+        //if (gameManager1)
+        //{
+        //Calls the PlayerSwitch method within gameManager1 script
+        //    gameManager1.PlayerSwitch();
+        //}
     }
 }
