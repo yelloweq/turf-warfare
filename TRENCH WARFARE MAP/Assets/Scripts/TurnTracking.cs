@@ -174,8 +174,9 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
         {
             // player1 base destroyed, set winner to player2
             Winner = GameState.Player2Move;
-            WinnerName.text = "Host";
             WinScreen.SetActive(true);
+            WinnerName.text = "Host";
+            
         }
         else
         {
@@ -218,8 +219,9 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
                     if ((int)GameState.Player1Move == (int)data[0])
                     {
                         Debug.Log("=================LOCAL PLAYER WINS!=========================");
-                        WinnerName.text = "Local Player";
                         WinScreen.SetActive(true);
+                        WinnerName.text = "Local Player";
+                       
                     }
                 }
                 catch (System.Exception ex){
