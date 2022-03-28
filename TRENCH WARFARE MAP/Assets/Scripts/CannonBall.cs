@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CannonBall : MonoBehaviour
 {
-    public GameManager1 gameManager1;
+    public BattleSystem gameManager1;
     public Rigidbody rb;
     public bool inWindRegion;
     public GameObject windRegion;
@@ -16,7 +16,7 @@ public class CannonBall : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
 
-        //gameManager1 = GameObject.Find("GameManager").GetComponent<GameManager1>();
+        gameManager1 = GameObject.Find("EventSystem").GetComponent<BattleSystem>();
 
         Invoke("CallSwitch", 10);
 
@@ -50,9 +50,6 @@ public class CannonBall : MonoBehaviour
         {
             inWindRegion = true;
             windRegion = other.gameObject;
-
-            strenth = windRegion.GetComponent<WindRegion>().setStrength();
-            direction = windRegion.GetComponent<WindRegion>().setDirection();
         }
     }
 
@@ -68,16 +65,16 @@ public class CannonBall : MonoBehaviour
     {
         if (inWindRegion)
         {
-            rb.AddForce(direction * strenth);
+            rb.AddForce(gameManager1.direction * gameManager1.strenth);
         }
     }
 
     void CallSwitch()
     {
-        //if (gameManager1)
-        //{
+        if (gameManager1)
+        {
         //Calls the PlayerSwitch method within gameManager1 script
-        //    gameManager1.PlayerSwitch();
-        //}
+            gameManager1.PlayerSwitch();
+        }
     }
 }
