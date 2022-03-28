@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthTrigger : MonoBehaviour
+public class HealthTrigger : MonoBehaviour, IUpgradeTrigger
 {
     public BaseHealth userBase;
     public HealthbarScript healthbar;
@@ -18,7 +18,7 @@ public class HealthTrigger : MonoBehaviour
     }
     
     
-    private void OnTriggerStay(Collider other)
+    public void OnTriggerStay(Collider other)
     {
         if (other.gameObject.tag == "Player" &&  userCurrency.getCurrency() >= 500 && userBase.health < 100)//when player has >500 monney and <full health
         {
@@ -46,7 +46,7 @@ public class HealthTrigger : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)//when moving away from buy station
+    public void OnTriggerExit(Collider other)//when moving away from buy station
     {//resets message to its original incase it was changed to 'unavailable' and unactivates it for next time
         message.text = originalText;
         message.gameObject.SetActive(false);

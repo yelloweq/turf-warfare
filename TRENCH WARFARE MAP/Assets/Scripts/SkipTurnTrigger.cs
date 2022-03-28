@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class SkipTurnTrigger : MonoBehaviour
+public class SkipTurnTrigger : MonoBehaviour, IUpgradeTrigger
 {
     public Text message;
     Component monney;
@@ -23,7 +23,7 @@ public class SkipTurnTrigger : MonoBehaviour
         
     }
 
-    private void OnTriggerStay(Collider other)
+    public void OnTriggerStay(Collider other)
     {
         if(other.gameObject.tag == "Player"){
               
@@ -39,7 +39,7 @@ public class SkipTurnTrigger : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    public void OnTriggerExit(Collider other)
     {
         message.text = originalText;
         message.gameObject.SetActive(false);

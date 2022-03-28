@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BaseTrigger : MonoBehaviour
+public class BaseTrigger : MonoBehaviour, IUpgradeTrigger
 {
     public GameObject oldBase;
     public GameObject newBase;
@@ -22,13 +22,8 @@ public class BaseTrigger : MonoBehaviour
         originalText = message.text;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
 
-    }
-
-    private void OnTriggerStay(Collider other)
+    public void OnTriggerStay(Collider other)
     {
         if (other.gameObject.tag == "Player" && bought == false)
         {
@@ -48,7 +43,7 @@ public class BaseTrigger : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    public void OnTriggerExit(Collider other)
     {
         message.text = originalText;
         message.gameObject.SetActive(false);

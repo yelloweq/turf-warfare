@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class cannonEnterTrigger : MonoBehaviour
+public class cannonEnterTrigger : MonoBehaviour, IUpgradeTrigger
 {
     public cameraSwitch cameraSwitch;
     public Text message;
@@ -24,7 +24,7 @@ public class cannonEnterTrigger : MonoBehaviour
         originalText = message.text;
     }
 
-    private void OnTriggerStay(Collider other)
+    public void OnTriggerStay(Collider other)
     {
         if (other.gameObject.tag == "Player" && entered == false)
         {
@@ -39,7 +39,7 @@ public class cannonEnterTrigger : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    public void OnTriggerExit(Collider other)
     {
         entered = false;
         message.text = originalText;
