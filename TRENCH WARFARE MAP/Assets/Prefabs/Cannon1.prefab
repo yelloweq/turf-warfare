@@ -317,7 +317,7 @@ GameObject:
   - component: {fileID: 5850756088458483789}
   - component: {fileID: 7608628311650404979}
   m_Layer: 0
-  m_Name: BaseTrigger
+  m_Name: CannonTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
