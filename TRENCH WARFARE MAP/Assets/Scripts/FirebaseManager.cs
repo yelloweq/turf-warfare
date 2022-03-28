@@ -146,7 +146,6 @@ public class FirebaseManager : MonoBehaviour
             confirmLoginText.text = "Logged in!";
             loggedin = true;
             StartCoroutine(LoadUserWins());
-
             OnLoginButtonClicked();
         }
     }
@@ -259,13 +258,36 @@ public class FirebaseManager : MonoBehaviour
 
     public void OnLoginButtonClicked()
     {
+        if (PhotonNetwork.IsConnected)
+        {
+            PhotonNetwork.Disconnect();
+        }
         ActivatePanel(ConnectingUIPanel.name);
         connectionStatusText.gameObject.SetActive(true);
         PhotonNetwork.ConnectUsingSettings();
+
         WelcomeMessage.gameObject.SetActive(true);
         InputName.SetActive(false);
         WelcomeMessage.text = "Welcome back " + User.DisplayName + "!";
+        currentWinsText.gameObject.SetActive(true);
+    }
 
+    public void OnPlayAsGuestButtonClicked()
+    {
+        if (PhotonNetwork.IsConnected)
+        {
+            PhotonNetwork.Disconnect();
+        }
+        if (auth.CurrentUser != null)
+        {
+            auth.SignOut();
+        }
+        ActivatePanel(ConnectingUIPanel.name);
+        connectionStatusText.gameObject.SetActive(true);
+        PhotonNetwork.ConnectUsingSettings();
+        WelcomeMessage.gameObject.SetActive(false);
+        playerNameInput.gameObject.SetActive(true);
+        currentWinsText.gameObject.SetActive(false);
     }
 
     public void OnBackButtonClicked()

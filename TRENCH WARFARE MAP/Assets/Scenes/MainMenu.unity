@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.35872743, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4014,6 +4014,28 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1300643928}
     m_Modifications:
+    - target: {fileID: 2225020569361064255, guid: 49b7f79ee429dbc4da8b39aa940d7fa1,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -58.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2225020569361064255, guid: 49b7f79ee429dbc4da8b39aa940d7fa1,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.000096996
+      objectReference: {fileID: 0}
+    - target: {fileID: 6094206063110817364, guid: 49b7f79ee429dbc4da8b39aa940d7fa1,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 9ddaf0951c6f7e14e981d3a4d683fe4e,
+        type: 2}
+    - target: {fileID: 6094206063110817364, guid: 49b7f79ee429dbc4da8b39aa940d7fa1,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -909094087561557781, guid: 9ddaf0951c6f7e14e981d3a4d683fe4e,
+        type: 2}
     - target: {fileID: 9206427353715923253, guid: 49b7f79ee429dbc4da8b39aa940d7fa1,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -4312,12 +4334,12 @@ PrefabInstance:
     - target: {fileID: 9206427355362168010, guid: 49b7f79ee429dbc4da8b39aa940d7fa1,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -285
+      value: -163.3
       objectReference: {fileID: 0}
     - target: {fileID: 9206427355362168010, guid: 49b7f79ee429dbc4da8b39aa940d7fa1,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000046134
+      value: 0.000086824
       objectReference: {fileID: 0}
     - target: {fileID: 9206427355362168011, guid: 49b7f79ee429dbc4da8b39aa940d7fa1,
         type: 3}
@@ -4334,7 +4356,7 @@ PrefabInstance:
     - target: {fileID: 9206427355386342145, guid: 49b7f79ee429dbc4da8b39aa940d7fa1,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 81
+      value: 148.9
       objectReference: {fileID: 0}
     - target: {fileID: 9206427355386342145, guid: 49b7f79ee429dbc4da8b39aa940d7fa1,
         type: 3}
@@ -5163,8 +5185,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 586827839}
-        m_TargetAssemblyTypeName: NetworkManager, Assembly-CSharp
+      - m_Target: {fileID: 2107081794}
+        m_TargetAssemblyTypeName: FirebaseManager, Assembly-CSharp
         m_MethodName: OnPlayAsGuestButtonClicked
         m_Mode: 1
         m_Arguments:
@@ -6239,18 +6261,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 586827839}
-        m_TargetAssemblyTypeName: NetworkManager, Assembly-CSharp
-        m_MethodName: OnBackButtonClicked
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: MainMenu
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 2107081794}
         m_TargetAssemblyTypeName: FirebaseManager, Assembly-CSharp
         m_MethodName: clearLoginFields
@@ -6262,6 +6272,30 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1757836769}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 176319583}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &793573577
 MonoBehaviour:
@@ -7807,18 +7841,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 586827839}
-        m_TargetAssemblyTypeName: NetworkManager, Assembly-CSharp
-        m_MethodName: OnBackButtonClicked
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: MainMenu
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 2107081794}
         m_TargetAssemblyTypeName: FirebaseManager, Assembly-CSharp
         m_MethodName: clearRegisterFields
@@ -7830,6 +7852,30 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1555996959}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 176319583}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &1080848804
 MonoBehaviour:
