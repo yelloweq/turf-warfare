@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.41564178, g: 0.45474452, b: 0.5056878, a: 1}
+  m_IndirectSpecularColor: {r: 0.41565785, g: 0.45471424, b: 0.5057025, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -538,16 +538,11 @@ MonoBehaviour:
   p1Cannon: {fileID: 546883751}
   p2Cannon: {fileID: 1882645750}
   p1Turn: 0
-  p1Base: {fileID: 3897219746225395105, guid: 8e64accabe2cfa2488b110ac315b535e, type: 3}
-  p2Base: {fileID: 3897219746225395105, guid: 8e64accabe2cfa2488b110ac315b535e, type: 3}
   p1: {fileID: 525644990}
   p2: {fileID: 2064294701}
   p1Camera: {fileID: 1908913499}
   p2Camera: {fileID: 1525773622}
-  personPlaying: {fileID: 0}
-  p2Money: {fileID: 0}
-  winner: {fileID: 0}
-  endGameMenu: {fileID: 0}
+  PersonPlaying: {fileID: 0}
 --- !u!4 &225355644
 Transform:
   m_ObjectHideFlags: 0
@@ -734,6 +729,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9489a475887fb9848b66b445934ed3b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tower: {fileID: 0}
+  message: {fileID: 0}
+  currency: {fileID: 0}
+  bought: 0
 --- !u!65 &337319731
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2650,8 +2649,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ac91445442d27b44a65425f77be3cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wall: {fileID: 0}
+  oldBase: {fileID: 0}
+  newBase: {fileID: 0}
+  spawnLocation: {fileID: 0}
   message: {fileID: 2068181406}
+  currency: {fileID: 0}
   bought: 0
 --- !u!65 &886102401
 BoxCollider:
@@ -3208,7 +3210,7 @@ PrefabInstance:
     - target: {fileID: 3178409831180390983, guid: 416ddfdbd3d60104d802c02d46f9f804,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.05
+      value: 1.77
       objectReference: {fileID: 0}
     - target: {fileID: 3178409831180390983, guid: 416ddfdbd3d60104d802c02d46f9f804,
         type: 3}
@@ -4677,7 +4679,7 @@ GameObject:
   - component: {fileID: 1644874370}
   - component: {fileID: 1644874372}
   - component: {fileID: 1644874371}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Terrain_0_0_17997aab-1d39-4d0b-ae39-308bfaf13625
   m_TagString: Untagged
   m_Icon: {fileID: 0}
