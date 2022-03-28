@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
 public class BaseTrigger : MonoBehaviour
 {
-    public GameObject wall;
+    public GameObject oldBase;
+    public GameObject newBase;
+    public Transform spawnLocation;
     public Text message;
-    Component monney;
+    public Currency currency;
+
     public bool bought;
 
     string originalText;
@@ -23,25 +25,25 @@ public class BaseTrigger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private void OnTriggerStay(Collider other)
     {
-        monney = other.gameObject.GetComponent<CharacterCurrency>();
-        if (other.gameObject.tag == "Player" && bought == false && monney.GetComponent<CharacterCurrency>().getCurrency() >= 500)
+        if (other.gameObject.tag == "Player" && bought == false)
         {
             message.gameObject.SetActive(true);
             if (Input.GetKeyDown(KeyCode.E))
             {
                 bought = true;
-                wall.SetActive(true);
-                monney.GetComponent<CharacterCurrency>().updateCurrency(-500);
+                Destroy(oldBase);
+                Instantiate(newBase, spawnLocation.position, spawnLocation.rotation);
+                currency.updateCurrency(-500);
             }
         }
         else
         {
-            message.text = "Unavailable!";
+            message.text = "You have already upgraded!";
             message.gameObject.SetActive(true);
         }
     }

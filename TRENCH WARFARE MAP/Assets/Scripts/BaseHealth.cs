@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class BaseHealth : MonoBehaviour
 {
@@ -32,18 +31,15 @@ public class BaseHealth : MonoBehaviour
   }
 
   private void Update()
-  { //when its the main scene
-    if(SceneManager.GetActiveScene().name == "MainScene")
+  {
+    //if the health is 0 or below
+    if (health <= 0)
     {
-      //if the health is 0 or below
-      if (health <= 0)
-      {
-        //Starts exploding particle effect
-        Destroy(Instantiate(Explosion, this.transform.position, this.transform.rotation), 2);
-        //Destroys the base prefab
-        Destroy(this.gameObject);
-        gameCompleteScreen.SetActive(true);
-      }
+      //Starts exploding particle effect
+      Destroy(Instantiate(Explosion, this.transform.position, this.transform.rotation), 2);
+      //Destroys the base prefab
+      Destroy(this.gameObject);
+      gameCompleteScreen.SetActive(true);
     }
   }
 

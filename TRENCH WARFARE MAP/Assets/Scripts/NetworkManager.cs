@@ -23,12 +23,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
   [Header("Leaderboard")]
   public GameObject LeaderboardUIPanel;
 
-  [Header("Settings")]
-  public GameObject SettingsUIPanel;
-
-  [Header("RoomOptions Panel")]
+  [Header("GameOptions Panel")]
   public GameObject GameOptionsUIPanel;
-  public TMP_InputField playerNameInput;
+  public InputField playerNameInput;
   public GameObject WelcomeMessage;
 
   [Header("Create Room Panel")]
@@ -45,11 +42,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
   public TextMeshProUGUI roomInfoText;
   public GameObject playerListPrefab;
   public GameObject playerListContent;
-  public TMP_Text waitingMessage;
-
 
   public Text connectionStatusText;
-  public TMP_Text currentWinsText;
+  public Text currentWinsText;
 
   private Dictionary<int, GameObject> playerListGameObjects;
 
@@ -113,7 +108,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     playerGameObject.GetComponent<Initializer>().setUpName(newPlayer.NickName);
 
     playerListGameObjects.Add(newPlayer.ActorNumber, playerGameObject);
-
   }
 
   public override void OnPlayerLeftRoom(Player otherPlayer)
@@ -204,6 +198,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
       PhotonNetwork.LoadLevel(levelname);
     }
+
   }
 
   public void OnLeaveGameButtonClicked()
@@ -220,7 +215,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
 
     ActivatePanel(MainMenuUIPanel.name);
-    playerNameInput.text = "";
   }
 
   public void OnLoginButtonClicked()
@@ -264,7 +258,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     LoginMenu.SetActive(LoginMenu.name.Equals(panelTobeActivated));
     RegisterMenu.SetActive(RegisterMenu.name.Equals(panelTobeActivated));
     LeaderboardUIPanel.SetActive(LeaderboardUIPanel.name.Equals(panelTobeActivated));
-    SettingsUIPanel.SetActive(SettingsUIPanel.name.Equals(panelTobeActivated));
 
   }
 

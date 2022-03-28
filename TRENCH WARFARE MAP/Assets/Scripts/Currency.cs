@@ -11,13 +11,13 @@ public class Currency : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        funds.text = "Funds: £" + currency;
+        funds.text = "Funds: Â£" + currency;
     }
 
     // Update is called once per frame
     void Update()
     {
-        funds.text = "Funds: £" + currency;
+        funds.text = "Funds: Â£" + currency;
     }
 
     public float getCurrency()

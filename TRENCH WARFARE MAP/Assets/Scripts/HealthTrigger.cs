@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
 public class HealthTrigger : MonoBehaviour
 {
     public BaseHealth userBase;
     public HealthbarScript healthbar;
+    public Currency userCurrency;
     public Text message;
     string originalText;
-    Component monney;
 
     // Start is called before the first frame update
     void Start()
@@ -21,8 +20,7 @@ public class HealthTrigger : MonoBehaviour
     
     private void OnTriggerStay(Collider other)
     {
-        monney = other.gameObject.GetComponent<CharacterCurrency>();
-        if (other.gameObject.tag == "Player" &&  monney.GetComponent<CharacterCurrency>().getCurrency() >= 500 && userBase.health < 100)//when player has >500 monney and <full health
+        if (other.gameObject.tag == "Player" &&  userCurrency.getCurrency() >= 500 && userBase.health < 100)//when player has >500 monney and <full health
         {
             message.gameObject.SetActive(true);
 
@@ -38,7 +36,7 @@ public class HealthTrigger : MonoBehaviour
                     userBase.health += 20;
                     healthbar.increaseHealth(20);
                 }
-                monney.GetComponent<CharacterCurrency>().updateCurrency(-500);//reduces currency by 500
+                userCurrency.updateCurrency(-500);//reduces currency by 500
             }
         }
         else//Otherwise it displays the message 'unavailable'

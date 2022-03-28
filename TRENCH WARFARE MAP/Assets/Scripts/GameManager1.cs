@@ -2,16 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class GameManager1 : MonoBehaviour
 {
     public GameObject p1Cannon;
     public GameObject p2Cannon;
     public bool p1Turn;
-
-    public GameObject p1Base;
-    public GameObject p2Base;
 
     Component p1Controller;
     Component p2Controller;
@@ -21,10 +17,7 @@ public class GameManager1 : MonoBehaviour
     public GameObject p2;
     public GameObject p1Camera;
     public GameObject p2Camera;
-    public Text personPlaying;
-    public Text p2Money;
-    public Text winner;
-    public GameObject endGameMenu;
+    public Text PersonPlaying;
 
     void Start()
     {
@@ -37,24 +30,13 @@ public class GameManager1 : MonoBehaviour
 
         p1Turn = true;
         SetupBattle();
-
-        p2Money.gameObject.SetActive(true);//so it only shows when in the offline scene
         
     }
 
     void Update()
     { 
-        if(CheckIfGameOver())
-        {            
-            if(Input.GetKeyDown("r"))
-            {
-                Restart();
-            }
-            else if(Input.GetKeyDown("q"))
-            {
-                Home();
-            }
-        }
+        CheckIfGameOver(); //or put it into base script, which comes here for the end game method
+        EndOfGame();
     }
 
     void SetupBattle()
@@ -67,7 +49,7 @@ public class GameManager1 : MonoBehaviour
         //if the current player is active
         if (p1Turn)
         {
-            personPlaying.text = "Player1:"; //Changes text at the top of screen
+            PersonPlaying.text = "Player1:"; //Changes text at the top of screen
             EnableP1Cannon();
             EnableP1Movement();
         }
@@ -75,7 +57,7 @@ public class GameManager1 : MonoBehaviour
         //if the current player is not active
         else
         {
-            personPlaying.text = "Player2:";//Changes text at the top of screen
+            PersonPlaying.text = "Player2:";//Changes text at the top of screen
             EnableP2Cannon();
             EnableP2Movement();
         }
@@ -128,36 +110,6 @@ public class GameManager1 : MonoBehaviour
         p2Camera.GetComponent<Camera>().enabled = true;
     }
 
-    bool CheckIfGameOver()//checks if someone has no more health
-    {
-        if(p1Base.GetComponent<BaseHealth>().health <= 0 || p2Base.GetComponent<BaseHealth>().health <= 0)
-        {
-            EndOfGame();
-            return true;
-        }
-        return false;
-    }
-
-    void EndOfGame()//Opens ui that says which player won and the options to restart game or back to main menu.
-    {
-        //freezes cannons and players
-        p1.GetComponent<CharacterMovement>().enabled = false;
-        p1Controller.GetComponent<CannonController>().enabled = false;
-        p2.GetComponent<CharacterMovement>().enabled = false;
-        p2Controller.GetComponent<CannonController>().enabled = false;
-        //Activates the options menu
-        endGameMenu.gameObject.SetActive(true);
-        if(p1Base.GetComponent<BaseHealth>().health <= 0){winner.text = "Player 2 has won!";}
-        else{winner.text = "Player 1 has won";}
-    }
-
-    public void Home()//when restart button is clicked
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 2);
-    }
-
-    public void Restart()//when Quit button is clicked
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
+    void CheckIfGameOver(){}//TODO
+    void EndOfGame(){}//TODO
 }
