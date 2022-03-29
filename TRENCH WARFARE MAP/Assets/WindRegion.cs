@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class WindRegion : MonoBehaviour
 {
 
+    float[] directionArray = new float[] {-1, 1};
+
     private float windStrength;
     private Vector3 windDirection;
 
@@ -14,14 +16,15 @@ public class WindRegion : MonoBehaviour
 
     public float setStrength()
     {
-        windStrength = Random.Range(1, 8);
+        windStrength = Random.Range(1, 100);
         Debug.Log(windStrength);
         return windStrength;
     }
 
     public Vector3 setDirection()
     {
-        windDirection = new Vector3(Random.Range(-15, 15), 0, 0);
+        int index = Random.Range(0,2);
+        windDirection = new Vector3(directionArray[index], 0, 0);
         Debug.Log(windDirection);
         return windDirection;
     }

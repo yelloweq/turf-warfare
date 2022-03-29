@@ -11,7 +11,7 @@ public class BattleSystem : MonoBehaviour
   public bool currentPlayer;
   public GameObject windRegion;
 
-  public float strenth;
+  public float strength;
   public Vector3 direction;
 
   Component p1Controller;
@@ -22,10 +22,10 @@ public class BattleSystem : MonoBehaviour
 
   void Start()
   {
-    strenth = windRegion.GetComponent<WindRegion>().setStrength();
+    strength = windRegion.GetComponent<WindRegion>().setStrength();
     direction = windRegion.GetComponent<WindRegion>().setDirection();
     windRegion.GetComponent<WindRegion>().setArrow(direction.x);
-    windRegion.GetComponent<WindRegion>().setStrengthText(strenth);
+    windRegion.GetComponent<WindRegion>().setStrengthText(strength);
     SetupBattle();
     currentPlayer = true;
   }
@@ -85,11 +85,11 @@ public class BattleSystem : MonoBehaviour
 
   public void PlayerSwitch()
   {
-    strenth = windRegion.GetComponent<WindRegion>().setStrength();
+    strength = windRegion.GetComponent<WindRegion>().setStrength();
     direction = windRegion.GetComponent<WindRegion>().setDirection();
 
     windRegion.GetComponent<WindRegion>().setArrow(direction.x);
-    windRegion.GetComponent<WindRegion>().setStrengthText(strenth);
+    windRegion.GetComponent<WindRegion>().setStrengthText(strength);
 
     //inverts the currentPlayer boolean
     currentPlayer = !currentPlayer;

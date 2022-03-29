@@ -10,6 +10,7 @@ public class cannonEnterTrigger : MonoBehaviour, IUpgradeTrigger
     public BoxCollider cannonBody;
 
     public bool entered;
+    private bool canEnter;
 
     string originalText;
 
@@ -22,13 +23,13 @@ public class cannonEnterTrigger : MonoBehaviour, IUpgradeTrigger
         cannonBody = transform.parent.gameObject.GetComponent<BoxCollider>();
         entered = false;
         originalText = message.text;
+        canEnter = false;
     }
 
-    public void OnTriggerStay(Collider other)
+    private void Update()
     {
-        if (other.gameObject.tag == "Player" && entered == false)
+        if(canEnter == true)
         {
-            message.text = "Press 'E' to enter cannon";
             if (Input.GetKeyDown(KeyCode.E))
             {
                 entered = true;
@@ -39,8 +40,18 @@ public class cannonEnterTrigger : MonoBehaviour, IUpgradeTrigger
         }
     }
 
+    public void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.tag == "Player" && entered == false)
+        {
+            canEnter = true;
+            message.text = "Press 'E' to enter cannon";
+        }
+    }
+
     public void OnTriggerExit(Collider other)
     {
+        canEnter = false;
         entered = false;
         message.text = originalText;
         message.text = "";

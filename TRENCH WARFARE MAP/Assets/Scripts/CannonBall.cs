@@ -29,7 +29,7 @@ public class CannonBall : MonoBehaviour
     //if the ball collides this method is executed
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Boundaries" || collision.gameObject.tag == "Cannon")
+        if (collision.gameObject.tag == "Boundaries" || collision.gameObject.tag == "Cannon" || collision.gameObject.tag == "Player")
         {
             Physics.IgnoreCollision(collision.collider, GetComponent<Collider>());
         }
@@ -65,7 +65,7 @@ public class CannonBall : MonoBehaviour
     {
         if (inWindRegion)
         {
-            rb.AddForce(gameManager1.direction * gameManager1.strenth);
+            rb.AddForce(gameManager1.direction * gameManager1.strength);
         }
     }
 
