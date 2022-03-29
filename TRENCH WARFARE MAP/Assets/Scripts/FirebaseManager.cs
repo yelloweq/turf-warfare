@@ -452,7 +452,10 @@ public class FirebaseManager : MonoBehaviour
         {
             //Data has been retrieved
             DataSnapshot snapshot = DBTask.Result;
-
+            foreach (Transform child in scoreboardContent.transform)
+            {
+                Destroy(child.gameObject);
+            }
             //Destroy any existing scoreboard elements
             int rank = 1;
             foreach (DataSnapshot childSnapshot in snapshot.Children.Reverse<DataSnapshot>())
