@@ -454,22 +454,34 @@ public class FirebaseManager : MonoBehaviour
             DataSnapshot snapshot = DBTask.Result;
 
             //Destroy any existing scoreboard elements
-            foreach (Transform child in scoreboardContent.transform)
-            {
-                Destroy(child.gameObject);
-            }
-
-            //Loop through every users UID
             int rank = 1;
             foreach (DataSnapshot childSnapshot in snapshot.Children.Reverse<DataSnapshot>())
             {
-
                 string username = childSnapshot.Child("username").Value.ToString();
                 int wins = int.Parse(childSnapshot.Child("wins").Value.ToString());
 
+
                 //Instantiate new scoreboard elements
                 GameObject scoreboardElement = Instantiate(scoreElement, scoreboardContent);
-                scoreboardElement.GetComponent<ScoreElement>().NewScoreElement(rank.ToString(), username, wins);
+                if (rank == 1)
+                {
+                    scoreboardElement.GetComponent<ScoreElement>().winsText.color = Color.yellow;
+                    scoreboardElement.GetComponent<ScoreElement>().usernameText.color = Color.yellow;
+                    scoreboardElement.GetComponent<ScoreElement>().rank.color = Color.yellow;
+                }
+                else if (rank == 2)
+                {
+                    scoreboardElement.GetComponent<ScoreElement>().winsText.color = Color.cyan;
+                    scoreboardElement.GetComponent<ScoreElement>().usernameText.color = Color.cyan;
+                    scoreboardElement.GetComponent<ScoreElement>().rank.color = Color.cyan;
+                }
+                else if (rank == 3)
+                {
+                    scoreboardElement.GetComponent<ScoreElement>().winsText.color = Color.green;
+                    scoreboardElement.GetComponent<ScoreElement>().usernameText.color = Color.green;
+                    scoreboardElement.GetComponent<ScoreElement>().rank.color = Color.green;
+                }
+                scoreboardElement.GetComponent<ScoreElement>().NewScoreElement(rank + "#", username, wins);
                 rank++;
             }
 
