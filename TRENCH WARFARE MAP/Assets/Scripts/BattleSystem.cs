@@ -9,6 +9,10 @@ public class BattleSystem : MonoBehaviour
   public GameObject Player1Cannon;
   public GameObject Player2Cannon;
   public bool currentPlayer;
+  public GameObject windRegion;
+
+  public float strenth;
+  public Vector3 direction;
 
   Component p1Controller;
   Component p2Controller;
@@ -18,6 +22,10 @@ public class BattleSystem : MonoBehaviour
 
   void Start()
   {
+    strenth = windRegion.GetComponent<WindRegion>().setStrength();
+    direction = windRegion.GetComponent<WindRegion>().setDirection();
+    windRegion.GetComponent<WindRegion>().setArrow(direction.x);
+    windRegion.GetComponent<WindRegion>().setStrengthText(strenth);
     SetupBattle();
     currentPlayer = true;
   }
@@ -77,6 +85,12 @@ public class BattleSystem : MonoBehaviour
 
   public void PlayerSwitch()
   {
+    strenth = windRegion.GetComponent<WindRegion>().setStrength();
+    direction = windRegion.GetComponent<WindRegion>().setDirection();
+
+    windRegion.GetComponent<WindRegion>().setArrow(direction.x);
+    windRegion.GetComponent<WindRegion>().setStrengthText(strenth);
+
     //inverts the currentPlayer boolean
     currentPlayer = !currentPlayer;
     //runs PlayerTurn to check the new current player

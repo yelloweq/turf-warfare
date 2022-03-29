@@ -317,7 +317,7 @@ GameObject:
   - component: {fileID: 105368774}
   - component: {fileID: 105368776}
   - component: {fileID: 105368775}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Terrain_0_0_769a1a98-8ed7-4b83-8442-809d0725c06b
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -899,9 +899,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9489a475887fb9848b66b445934ed3b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tower: {fileID: 1830808228}
   message: {fileID: 2068181406}
-  currency: {fileID: 1557393663}
   bought: 0
 --- !u!65 &337319731
 BoxCollider:
@@ -2867,11 +2865,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ac91445442d27b44a65425f77be3cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  oldBase: {fileID: 0}
-  newBase: {fileID: 0}
-  spawnLocation: {fileID: 0}
+  wall: {fileID: 0}
   message: {fileID: 2068181406}
-  currency: {fileID: 0}
   bought: 0
 --- !u!65 &886102401
 BoxCollider:
