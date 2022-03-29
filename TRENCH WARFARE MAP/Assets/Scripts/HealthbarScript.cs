@@ -15,10 +15,10 @@ public class HealthbarScript : MonoBehaviour
         //work out the percentage to fill healthbar
         healthbar.fillAmount = health / initialHealth;
     }
-    public void increaseHealth(int damage)
+    public void increaseHealth(int amount)
     {
         //Adds health to user's base and fills the healthbar 
-        health += damage;
+        health += amount;
         healthbar.fillAmount = health / initialHealth;
     }
     public void restoreHealth()

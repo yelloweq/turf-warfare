@@ -10,7 +10,8 @@ TagManager:
   - Boundaries
   - Cannon
   - Upgrade
-  - WindRegion
+  - WinScreen
+  - WinnerName
   layers:
   - Default
   - TransparentFX

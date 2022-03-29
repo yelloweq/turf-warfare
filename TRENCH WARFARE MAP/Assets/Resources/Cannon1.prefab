@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 3495213464726825826}
   - component: {fileID: 8396266200730655069}
   - component: {fileID: 5090290142044690814}
+  - component: {fileID: 344831304637350692}
+  - component: {fileID: 105959063099053600}
   m_Layer: 0
   m_Name: Cannon1
   m_TagString: Cannon
@@ -59,9 +61,10 @@ MonoBehaviour:
   cannonEnterTrigger: {fileID: 7608628311650404979}
   horizontalSet: 0
   verticalSet: 0
+  Projection: {fileID: 0}
   Explosion: {fileID: 2771661109152740402, guid: bfe66bccbf1de304695a06472a63da73,
     type: 3}
-  cannonTop: {fileID: 0}
+  cannonTop: {fileID: 2281156524700148351}
 --- !u!120 &3495213464726825826
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -190,6 +193,45 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 6.001625, y: 3.001929, z: 4.780622}
   m_Center: {x: -0.4968301, y: 0.32515132, z: 0.5996473}
+--- !u!114 &344831304637350692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4306046685308761417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 105959063099053600}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &105959063099053600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4306046685308761417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &4370678027351890154
 GameObject:
   m_ObjectHideFlags: 0
@@ -675,6 +717,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bb274837b160c0c43b9f96a9ffd7c674, type: 3}
+--- !u!1 &2281156524700148351 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: bb274837b160c0c43b9f96a9ffd7c674,
+    type: 3}
+  m_PrefabInstance: {fileID: 1398686628836024110}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1505217577647962309 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: bb274837b160c0c43b9f96a9ffd7c674,

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using Photon.Pun;
 
 public class BaseHealth : MonoBehaviour
 {
@@ -10,11 +10,20 @@ public class BaseHealth : MonoBehaviour
 
   public GameObject Explosion;
 
-  public GameObject gameCompleteScreen;
+  // public GameObject gameCompleteScreen;
 
   public HealthbarScript HealthbarScript;
+  private PhotonView PV;
 
-  public void OnCollisionEnter(Collision collision)
+  public TurnTracking gameManager;
+
+  private void Start() 
+  {
+    PV = PhotonView.Get(this);
+    gameManager = GameObject.Find("GameManager").GetComponent<TurnTracking>();
+  }
+
+  public IEnumerator OnCollisionEnter(Collision collision)
   {
     //If the ball collides with the base
     if (collision.gameObject.tag == "ball")
@@ -24,27 +33,52 @@ public class BaseHealth : MonoBehaviour
       if (HealthbarScript)
       {
         //Calls the damageTaken method within HealthbarScript script
-        HealthbarScript.damageTaken(34);
-        health -= 34;
+        PV.RPC("TakeDamage", RpcTarget.AllViaServer, 20);
       }
+
+      
     }
+    yield return new WaitForSeconds(2);
 
   }
 
   private void Update()
-  { //when its the main scene
-    if(SceneManager.GetActiveScene().name == "MainScene")
+  {
+    //if the health is 0 or below
+    if (health <= 0)
     {
-      //if the health is 0 or below
-      if (health <= 0)
-      {
-        //Starts exploding particle effect
-        Destroy(Instantiate(Explosion, this.transform.position, this.transform.rotation), 2);
-        //Destroys the base prefab
-        Destroy(this.gameObject);
-        gameCompleteScreen.SetActive(true);
-      }
+      //Starts exploding particle effect
+      Destroy(PhotonNetwork.Instantiate(Explosion.name, this.transform.position, this.transform.rotation), 2);
+      //Destroys the base prefab
+      Destroy(this.gameObject);
+      // gameCompleteScreen.SetActive(true);
+      gameManager.EndGame();
+
     }
   }
+
+  [PunRPC]
+    void TakeDamage(int damage)
+    {
+        Debug.Log("[RPC] BASE TAKEN DAMAGE");
+        health -= damage;
+        HealthbarScript.damageTaken(damage);
+    }
+
+     [PunRPC]
+    void increaseHealth(int amount)
+    {
+        Debug.Log("[RPC] BASE HEALED");
+        health += amount;
+        HealthbarScript.increaseHealth(amount);
+    }
+
+     [PunRPC]
+    void restoreHealth()
+    {
+        Debug.Log("[RPC] BASE MAX HEALTH RESTORED");
+        health = 100;
+        HealthbarScript.restoreHealth();
+    }
 
 }
