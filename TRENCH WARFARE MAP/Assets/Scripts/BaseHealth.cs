@@ -43,4 +43,9 @@ public class BaseHealth : MonoBehaviour
     }
   }
 
+  public int GetHit(){
+
+  }
+
 }
+
