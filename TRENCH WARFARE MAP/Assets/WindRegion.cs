@@ -52,6 +52,6 @@ public class WindRegion : MonoBehaviour
 
     public void setStrengthText(float strength)
     {
-        windStrengthText.text = strength.ToString();
+        windStrengthText.text = strength.ToString() + " Knots";
     }
 }
