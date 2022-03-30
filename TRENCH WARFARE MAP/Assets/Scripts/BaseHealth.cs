@@ -13,10 +13,27 @@ public class BaseHealth : MonoBehaviour
 
   public HealthbarScript HealthbarScript;
 
+  public CharacterCurrency currency;
+
+  public void Start()
+  {
+   
+  }
+
   public void OnCollisionEnter(Collision collision)
   {
+     currency = GameObject.Find("Player").GetComponent<CharacterCurrency>();
     //If the ball collides with the base
-    if (collision.gameObject.tag == "ball")
+    if (collision.gameObject.tag == "ball") {
+      currency.updateCurrency(300);
+    }
+
+    if(currency)
+    {
+      
+      //dubug.log("Add money");
+    }
+    
 
     {
       //if the healthbar is assigned in inspector
