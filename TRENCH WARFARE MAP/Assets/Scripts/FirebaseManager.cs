@@ -407,7 +407,6 @@ public class FirebaseManager : MonoBehaviour
         var DBTask4 = DBreference.Child("users").Child(User.UserId).Child("email").SetValueAsync(emailToAdd);
         var DBTask5 = DBreference.Child("users").Child(User.UserId).Child("gamesPlayed").SetValueAsync(0);
 
-
         yield return new WaitUntil(predicate: () => DBTask2.IsCompleted);
         yield return new WaitUntil(predicate: () => DBTask3.IsCompleted);
         yield return new WaitUntil(predicate: () => DBTask4.IsCompleted);
@@ -470,7 +469,19 @@ public class FirebaseManager : MonoBehaviour
             {
                 string username = childSnapshot.Child("username").Value.ToString();
                 int wins = int.Parse(childSnapshot.Child("wins").Value.ToString());
+                int gamesPlayed = int.Parse(childSnapshot.Child("gamesPlayed").Value.ToString());
 
+                int percentComplete;
+                if (gamesPlayed == 0)
+                {
+                    percentComplete = 0;
+                }
+                percentComplete = (int)((double)(100 * wins) / gamesPlayed);
+
+                // float toAdd = Mathf.RoundToInt(winsPercentage);
+                print("wins: " + wins);
+                print("gamesPlayed: " + gamesPlayed);
+                print("To add:" + percentComplete);
 
                 //Instantiate new scoreboard elements
                 GameObject scoreboardElement = Instantiate(scoreElement, scoreboardContent);
@@ -479,24 +490,27 @@ public class FirebaseManager : MonoBehaviour
                     scoreboardElement.GetComponent<ScoreElement>().winsText.color = Color.yellow;
                     scoreboardElement.GetComponent<ScoreElement>().usernameText.color = Color.yellow;
                     scoreboardElement.GetComponent<ScoreElement>().rank.color = Color.yellow;
+                    scoreboardElement.GetComponent<ScoreElement>().winsPercentage.color = Color.yellow;
                 }
                 else if (rank == 2)
                 {
                     scoreboardElement.GetComponent<ScoreElement>().winsText.color = Color.cyan;
                     scoreboardElement.GetComponent<ScoreElement>().usernameText.color = Color.cyan;
                     scoreboardElement.GetComponent<ScoreElement>().rank.color = Color.cyan;
+                    scoreboardElement.GetComponent<ScoreElement>().winsPercentage.color = Color.yellow;
+
                 }
                 else if (rank == 3)
                 {
                     scoreboardElement.GetComponent<ScoreElement>().winsText.color = Color.green;
                     scoreboardElement.GetComponent<ScoreElement>().usernameText.color = Color.green;
                     scoreboardElement.GetComponent<ScoreElement>().rank.color = Color.green;
+                    scoreboardElement.GetComponent<ScoreElement>().winsPercentage.color = Color.yellow;
+
                 }
-                scoreboardElement.GetComponent<ScoreElement>().NewScoreElement(rank + "#", username, wins);
+                scoreboardElement.GetComponent<ScoreElement>().NewScoreElement(rank + "#", username, wins, (int)percentComplete);
                 rank++;
             }
-
-
         }
     }
 
