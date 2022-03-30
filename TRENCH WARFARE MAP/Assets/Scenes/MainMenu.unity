@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.3731193, g: 0.38073996, b: 0.35872698, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -8170,14 +8170,14 @@ MonoBehaviour:
   m_text: 'Trench Warfare is a turn-based multiplayer game in which there are two
     players.
 
-    Each player has a respective base. The goal of the game is to
-    defeat your enemies base while preserving your own.
+    Each player has a respective base. The goal of the game is to defeat
+    your enemies base while preserving your own.
 
-    Canons are used to
-    attack the opposing base. Stack your money by attacking the enemy base.
+    Canons are used to attack the
+    opposing base. Stack your money by attacking the enemy base.
 
-    Upgrade
-    your base from the upgrade box. The first base health to diminish is the loser.'
+    Upgrade your
+    base from the upgrade box. The first base health to diminish is the loser.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9ddaf0951c6f7e14e981d3a4d683fe4e, type: 2}
   m_sharedMaterial: {fileID: -909094087561557781, guid: 9ddaf0951c6f7e14e981d3a4d683fe4e,
@@ -10332,13 +10332,13 @@ MonoBehaviour:
 
     1) WASD to walk around
 
-    2) E to interact with the
-    canon
+    2) E to interact with the canon
 
-    3) Left and Right arrows for horizontal canon control
+    3)
+    Left and Right arrows for horizontal canon control
 
-    4) Up
-    and Down arrows for vertical canon control
+    4) Up and Down arrows
+    for vertical canon control
 
     5) F to fire the canon'
   m_isRightToLeft: 0
