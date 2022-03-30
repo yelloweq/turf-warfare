@@ -2,19 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class UI_Shop_Trigger_Collider : MonoBehaviour
 {
-
-    private bool isMouseOverUI;
-
     public GameObject menuUI;
-
-    private void Update()
+    GameObject mouseLookScript;
+    public Text message;
+    private void Start()
     {
-        isMouseOverUI = EventSystem.current.IsPointerOverGameObject();
+        mouseLookScript = GameObject.FindWithTag("MainCamera");
     }
-
     void OnTriggerEnter(Collider Obj)
     {
         if(Obj.gameObject.tag == "Player")
@@ -22,6 +20,7 @@ public class UI_Shop_Trigger_Collider : MonoBehaviour
             menuUI.SetActive(true);
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
+            mouseLookScript.GetComponent<MouseLook>().enabled = false;
         }
     }
  
@@ -32,17 +31,8 @@ public class UI_Shop_Trigger_Collider : MonoBehaviour
             menuUI.SetActive(false);
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
+            mouseLookScript.GetComponent<MouseLook>().enabled = true;
+            message.gameObject.SetActive(false);
         }
     }
-
-    void baseUpgrade()
-    {
-
-    }
-
-    void buyHealth()
-    {
-
-    }
-
 }
