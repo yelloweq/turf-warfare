@@ -8,10 +8,14 @@ public class BaseHealth : MonoBehaviour
     public double health = 100;
 
     public GameObject Explosion;
-
     public GameObject gameCompleteScreen;
-
     public HealthbarScript HealthbarScript;
+    private CharacterCurrency characterCurrency;
+
+    private void Start()
+    {
+        characterCurrency = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterCurrency>();
+    }
 
     public void OnCollisionEnter(Collision collision)
     {
@@ -20,11 +24,13 @@ public class BaseHealth : MonoBehaviour
 
         {
             //if the healthbar is assigned in inspector
-            if (HealthbarScript)
+            if (HealthbarScript && characterCurrency)
             {
                 //Calls the damageTaken method within HealthbarScript script
                 HealthbarScript.damageTaken(34);
                 health -= 34;
+
+                characterCurrency.updateCurrency(300);
             }
         }
 
