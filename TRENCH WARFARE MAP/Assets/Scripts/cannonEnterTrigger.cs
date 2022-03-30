@@ -25,7 +25,9 @@ public class cannonEnterTrigger : MonoBehaviour, IUpgradeTrigger
         originalText = message.text;
         canEnter = false;
     }
-
+    /* Updates every frame, and checks whether player can enter the cannon
+       and checks where the correct key is pressed and if it should switch
+       camera angles*/
     private void Update()
     {
         if(canEnter == true)
@@ -39,7 +41,8 @@ public class cannonEnterTrigger : MonoBehaviour, IUpgradeTrigger
             }
         }
     }
-
+    /* If the player is near the cannon, but hasn't entered, display the
+    message notifying the use about which button to press*/
     public void OnTriggerStay(Collider other)
     {
         if (other.gameObject.tag == "Player" && entered == false)
@@ -48,7 +51,7 @@ public class cannonEnterTrigger : MonoBehaviour, IUpgradeTrigger
             message.text = "Press 'E' to enter cannon";
         }
     }
-
+    /* If the player leaves the cannon area, switch back to the main Camera */
     public void OnTriggerExit(Collider other)
     {
         canEnter = false;
@@ -58,7 +61,7 @@ public class cannonEnterTrigger : MonoBehaviour, IUpgradeTrigger
         cameraSwitch.changeCam("mainCamera");
         cannonBody.isTrigger = false;
     }
-
+    
     public void SetCam(string camName)
     {
         cameraSwitch.changeCam(camName);

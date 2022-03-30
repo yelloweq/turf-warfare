@@ -21,7 +21,7 @@ public class DrawProjection : MonoBehaviour
         lineRenderer = GetComponent<LineRenderer>();
     }
 
-
+    // Renders the projection line
     void Update()
     {
         lineRenderer.positionCount = (int)numPoints;
@@ -30,7 +30,9 @@ public class DrawProjection : MonoBehaviour
         Vector3 startingVelocity = cannonController.ShotPoint.up * cannonController.BlastPower;
         for (float t = 0; t < numPoints; t += timeBetweenPoints)
         {
-            //s = ut + 0.5gt^2  s= displacement t = time    u = inital velocity   g = accelaration due to gravity   
+            /* An equation to calculte the vertical displacement
+            s = ut + 0.5gt^2  s=  displacement t = time    u = inital velocity
+            g = accelaration due to gravity */ 
             Vector3 newPoint = startingPosition + t * startingVelocity;
             newPoint.y = startingPosition.y + startingVelocity.y * t + Physics.gravity.y/2f * t * t;
             points.Add(newPoint);

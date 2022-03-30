@@ -20,13 +20,15 @@ public class CharacterMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /* Checking if the player is on the ground and is responsible for
+           character jump height, gravity and movement speed.*/
         onGround = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
-        
+
         if (onGround && velocity.y < 0)
         {
             velocity.y = -2f;
         }
-        
+
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
 
@@ -41,6 +43,6 @@ public class CharacterMovement : MonoBehaviour
 
         velocity.y += gravity * Time.deltaTime;
 
-        CharacterController.Move(velocity * Time.deltaTime); 
+        CharacterController.Move(velocity * Time.deltaTime);
     }
 }

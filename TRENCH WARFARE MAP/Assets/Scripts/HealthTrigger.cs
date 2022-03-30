@@ -17,7 +17,9 @@ public class HealthTrigger : MonoBehaviour
         originalText = message.text;
         money = GameObject.FindGameObjectWithTag("Player");
     }
-
+    /* Checks if the user has enough money and doesn't have maximum health
+       if yes, subtract 500 from currency and increase base health. Otherwise
+       show an error message.*/
     public void buyHealth()
     {
         if (money.GetComponent<CharacterCurrency>().getCurrency() >= 500 && userBase.health < 100)
