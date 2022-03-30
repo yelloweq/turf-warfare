@@ -472,11 +472,14 @@ public class FirebaseManager : MonoBehaviour
                 int gamesPlayed = int.Parse(childSnapshot.Child("gamesPlayed").Value.ToString());
 
                 int percentComplete;
-                if (gamesPlayed == 0)
+                if (gamesPlayed == 0 || wins == 0)
                 {
                     percentComplete = 0;
                 }
-                percentComplete = (int)((double)(100 * wins) / gamesPlayed);
+                else
+                {
+                    percentComplete = (int)((double)(100 * wins) / gamesPlayed);
+                }
 
                 // float toAdd = Mathf.RoundToInt(winsPercentage);
                 print("wins: " + wins);
@@ -497,7 +500,7 @@ public class FirebaseManager : MonoBehaviour
                     scoreboardElement.GetComponent<ScoreElement>().winsText.color = Color.cyan;
                     scoreboardElement.GetComponent<ScoreElement>().usernameText.color = Color.cyan;
                     scoreboardElement.GetComponent<ScoreElement>().rank.color = Color.cyan;
-                    scoreboardElement.GetComponent<ScoreElement>().winsPercentage.color = Color.yellow;
+                    scoreboardElement.GetComponent<ScoreElement>().winsPercentage.color = Color.cyan;
 
                 }
                 else if (rank == 3)
@@ -505,7 +508,7 @@ public class FirebaseManager : MonoBehaviour
                     scoreboardElement.GetComponent<ScoreElement>().winsText.color = Color.green;
                     scoreboardElement.GetComponent<ScoreElement>().usernameText.color = Color.green;
                     scoreboardElement.GetComponent<ScoreElement>().rank.color = Color.green;
-                    scoreboardElement.GetComponent<ScoreElement>().winsPercentage.color = Color.yellow;
+                    scoreboardElement.GetComponent<ScoreElement>().winsPercentage.color = Color.green;
 
                 }
                 scoreboardElement.GetComponent<ScoreElement>().NewScoreElement(rank + "#", username, wins, (int)percentComplete);
