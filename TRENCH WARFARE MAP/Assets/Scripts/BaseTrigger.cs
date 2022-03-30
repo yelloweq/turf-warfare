@@ -4,37 +4,26 @@ public class BaseTrigger : MonoBehaviour
 {
     public GameObject wall;
     public Text message;
-    Component monney;
+    GameObject money;
     public bool bought;
     string originalText;
     // Update is called once per frame
-    void Update()
+    void Start()
     {
-
+        money = GameObject.FindGameObjectWithTag("Player");
     }
-    private void OnTriggerStay(Collider other)
+
+    public void activateWall()
     {
-        monney = other.gameObject.GetComponent<CharacterCurrency>();
-        if (other.gameObject.tag == "Player" && bought == false && monney.GetComponent<CharacterCurrency>().getCurrency() >= 500)
+        if (bought == false && money.GetComponent<CharacterCurrency>().getCurrency() >= 500)
         {
-            message.gameObject.SetActive(true);
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                bought = true;
-                wall.SetActive(true);
-                monney.GetComponent<CharacterCurrency>().updateCurrency(-500);
-            }
-        }
-        else
+            bought = true;
+            wall.SetActive(true);
+            money.GetComponent<CharacterCurrency>().updateCurrency(-500);
+        }else
         {
             message.text = "Unavailable!";
             message.gameObject.SetActive(true);
         }
-    }
-
-    public void OnTriggerExit(Collider other)
-    {
-        message.text = originalText;
-        message.gameObject.SetActive(false);
     }
 }
