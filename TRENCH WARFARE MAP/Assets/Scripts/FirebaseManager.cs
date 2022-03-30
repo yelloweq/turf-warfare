@@ -472,7 +472,7 @@ public class FirebaseManager : MonoBehaviour
                 int gamesPlayed = int.Parse(childSnapshot.Child("gamesPlayed").Value.ToString());
 
                 int percentComplete;
-                if (gamesPlayed == 0)
+                if (gamesPlayed == 0 || wins == 0)
                 {
                     percentComplete = 0;
                 }
