@@ -27,6 +27,7 @@ public class GameExiterTemporary : MonoBehaviourPunCallbacks
     {
         exitGame();
         IncrementWinsC();
+        IncreaseGamesPLayed();
     }
 
     private void Awake() // connects to the database
@@ -104,6 +105,7 @@ public class GameExiterTemporary : MonoBehaviourPunCallbacks
                         Debug.LogWarning(message: $"Failed to register task with {DBTask.Exception}");
                     }
                 }
+                IncreaseGamesPLayed();
             }
             else
             {
@@ -117,4 +119,43 @@ public class GameExiterTemporary : MonoBehaviourPunCallbacks
     {
         StartCoroutine(incrementWins());
     }
+
+     public IEnumerator IncreaseGamesPLayed() 
+    {   
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            if (auth.CurrentUser != null)
+            {
+
+                var DBTask = DBreference.Child("users").Child(FirebaseAuth.DefaultInstance.CurrentUser.UserId).GetValueAsync();
+
+                yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
+
+                if (DBTask.Result != null)
+                {
+                    DataSnapshot snapshot = DBTask.Result;
+
+                    int gamesPlayed = int.Parse(snapshot.Child("gamesPlayed").Value.ToString());
+
+                    var DBTask2 = DBreference.Child("users").Child(FirebaseAuth.DefaultInstance.CurrentUser.UserId).Child("gamesPlayed").SetValueAsync(gamesPlayed + 1);
+
+                    yield return new WaitUntil(predicate: () => DBTask2.IsCompleted);
+                    Debug.Log("Game added! Check leaderboard.");
+                    if (DBTask.Exception != null)
+                    {
+                        Debug.LogWarning(message: $"Failed to register task with {DBTask.Exception}");
+                    }
+                }
+                incrementWins();
+            }
+            else
+            {
+                print("Currently playing as guest, so win's won't be recorded.");
+            }
+        }
+
+    }
+
+
+
 }

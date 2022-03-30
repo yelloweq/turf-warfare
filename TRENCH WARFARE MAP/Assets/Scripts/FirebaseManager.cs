@@ -405,10 +405,14 @@ public class FirebaseManager : MonoBehaviour
         var DBTask2 = DBreference.Child("users").Child(User.UserId).Child("username").SetValueAsync(usernameToAdd);
         var DBTask3 = DBreference.Child("users").Child(User.UserId).Child("wins").SetValueAsync(0);
         var DBTask4 = DBreference.Child("users").Child(User.UserId).Child("email").SetValueAsync(emailToAdd);
+        var DBTask5 = DBreference.Child("users").Child(User.UserId).Child("gamesPlayed").SetValueAsync(0);
+
 
         yield return new WaitUntil(predicate: () => DBTask2.IsCompleted);
         yield return new WaitUntil(predicate: () => DBTask3.IsCompleted);
         yield return new WaitUntil(predicate: () => DBTask4.IsCompleted);
+        yield return new WaitUntil(predicate: () => DBTask5.IsCompleted);
+
 
         if (DBTask2.Exception != null)
         {
@@ -427,6 +431,10 @@ public class FirebaseManager : MonoBehaviour
             //update succesful
         }
         if (DBTask4.Exception != null)
+        {
+            Debug.LogWarning(message: $"Failed to register task with {DBTask4.Exception}");
+        }
+        if (DBTask5.Exception != null)
         {
             Debug.LogWarning(message: $"Failed to register task with {DBTask4.Exception}");
         }
