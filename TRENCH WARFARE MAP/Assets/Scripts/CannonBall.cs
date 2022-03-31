@@ -35,6 +35,10 @@ public class CannonBall : MonoBehaviourPun
         }
         else
         {
+            if (collision.gameObject.tag == "Base" && photonView.IsMine)
+            {
+                currency.updateCurrency(300);
+            }  
             //Play explosion particle effect
             Destroy(PhotonNetwork.Instantiate(Explosion.name, this.transform.position, this.transform.rotation), 2);
             //destroy the ball from the scene
@@ -50,16 +54,8 @@ public class CannonBall : MonoBehaviourPun
             inWindRegion = true;
             windRegion = other.gameObject;
         }
-
-        if (other.gameObject.tag == "Base")
-        {
-            if (currency && photonView.IsMine)
-            {
-                currency.updateCurrency(300);
-            }
-
-        }
     }
+
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.tag == "WindRegion")

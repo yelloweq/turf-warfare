@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Currency : MonoBehaviour
 {
-   private int currency = 1000;
+    private int currency = 1000;
     public Text funds;
 
     // Start is called before the first frame update
