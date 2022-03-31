@@ -21,9 +21,11 @@ public class GameExiterTemporary : MonoBehaviourPunCallbacks
     public TMP_Text currentWinsText;
 
     private TurnTracking turnTracking;
+    public GameObject playerLeftScreen;
     void Start()
     {
         turnTracking = GameObject.Find("GameManager").GetComponent<TurnTracking>();
+        playerLeftScreen.SetActive(false);
     }
 
     // Update is called once per frame
@@ -31,7 +33,8 @@ public class GameExiterTemporary : MonoBehaviourPunCallbacks
     {
         exitGame();
         IncrementWinsC();
-        IncreaseGamesPLayed();
+        checkIfPlayerLeft();
+
     }
 
     private void Awake() // connects to the database
@@ -116,130 +119,13 @@ public class GameExiterTemporary : MonoBehaviourPunCallbacks
                 print("Currently playing as guest, so win's won't be recorded.");
             }
         }
-    }
 
-    public IEnumerator incrementWins2() // Add win when 'B' is pressed ---- to add when the win screen appears
-    {
-
-        if (auth.CurrentUser != null)
-        {
-
-            var DBTask = DBreference.Child("users").Child(FirebaseAuth.DefaultInstance.CurrentUser.UserId).GetValueAsync();
-
-            yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
-
-            if (DBTask.Result != null)
-            {
-                DataSnapshot snapshot = DBTask.Result;
-
-                int currentWins = int.Parse(snapshot.Child("wins").Value.ToString());
-
-                var DBTask2 = DBreference.Child("users").Child(FirebaseAuth.DefaultInstance.CurrentUser.UserId).Child("wins").SetValueAsync(currentWins + 1);
-
-                yield return new WaitUntil(predicate: () => DBTask2.IsCompleted);
-                Debug.Log("Win added! Check leaderboard.");
-                if (DBTask.Exception != null)
-                {
-                    Debug.LogWarning(message: $"Failed to register task with {DBTask.Exception}");
-                }
-            }
-            StartCoroutine(IncreaseGamesPLayed2());
-        }
-        else
-        {
-            print("Currently playing as guest, so win's won't be recorded.");
-        }
-    }
-
-    public void IncreaseButtonTester()
-    {
-        StartCoroutine(incrementWins2());
+        yield return new WaitForSeconds(3);
     }
 
     public void IncrementWinsC() //couroutine to increment win
     {
         StartCoroutine(incrementWins());
-    }
-
-    public IEnumerator IncreaseGamesPLayed()
-    {
-        if (turnTracking.hasGameEnded())
-        {
-            if (auth.CurrentUser != null)
-            {
-
-                var DBTask = DBreference.Child("users").Child(FirebaseAuth.DefaultInstance.CurrentUser.UserId).GetValueAsync();
-
-                yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
-
-                if (DBTask.Result != null)
-                {
-                    DataSnapshot snapshot = DBTask.Result;
-
-                    int gamesPlayed = int.Parse(snapshot.Child("gamesPlayed").Value.ToString());
-
-                    var DBTask2 = DBreference.Child("users").Child(FirebaseAuth.DefaultInstance.CurrentUser.UserId).Child("gamesPlayed").SetValueAsync(gamesPlayed + 1);
-
-                    yield return new WaitUntil(predicate: () => DBTask2.IsCompleted);
-                    Debug.Log("Game added! Check leaderboard.");
-                    if (DBTask.Exception != null)
-                    {
-                        Debug.LogWarning(message: $"Failed to register task with {DBTask.Exception}");
-                    }
-                }
-                StartCoroutine(incrementWins());
-            }
-            else
-            {
-                Debug.Log("Currently playing as guest, so win's won't be recorded.");
-            }
-        }
-
-    }
-
-    public IEnumerator IncreaseGamesPLayed2()
-    {
-
-        if (auth.CurrentUser != null)
-        {
-
-            var DBTask = DBreference.Child("users").Child(FirebaseAuth.DefaultInstance.CurrentUser.UserId).GetValueAsync();
-
-            yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
-
-            if (DBTask.Result != null)
-            {
-                DataSnapshot snapshot = DBTask.Result;
-
-                int gamesPlayed = int.Parse(snapshot.Child("gamesPlayed").Value.ToString());
-
-                var DBTask2 = DBreference.Child("users").Child(FirebaseAuth.DefaultInstance.CurrentUser.UserId).Child("gamesPlayed").SetValueAsync(gamesPlayed + 1);
-
-                yield return new WaitUntil(predicate: () => DBTask2.IsCompleted);
-                Debug.Log("Game added! Check leaderboard.");
-                if (DBTask.Exception != null)
-                {
-                    Debug.LogWarning(message: $"Failed to register task with {DBTask.Exception}");
-                }
-            }
-        }
-        else
-        {
-            Debug.Log("Currently playing as guest, so win's won't be recorded.");
-        }
-
-
-    }
-
-
-    public void IncrementGamesPlauyedC() //couroutine to increment win
-    {
-        StartCoroutine(IncreaseGamesPLayed());
-    }
-
-    public void IncrementGamesPlauyedC2() //couroutine to increment win
-    {
-        StartCoroutine(IncreaseGamesPLayed2());
     }
 
     private IEnumerator LoadUserWins()
@@ -267,4 +153,14 @@ public class GameExiterTemporary : MonoBehaviourPunCallbacks
 
         }
     }
+
+    public void checkIfPlayerLeft()
+    {
+        if (PhotonNetwork.CurrentRoom.PlayerCount < 2)
+        {
+            playerLeftScreen.SetActive(true);
+            exitGame();
+        }
+    }
+
 }

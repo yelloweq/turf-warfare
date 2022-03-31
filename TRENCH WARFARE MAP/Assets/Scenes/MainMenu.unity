@@ -206,9 +206,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 487869536}
-        m_TargetAssemblyTypeName: GameExiterTemporary, Assembly-CSharp
-        m_MethodName: IncreaseButtonTester
+      - m_Target: {fileID: 2107081794}
+        m_TargetAssemblyTypeName: FirebaseManager, Assembly-CSharp
+        m_MethodName: IncrementWinsButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2110,7 +2110,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &176319584
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3532,51 +3532,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 480224983}
   m_CullTransparentMesh: 1
---- !u!1 &487869535
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 487869537}
-  - component: {fileID: 487869536}
-  m_Layer: 0
-  m_Name: IncreaseWinTester
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &487869536
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 487869535}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a0b814fcabe4c546bdf4883b6767b5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dependencyStatus: 0
-  currentWinsText: {fileID: 1481055767}
---- !u!4 &487869537
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 487869535}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1137.3094, y: 610.62317, z: -588.0994}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &489159612
 GameObject:
   m_ObjectHideFlags: 0
@@ -4218,6 +4173,9 @@ MonoBehaviour:
   playerListContent: {fileID: 1604332457}
   connectionStatusText: {fileID: 1454741615}
   currentWinsText: {fileID: 0}
+  PlayGameButton: {fileID: 1246501454}
+  PlayGameButton2: {fileID: 1099861179}
+  PlayGameButton3: {fileID: 581741440}
 --- !u!1 &623984008
 GameObject:
   m_ObjectHideFlags: 0
@@ -4664,6 +4622,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9206427354039487945, guid: 49b7f79ee429dbc4da8b39aa940d7fa1,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9206427354047669102, guid: 49b7f79ee429dbc4da8b39aa940d7fa1,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -4717,7 +4680,7 @@ PrefabInstance:
     - target: {fileID: 9206427354939815248, guid: 49b7f79ee429dbc4da8b39aa940d7fa1,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 812.52
+      value: 650
       objectReference: {fileID: 0}
     - target: {fileID: 9206427354939815248, guid: 49b7f79ee429dbc4da8b39aa940d7fa1,
         type: 3}
@@ -4767,7 +4730,7 @@ PrefabInstance:
     - target: {fileID: 9206427355284970427, guid: 49b7f79ee429dbc4da8b39aa940d7fa1,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 812.52
+      value: 650
       objectReference: {fileID: 0}
     - target: {fileID: 9206427355284970427, guid: 49b7f79ee429dbc4da8b39aa940d7fa1,
         type: 3}
@@ -4777,7 +4740,7 @@ PrefabInstance:
     - target: {fileID: 9206427355284970427, guid: 49b7f79ee429dbc4da8b39aa940d7fa1,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.0016683
+      value: -0.5026
       objectReference: {fileID: 0}
     - target: {fileID: 9206427355284970427, guid: 49b7f79ee429dbc4da8b39aa940d7fa1,
         type: 3}
@@ -4832,7 +4795,7 @@ PrefabInstance:
     - target: {fileID: 9206427355362168010, guid: 49b7f79ee429dbc4da8b39aa940d7fa1,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -239.3
+      value: -152
       objectReference: {fileID: 0}
     - target: {fileID: 9206427355362168010, guid: 49b7f79ee429dbc4da8b39aa940d7fa1,
         type: 3}
@@ -4854,12 +4817,12 @@ PrefabInstance:
     - target: {fileID: 9206427355386342145, guid: 49b7f79ee429dbc4da8b39aa940d7fa1,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 54.8
+      value: 148
       objectReference: {fileID: 0}
     - target: {fileID: 9206427355386342145, guid: 49b7f79ee429dbc4da8b39aa940d7fa1,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -0.00004069
       objectReference: {fileID: 0}
     - target: {fileID: 9206427355386342150, guid: 49b7f79ee429dbc4da8b39aa940d7fa1,
         type: 3}
@@ -9799,7 +9762,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1186985897
@@ -12736,33 +12699,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 75307864}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1300643927}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
       - m_Target: {fileID: 2107081794}
         m_TargetAssemblyTypeName: FirebaseManager, Assembly-CSharp
-        m_MethodName: ScoreboardButton
+        m_MethodName: LeaderBoardButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -14051,7 +13990,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1555996960
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14790,18 +14729,6 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 586827839}
-        m_TargetAssemblyTypeName: NetworkManager, Assembly-CSharp
-        m_MethodName: OnBackButtonClicked
-        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -18918,7 +18845,6 @@ MonoBehaviour:
   emailLoginField: {fileID: 2041810855}
   passwordLoginField: {fileID: 1530874028}
   warningLoginText: {fileID: 1788391992}
-  confirmLoginText: {fileID: 1882827022}
   usernameRegisterField: {fileID: 1503547826}
   emailRegisteredField: {fileID: 72939137}
   passwordRegisteredField: {fileID: 2125482683}

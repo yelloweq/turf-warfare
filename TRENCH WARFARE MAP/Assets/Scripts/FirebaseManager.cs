@@ -29,7 +29,6 @@ public class FirebaseManager : MonoBehaviour
     public TMP_InputField emailLoginField;
     public TMP_InputField passwordLoginField;
     public TMP_Text warningLoginText;
-    public TMP_Text confirmLoginText;
 
     //Register variables
     [Header("Register")]
@@ -95,6 +94,8 @@ public class FirebaseManager : MonoBehaviour
     {
         StartCoroutine(Login(emailLoginField.text, passwordLoginField.text));
 
+
+
     }
 
     //RegisterButton function
@@ -140,13 +141,12 @@ public class FirebaseManager : MonoBehaviour
         else
         {
             //Login succesful
+
+
             User = LoginTask.Result;
             Debug.LogFormat("User signed in successfully: {0} ({1})", User.DisplayName, User.Email);
-
-            confirmLoginText.text = "Logged in!";
-            loggedin = true;
             StartCoroutine(LoadUserWins());
-
+            loggedin = true;
             OnLoginButtonClicked();
 
         }
@@ -156,7 +156,7 @@ public class FirebaseManager : MonoBehaviour
     {
         emailLoginField.text = "";
         passwordLoginField.text = "";
-        confirmLoginText.text = "";
+        warningLoginText.text = "";
     }
 
     public void clearRegisterFields()
@@ -165,6 +165,8 @@ public class FirebaseManager : MonoBehaviour
         emailRegisteredField.text = "";
         passwordRegisteredField.text = "";
         passwordRegisterVerifyField.text = "";
+        confirmRegisterText.text = "";
+        warningRegisterText.text = "";
     }
 
     private IEnumerator Register(string _email, string _password, string _username)
@@ -209,16 +211,12 @@ public class FirebaseManager : MonoBehaviour
                 }
 
                 warningRegisterText.text = message;
-                confirmRegisterText.text = "";
+                yield return new WaitForSeconds(3);
+                warningRegisterText.text = "";
             }
-            // else if (checkExistingUsername(_username))
-            // {
-            //   warningRegisterText.text = "Username already taken!";
-            //   yield return new WaitForSeconds(3);
-            //   warningRegisterText.text = "";
-            // }
             else
             {
+
                 //User created!
                 User = RegisterTask.Result;
                 if (User != null)
@@ -236,15 +234,13 @@ public class FirebaseManager : MonoBehaviour
                     }
                     else
                     {
+                        yield return StartCoroutine(UpdateUsernameDatabase(usernameRegisterField.text, emailRegisteredField.text));
+                        yield return StartCoroutine(UpdateUsernameAuth(usernameRegisterField.text));
                         //Username set
                         Debug.Log("User created!");
-                        warningRegisterText.text = "";
                         confirmRegisterText.text = "User created! You can now login :)";
                         yield return new WaitForSeconds(3);
                         confirmRegisterText.text = "";
-
-                        StartCoroutine(UpdateUsernameAuth(usernameRegisterField.text));
-                        StartCoroutine(UpdateUsernameDatabase(usernameRegisterField.text, emailRegisteredField.text));
 
                     }
                 }
@@ -273,6 +269,9 @@ public class FirebaseManager : MonoBehaviour
         {
             PhotonNetwork.Disconnect();
         }
+
+        auth.SignOut();
+
         ActivatePanel(ConnectingUIPanel.name);
         connectionStatusText.gameObject.SetActive(true);
         PhotonNetwork.ConnectUsingSettings();
@@ -283,7 +282,11 @@ public class FirebaseManager : MonoBehaviour
 
     public void OnBackButtonClicked()
     {
-        auth.SignOut();
+        if (auth.CurrentUser != null)
+        {
+            auth.SignOut();
+            print("Logged out!--");
+        }
         if (PhotonNetwork.IsConnected)
         {
             PhotonNetwork.Disconnect();
@@ -292,14 +295,9 @@ public class FirebaseManager : MonoBehaviour
         ActivatePanel(MainMenuUIPanel.name);
 
         loggedin = false;
-        Debug.Log("LOGGED OUT!");
+
         clearLoginFields();
         clearRegisterFields();
-    }
-
-    public void OnLeaderboardButtonClicked()
-    {
-        ActivatePanel(LeaderboardUIPanel.name);
     }
 
     public void ActivatePanel(string panelTobeActivated)
@@ -334,7 +332,12 @@ public class FirebaseManager : MonoBehaviour
 
             if (playerName == "")
             {
-                playerName = "Player" + Random.Range(100, 1000);
+                playerName = "Player" + Random.Range(100, 1000) + " (GUEST)";
+            }
+            else
+            {
+                string guest = " (GUEST)";
+                playerName = playerNameInput.text + guest;
             }
         }
 
@@ -358,9 +361,15 @@ public class FirebaseManager : MonoBehaviour
         else
         {
             playerName = playerNameInput.text;
+
             if (playerName == "")
             {
-                playerName = "Player" + Random.Range(100, 1000);
+                playerName = "Player" + Random.Range(100, 1000) + " (GUEST)";
+            }
+            else
+            {
+                string guest = " (GUEST)";
+                playerName = playerNameInput.text + guest;
             }
         }
 
@@ -405,13 +414,10 @@ public class FirebaseManager : MonoBehaviour
         var DBTask2 = DBreference.Child("users").Child(User.UserId).Child("username").SetValueAsync(usernameToAdd);
         var DBTask3 = DBreference.Child("users").Child(User.UserId).Child("wins").SetValueAsync(0);
         var DBTask4 = DBreference.Child("users").Child(User.UserId).Child("email").SetValueAsync(emailToAdd);
-        var DBTask5 = DBreference.Child("users").Child(User.UserId).Child("gamesPlayed").SetValueAsync(0);
 
         yield return new WaitUntil(predicate: () => DBTask2.IsCompleted);
         yield return new WaitUntil(predicate: () => DBTask3.IsCompleted);
         yield return new WaitUntil(predicate: () => DBTask4.IsCompleted);
-        yield return new WaitUntil(predicate: () => DBTask5.IsCompleted);
-
 
         if (DBTask2.Exception != null)
         {
@@ -433,10 +439,6 @@ public class FirebaseManager : MonoBehaviour
         {
             Debug.LogWarning(message: $"Failed to register task with {DBTask4.Exception}");
         }
-        if (DBTask5.Exception != null)
-        {
-            Debug.LogWarning(message: $"Failed to register task with {DBTask4.Exception}");
-        }
         else
         {
             //update succesful
@@ -444,7 +446,7 @@ public class FirebaseManager : MonoBehaviour
 
     }
 
-    private IEnumerator LoadScoreboardData()
+    private IEnumerator LoadLeaderBoardData()
     {
         //Get all the users data ordered by kills amount
         var DBTask = DBreference.Child("users").OrderByChild("wins").GetValueAsync();
@@ -469,19 +471,6 @@ public class FirebaseManager : MonoBehaviour
             {
                 string username = childSnapshot.Child("username").Value.ToString();
                 int wins = int.Parse(childSnapshot.Child("wins").Value.ToString());
-                int gamesPlayed = int.Parse(childSnapshot.Child("gamesPlayed").Value.ToString());
-
-                int percentComplete;
-                if (gamesPlayed == 0 || wins == 0)
-                {
-                    percentComplete = 0;
-                }
-                percentComplete = (int)((double)(100 * wins) / gamesPlayed);
-
-                // float toAdd = Mathf.RoundToInt(winsPercentage);
-                print("wins: " + wins);
-                print("gamesPlayed: " + gamesPlayed);
-                print("To add:" + percentComplete);
 
                 //Instantiate new scoreboard elements
                 GameObject scoreboardElement = Instantiate(scoreElement, scoreboardContent);
@@ -490,14 +479,12 @@ public class FirebaseManager : MonoBehaviour
                     scoreboardElement.GetComponent<ScoreElement>().winsText.color = Color.yellow;
                     scoreboardElement.GetComponent<ScoreElement>().usernameText.color = Color.yellow;
                     scoreboardElement.GetComponent<ScoreElement>().rank.color = Color.yellow;
-                    scoreboardElement.GetComponent<ScoreElement>().winsPercentage.color = Color.yellow;
                 }
                 else if (rank == 2)
                 {
                     scoreboardElement.GetComponent<ScoreElement>().winsText.color = Color.cyan;
                     scoreboardElement.GetComponent<ScoreElement>().usernameText.color = Color.cyan;
                     scoreboardElement.GetComponent<ScoreElement>().rank.color = Color.cyan;
-                    scoreboardElement.GetComponent<ScoreElement>().winsPercentage.color = Color.yellow;
 
                 }
                 else if (rank == 3)
@@ -505,65 +492,54 @@ public class FirebaseManager : MonoBehaviour
                     scoreboardElement.GetComponent<ScoreElement>().winsText.color = Color.green;
                     scoreboardElement.GetComponent<ScoreElement>().usernameText.color = Color.green;
                     scoreboardElement.GetComponent<ScoreElement>().rank.color = Color.green;
-                    scoreboardElement.GetComponent<ScoreElement>().winsPercentage.color = Color.yellow;
 
                 }
-                scoreboardElement.GetComponent<ScoreElement>().NewScoreElement(rank + "#", username, wins, (int)percentComplete);
+                scoreboardElement.GetComponent<ScoreElement>().NewScoreElement(rank + "#", username, wins);
                 rank++;
             }
         }
     }
 
-    public void ScoreboardButton()
+    public void LeaderBoardButton()
     {
-        StartCoroutine(LoadScoreboardData());
+        StartCoroutine(LoadLeaderBoardData());
+        ActivatePanel(LeaderboardUIPanel.name);
     }
-
-    // public bool checkExistingUsername(string _username)
-    // {
-    //   var DBTask = DBreference.Child("users").Child("username").GetValueAsync();
-
-    //   DataSnapshot snapshot = DBTask.Result;
-
-    //   foreach (DataSnapshot ds in snapshot.Children)
-    //   {
-    //     if (ds.Child("username").Value.Equals(_username))
-    //     {
-    //       return true;
-    //     }
-    //   }
-    //   return false;
-    // }
 
     private IEnumerator LoadUserWins()
     {
         //Get the currently logged in user data
-        var DBTask = DBreference.Child("users").Child(User.UserId).GetValueAsync();
-
-        yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
-
-        if (DBTask.Exception != null)
+        if (auth.CurrentUser != null)
         {
-            Debug.LogWarning(message: $"Failed to register task with {DBTask.Exception}");
-        }
-        else if (DBTask.Result.Value == null)
-        {
-            //No data exists yet
-            currentWinsText.text = "no data found";
-        }
-        else
-        {
-            //Data has been retrieved
-            DataSnapshot snapshot = DBTask.Result;
+            print("user: " + auth.CurrentUser.DisplayName);
 
-            currentWinsText.text = "Current wins: " + snapshot.Child("wins").Value.ToString();
+            var DBTask = DBreference.Child("users").Child(User.UserId).GetValueAsync();
 
+            yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
+
+            if (DBTask.Exception != null)
+            {
+                Debug.LogWarning(message: $"Failed to register task with {DBTask.Exception}");
+            }
+            else if (DBTask.Result.Value == null)
+            {
+                //No data exists yet
+                currentWinsText.text = "no data found";
+            }
+            else
+            {
+                //Data has been retrieved
+                DataSnapshot snapshot = DBTask.Result;
+
+                currentWinsText.text = "Current wins: " + snapshot.Child("wins").Value.ToString();
+
+            }
         }
     }
 
     private IEnumerator incrementWins()
     {
-        if (loggedin == true)
+        if (auth.CurrentUser != null)
         {
             var DBTask = DBreference.Child("users").Child(User.UserId).GetValueAsync();
 
@@ -588,19 +564,18 @@ public class FirebaseManager : MonoBehaviour
 
                 }
             }
+            StartCoroutine(LoadUserWins());
         }
         else
         {
             Debug.Log("Not logged in! Leaderboard wins only available for logged in users.");
         }
-        StartCoroutine(LoadUserWins());
+
     }
 
     public void IncrementWinsButton()
     {
         StartCoroutine(incrementWins());
-
-
     }
 
 }
