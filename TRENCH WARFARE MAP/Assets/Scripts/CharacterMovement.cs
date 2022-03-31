@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class CharacterMovement : MonoBehaviour
+public class CharacterMovement : MonoBehaviourPun
 {
     public CharacterController CharacterController;
 
@@ -20,8 +21,14 @@ public class CharacterMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /* Checking if the player is on the ground and is responsible for
-           character jump height, gravity and movement speed.*/
+        if (photonView.IsMine)
+        {
+            Move();
+        }
+    }
+
+    void Move()
+    {
         onGround = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
         if (onGround && velocity.y < 0)

@@ -19,11 +19,11 @@ public class BaseTrigger : MonoBehaviour
          enough money. If true then subtract 500 and activate. Otherwise provide
          error message.*/
         if (bought == false &&
-        money.GetComponent<CharacterCurrency>().getCurrency() >= 500)
+        money.GetComponent<Currency>().getCurrency() >= 500)
         {
             bought = true;
             wall.SetActive(true);
-            money.GetComponent<CharacterCurrency>().updateCurrency(-500);
+            money.GetComponent<Currency>().updateCurrency(-500);
         } else
         {
             message.text = "Unavailable!";

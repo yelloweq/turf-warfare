@@ -5,29 +5,32 @@ using UnityEngine.UI;
 
 public class Currency : MonoBehaviour
 {
-    private float currency = 1000f;
+   private int currency = 1000;
     public Text funds;
 
     // Start is called before the first frame update
     private void Start()
     {
-        // funds = GameObject.GetComponent<Text>();
+        funds = GameObject.Find("Funds").GetComponent<Text>();
         funds.text = "Funds: £" + currency;
     }
 
     // Update is called once per frame
-    void Update()
+    void UpdateText()
     {
         funds.text = "Funds: £" + currency;
     }
 
-    public float getCurrency()
+    public int getCurrency()
     {
         return currency;
     }
 
-    public void updateCurrency(float currency)
+    public void updateCurrency(int currency)
     {
         this.currency += currency;
+
+        UpdateText();
     }
+
 }

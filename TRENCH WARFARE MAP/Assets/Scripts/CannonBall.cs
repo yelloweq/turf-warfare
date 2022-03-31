@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class CannonBall : MonoBehaviour
+using Photon.Pun;
+public class CannonBall : MonoBehaviourPun
 {
-    public BattleSystem gameManager1;
-    public Rigidbody rb;
-    public bool inWindRegion;
+    private WindSystem windSystem;
+    private Rigidbody rb;
+    private bool inWindRegion;
     public GameObject windRegion;
+    private Currency currency;
 
     float strenth;
     Vector3 direction;
@@ -16,12 +17,11 @@ public class CannonBall : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
 
-        gameManager1 = GameObject.Find("EventSystem").GetComponent<BattleSystem>();
-
-        Invoke("CallSwitch", 10);
+        windSystem = GameObject.Find("EventSystem").GetComponent<WindSystem>();
+        currency = GameObject.Find("CurrencyManager").GetComponent<Currency>();
 
         //destroys ball in 10s of spawning in case the ball goes outside the map
-        Destroy(this.gameObject, 10f);
+        Destroy(this, 10f);
 
     }
     public GameObject Explosion;
@@ -35,13 +35,12 @@ public class CannonBall : MonoBehaviour
         }
         else
         {
-            CallSwitch();
-
             //Play explosion particle effect
-            Destroy(Instantiate(Explosion, this.transform.position, this.transform.rotation), 2);
+            Destroy(PhotonNetwork.Instantiate(Explosion.name, this.transform.position, this.transform.rotation), 2);
             //destroy the ball from the scene
             Destroy(this.gameObject);
         }
+        windSystem.GenerateWind();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -51,8 +50,16 @@ public class CannonBall : MonoBehaviour
             inWindRegion = true;
             windRegion = other.gameObject;
         }
-    }
 
+        if (other.gameObject.tag == "Base")
+        {
+            if (currency && photonView.IsMine)
+            {
+                currency.updateCurrency(300);
+            }
+
+        }
+    }
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.tag == "WindRegion")
@@ -65,16 +72,7 @@ public class CannonBall : MonoBehaviour
     {
         if (inWindRegion)
         {
-            rb.AddForce(gameManager1.direction * gameManager1.strength);
-        }
-    }
-
-    void CallSwitch()
-    {
-        if (gameManager1)
-        {
-        //Calls the PlayerSwitch method within gameManager1 script
-            gameManager1.PlayerSwitch();
+            rb.AddForce(windSystem.direction * windSystem.strength);
         }
     }
 }

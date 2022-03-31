@@ -8387,6 +8387,11 @@ PrefabInstance:
       propertyPath: m_TagString
       value: MainCamera
       objectReference: {fileID: 0}
+    - target: {fileID: 6959998589455537679, guid: 416ddfdbd3d60104d802c02d46f9f804,
+        type: 3}
+      propertyPath: sceneViewId
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 416ddfdbd3d60104d802c02d46f9f804, type: 3}
 --- !u!1 &1941371858

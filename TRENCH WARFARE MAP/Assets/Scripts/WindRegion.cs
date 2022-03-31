@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using Photon.Pun;
 public class WindRegion : MonoBehaviour
 {
 
@@ -41,13 +41,26 @@ public class WindRegion : MonoBehaviour
 
     public void setArrow(float direction)
     {
-        if(direction > 0)
-        {
-            windArrow.transform.rotation = Quaternion.Euler(0, 0, 90);
-        }else if(direction < 0)
-        {
-            windArrow.transform.rotation = Quaternion.Euler(0, 0, -90);
+        if (PhotonNetwork.IsMasterClient){
+            if(direction > 0)
+            {
+                windArrow.transform.rotation = Quaternion.Euler(0, 0, 90);
+            }else if(direction < 0)
+            {
+                windArrow.transform.rotation = Quaternion.Euler(0, 0, -90);
+            }
         }
+        else 
+        {
+            if(direction > 0)
+            {
+                windArrow.transform.rotation = Quaternion.Euler(0, 0, -90);
+            }else if(direction < 0)
+            {
+                windArrow.transform.rotation = Quaternion.Euler(0, 0, 90);
+            }
+        }
+        
     }
 
     public void setStrengthText(float strength)

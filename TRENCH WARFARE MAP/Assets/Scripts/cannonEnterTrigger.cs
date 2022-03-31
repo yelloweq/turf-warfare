@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
-public class cannonEnterTrigger : MonoBehaviour, IUpgradeTrigger
+using Photon.Pun;
+public class cannonEnterTrigger : MonoBehaviourPun, IUpgradeTrigger
 {
     public cameraSwitch cameraSwitch;
     public Text message;
@@ -45,7 +45,7 @@ public class cannonEnterTrigger : MonoBehaviour, IUpgradeTrigger
     message notifying the use about which button to press*/
     public void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.tag == "Player" && entered == false)
+        if (other.gameObject.tag == "Player" && entered == false && photonView.IsMine)
         {
             canEnter = true;
             message.text = "Press 'E' to enter cannon";

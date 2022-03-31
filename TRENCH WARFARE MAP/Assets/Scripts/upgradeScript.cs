@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using Photon.Pun;
 public class upgradeScript : MonoBehaviour
 {
 
-    public BaseHealth userBase;
-    public HealthbarScript healthbar;
-    GameObject money;
+    private BaseHealth userBase;
+    private HealthbarScript healthbar;
+    private Currency money;
     public Text message;
     string originalText;
     public GameObject wall;
@@ -20,30 +20,41 @@ public class upgradeScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        money = GameObject.FindGameObjectWithTag("Player");
+        money = GameObject.Find("CurrencyManager").GetComponent<Currency>();
         successMessage = "ITEM BOUGHT SUCCESSFULLY";
         errorMessage = "ITEM UNAVAILABLE";
+        userBase = GameObject.Find("FriendlyBase").GetComponent<BaseHealth>();
+        healthbar = GameObject.Find("P1Healthbar").GetComponent<HealthbarScript>();
     }
 
     public void buyHealth()
     {
-        if (money.GetComponent<CharacterCurrency>().getCurrency() >= 500 && userBase.health < 100)
+        if (!userBase)
+        {
+            userBase = GameObject.Find("FriendlyBase").GetComponent<BaseHealth>();
+        }
+        if (!money)
+        {
+            money = GameObject.Find("CurrencyManager").GetComponent<Currency>();
+        }
+
+        Debug.Log("money " + money.getCurrency());
+        Debug.Log("health" + userBase.GetHealth()); 
+        if (money.getCurrency() >= 500 && userBase.GetHealth() < 1000)
         {
             message.text = successMessage;
             message.color = Color.green;
             message.gameObject.SetActive(true);
 
-            if (userBase.health >= 80)
+            if (userBase.GetHealth() >= 800)
             {
-                userBase.health = 100;
-                healthbar.restoreHealth();
+                userBase.restoreHealth();
             }
             else
             {
-                userBase.health += 20;
-                healthbar.increaseHealth(20);
+                userBase.increaseHealth(200);
             }
-            money.GetComponent<CharacterCurrency>().updateCurrency(-500);   //reduces currency by 500
+            money.updateCurrency(-500);   //reduces currency by 500
         }
         else     //Otherwise it displays the message 'unavailable'
         {
@@ -55,7 +66,7 @@ public class upgradeScript : MonoBehaviour
 
     public void activateWall()
     {
-        if (bought == false && money.GetComponent<CharacterCurrency>().getCurrency() >= 500)
+        if (bought == false && money.getCurrency() >= 500)
         {
             message.text = successMessage;
             message.color = Color.green;
@@ -63,7 +74,7 @@ public class upgradeScript : MonoBehaviour
 
             bought = true;
             wall.SetActive(true);
-            money.GetComponent<CharacterCurrency>().updateCurrency(-500);
+            money.updateCurrency(-500);
         }
         else
         {

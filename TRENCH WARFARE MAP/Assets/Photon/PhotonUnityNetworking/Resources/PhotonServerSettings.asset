@@ -39,6 +39,15 @@ MonoBehaviour:
   - DestroySpaceship
   - Fire
   - RespawnSpaceship
+  - DisableCannon
+  - EnableCannon
+  - IncreaseHealth
+  - RestoreHealth
+  - TakeDamage
+  - RPC_ChangeName
+  - RPC_TakeDamage
+  - RPC_IncreaseHealth
+  - RPC_RestoreHealth
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

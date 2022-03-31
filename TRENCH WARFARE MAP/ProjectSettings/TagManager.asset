@@ -11,6 +11,8 @@ TagManager:
   - Cannon
   - Upgrade
   - WindRegion
+  - Fire
+  - Canvas
   layers:
   - Default
   - TransparentFX
