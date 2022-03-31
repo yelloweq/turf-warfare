@@ -21,7 +21,7 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
     #endregion
     
     #region Variables
-    public enum GameState { Player1Move = 0, Player2Move = 1, EMPTY = 3, WIN = 4};
+    public enum GameState { Player1Move = 0, Player2Move = 1, EMPTY = 3 };
 
     private GameState Winner;
     private GameState Turn;
@@ -30,11 +30,22 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
     private CannonController cannonController;
     private GameObject WinScreen;
     private Text WinnerName;
+
+    private GameExiterTemporary gameExiterTemporary;
    
 
     #endregion
     
     #region TurnGettingAndSetting
+
+    public bool hasGameEnded()
+    {
+        return (Winner != GameState.EMPTY);
+    }
+    public bool hasWon()
+    {
+        return (Winner == MyTurn);
+    }
     public GameState GetCurrentTurn(){
         return Turn;
     }
@@ -67,15 +78,7 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
         
     }
 
-    public void Player1Win()
-    {
-        Winner = GameState.Player1Move;
-    }
 
-    public void Player2Win()
-    {
-        Winner = GameState.Player2Move;
-    }
     #endregion
 
     void Start()
@@ -97,7 +100,7 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
         WinScreen = GameObject.Find("WinScreen");
         WinnerName = GameObject.Find("WinnerName").GetComponent<Text>();
         WinScreen.SetActive(false);
-        
+        gameExiterTemporary = GameObject.Find("GameExiterTemporary").GetComponent<GameExiterTemporary>();
 
         StartCoroutine(FindController());
     }
@@ -115,6 +118,13 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
             EndTurn();
             Debug.Log("MyTrun: " + MyTurn.ToString() + " Currently: " +  Turn.ToString() + "Winner: " + Winner.ToString());
 
+        }
+        
+        //rely won game to local player
+        if (Winner != GameState.EMPTY && !photonView.IsMine)
+        {
+            WinScreen.SetActive(true);
+            WinnerName.text = "Player2";
         }
         //if (photonView.IsMine && Winner != GameState.EMPTY && Input.GetKeyDown(KeyCode.Return))
         //{
@@ -153,6 +163,7 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
         }
         else
         {
+            Debug.Log(Winner);
             object[] content = new object[] {GameState.Player2Move};
             PhotonNetwork.RaiseEvent(END_TURN,
                 content,
@@ -163,14 +174,14 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
 
     public void EndGame() 
     {
+        Debug.Log(Winner);
         Debug.Log("============= GAME ENDED ============");
         if (photonView.IsMine)
         {
             // player1 base destroyed, set winner to player2
             Winner = GameState.Player2Move;
             WinScreen.SetActive(true);
-            WinnerName.text = "Host";
-            
+            WinnerName.text = "Player2";
         }
         else
         {
@@ -182,8 +193,9 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
                 SendOptions.SendReliable);
 
             WinScreen.SetActive(true);
-            WinnerName.text = "Local";
+            WinnerName.text = "Player1";
         }
+        Debug.Log(Winner);
     }
 
     public void OnEvent(EventData photonEvent)
@@ -215,9 +227,10 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
                 {
                     if ((int)GameState.Player1Move == (int)data[0])
                     {
-                        Debug.Log("=================LOCAL PLAYER WINS!=========================");
+                        Debug.Log("=================HOST WINS!=========================");
                         WinScreen.SetActive(true);
-                        WinnerName.text = "Local Player";
+                        WinnerName.text = "Player1";
+                        Winner = GameState.Player1Move;
                        
                     }
                 }
@@ -225,7 +238,7 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
                     Debug.Log("GAME_OVER ERROR: " + ex);
                 }
                     
-                    
+                    Debug.Log(Winner);
                     break;
             }
         }

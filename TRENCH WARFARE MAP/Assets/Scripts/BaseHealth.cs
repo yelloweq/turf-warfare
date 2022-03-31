@@ -97,7 +97,10 @@ public class BaseHealth : MonoBehaviourPun
             Destroy(PhotonNetwork.Instantiate(Explosion.name, this.transform.position, this.transform.rotation), 2);
             //Destroys the base prefab
             Destroy(this.gameObject);
-            gameManager.EndGame();
+            if (PV.IsMine)
+            {
+                gameManager.EndGame();
+            }
         }
     }
 

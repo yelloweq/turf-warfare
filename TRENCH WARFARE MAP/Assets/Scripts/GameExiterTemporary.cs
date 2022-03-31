@@ -19,9 +19,11 @@ public class GameExiterTemporary : MonoBehaviourPunCallbacks
     public FirebaseUser User;
     public DatabaseReference DBreference;
     public TMP_Text currentWinsText;
+
+    private TurnTracking turnTracking;
     void Start()
     {
-
+        turnTracking = GameObject.Find("GameManager").GetComponent<TurnTracking>();
     }
 
     // Update is called once per frame
@@ -83,7 +85,7 @@ public class GameExiterTemporary : MonoBehaviourPunCallbacks
 
     public IEnumerator incrementWins() // Add win when 'B' is pressed ---- to add when the win screen appears
     {
-        if (Input.GetKeyDown(KeyCode.V))
+        if (turnTracking.hasWon())
         {
             if (auth.CurrentUser != null)
             {
@@ -161,7 +163,7 @@ public class GameExiterTemporary : MonoBehaviourPunCallbacks
 
     public IEnumerator IncreaseGamesPLayed()
     {
-        if (Input.GetKeyDown(KeyCode.B))
+        if (turnTracking.hasGameEnded())
         {
             if (auth.CurrentUser != null)
             {
@@ -189,7 +191,7 @@ public class GameExiterTemporary : MonoBehaviourPunCallbacks
             }
             else
             {
-                print("Currently playing as guest, so win's won't be recorded.");
+                Debug.Log("Currently playing as guest, so win's won't be recorded.");
             }
         }
 
@@ -223,7 +225,7 @@ public class GameExiterTemporary : MonoBehaviourPunCallbacks
         }
         else
         {
-            print("Currently playing as guest, so win's won't be recorded.");
+            Debug.Log("Currently playing as guest, so win's won't be recorded.");
         }
 
 
