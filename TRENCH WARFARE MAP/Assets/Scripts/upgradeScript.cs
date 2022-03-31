@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
-public class upgradeScript : MonoBehaviour
+public class upgradeScript : MonoBehaviourPun
 {
 
     private BaseHealth userBase;
@@ -11,12 +11,13 @@ public class upgradeScript : MonoBehaviour
     private Currency money;
     public Text message;
     string originalText;
-    public GameObject wall;
     public bool bought;
     private string successMessage;
     private string errorMessage;
+    public GameObject wallPosition;
+    public GameObject wall;
 
-
+    private PhotonView PV;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +26,7 @@ public class upgradeScript : MonoBehaviour
         errorMessage = "ITEM UNAVAILABLE";
         userBase = GameObject.Find("FriendlyBase").GetComponent<BaseHealth>();
         healthbar = GameObject.Find("P1Healthbar").GetComponent<HealthbarScript>();
+        PV = GameObject.Find("FriendlyBase").GetComponent<PhotonView>();
     }
 
     public void buyHealth()
@@ -73,8 +75,17 @@ public class upgradeScript : MonoBehaviour
             message.gameObject.SetActive(true);
 
             bought = true;
-            wall.SetActive(true);
             money.updateCurrency(-500);
+            if(!PV)
+            {
+                PV = GameObject.Find("FriendlyBase").GetComponent<PhotonView>();
+            }
+            if (PV.IsMine)
+            {
+                //Vector3 wallpos = GameObject.Find("FriendlyBase").transform.position + new Vector3(0, 0, 20);
+                PhotonNetwork.Instantiate(wall.name, wallPosition.transform.position, wallPosition.transform.rotation, 0);
+
+            }
         }
         else
         {
