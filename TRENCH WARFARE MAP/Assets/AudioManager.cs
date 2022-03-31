@@ -7,6 +7,11 @@ public class AudioManager : MonoBehaviour
 
 	public static AudioManager instance;
 
+
+    void start (){
+        
+    }
+
 	
 
 	public Sound[] sounds;
