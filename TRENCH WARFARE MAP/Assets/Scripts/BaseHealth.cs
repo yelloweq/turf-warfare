@@ -6,8 +6,8 @@ using Photon.Pun;
 public class BaseHealth : MonoBehaviourPun
 {
 //     //Starting health when bases spawn
-    private int health = 1000;
-    public const int maxHealth = 1000;
+    private int health = 100;
+    public const int maxHealth = 100;
     [SerializeField]
     private GameObject Explosion;
     
