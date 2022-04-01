@@ -42,6 +42,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public TextMeshProUGUI roomInfoText;
     public GameObject playerListPrefab;
     public GameObject playerListContent;
+    public TMP_Text waitingForPlayer2message;
 
     public Text connectionStatusText;
     public Text currentWinsText;
@@ -59,11 +60,25 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         connectionStatusText.gameObject.SetActive(false);
         PhotonNetwork.AutomaticallySyncScene = true;  //This line will synchronise scenes between all players inside the room
         ActivatePanel(MainMenuUIPanel.name);          //Activating the Main Menu Panel and deactivating all other panels
+        PlayGameButton.interactable = false;
     }
 
     void Update()
     {
         connectionStatusText.text = PhotonNetwork.NetworkClientState.ToString();
+        if (PhotonNetwork.IsConnected && PhotonNetwork.InRoom)
+        {
+            if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
+            {
+                waitingForPlayer2message.text = "";
+                PlayGameButton.interactable = true;
+            }
+            else
+            {
+                waitingForPlayer2message.text = "Waiting for player 2 to join...";
+                PlayGameButton.interactable = false;
+            }
+        }
     }
 
     #endregion
@@ -199,11 +214,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public void OnPlayGameButtonClicked(string levelname)
     {
-        if (PhotonNetwork.LocalPlayer.IsMasterClient)
+        if (PhotonNetwork.LocalPlayer.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount == 2)
         {
             PhotonNetwork.LoadLevel(levelname);
         }
-        PlayGameButton.interactable = false;
     }
 
     public void OnLeaveGameButtonClicked()

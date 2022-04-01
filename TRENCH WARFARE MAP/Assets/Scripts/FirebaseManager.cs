@@ -7,8 +7,8 @@ using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
 using Firebase.Database;
-using Firebase.Extensions;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 public class FirebaseManager : MonoBehaviour
 {
@@ -135,6 +135,7 @@ public class FirebaseManager : MonoBehaviour
                 case AuthError.UserNotFound:
                     message = "Account does not exist. Please register :)";
                     break;
+
             }
             warningLoginText.text = message;
             yield return new WaitForSeconds(3);
@@ -178,10 +179,31 @@ public class FirebaseManager : MonoBehaviour
             warningRegisterText.text = "Please choose your username!";
             yield return new WaitForSeconds(3);
             warningRegisterText.text = "";
+
         }
         else if (passwordRegisteredField.text != passwordRegisterVerifyField.text)
         {
             warningRegisterText.text = "Passwords do not match!";
+            yield return new WaitForSeconds(3);
+            warningRegisterText.text = "";
+        }
+        else if (!passwordRegisteredField.text.Any(char.IsLower))
+        {
+            warningRegisterText.text = "Password doesn't have a lower case letter!";
+            yield return new WaitForSeconds(3);
+            warningRegisterText.text = "";
+        }
+
+        else if (!passwordRegisteredField.text.Any(char.IsUpper))
+        {
+            warningRegisterText.text = "Password doesn't have a capital letter!";
+            yield return new WaitForSeconds(3);
+            warningRegisterText.text = "";
+        }
+
+        else if (!passwordRegisteredField.text.Any(char.IsDigit))
+        {
+            warningRegisterText.text = "Password doesn't have any numbers!";
             yield return new WaitForSeconds(3);
             warningRegisterText.text = "";
         }
@@ -212,6 +234,9 @@ public class FirebaseManager : MonoBehaviour
                         break;
                     case AuthError.EmailAlreadyInUse:
                         message = "Email already exists! Please log in.";
+                        break;
+                    case AuthError.WeakPassword:
+                        message = "Password too short! Please ensure it's at least 6 digits long.";
                         break;
 
                 }
