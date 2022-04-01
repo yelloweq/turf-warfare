@@ -48,6 +48,7 @@ public class FirebaseManager : MonoBehaviour
     public GameObject InputName;
     public bool loggedin;
     public TMP_Text currentWinsText;
+    public Button addWinBtn;
 
     [Header("Scoreboard")]
     public GameObject scoreElement;
@@ -58,6 +59,7 @@ public class FirebaseManager : MonoBehaviour
     {
         connectionStatusText.gameObject.SetActive(false);
         PhotonNetwork.AutomaticallySyncScene = true;  //This line will synchronise scenes between all players inside the room
+        addWinBtn.gameObject.SetActive(false);
     }
 
     void Update()
