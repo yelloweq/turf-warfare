@@ -173,11 +173,15 @@ public class FirebaseManager : MonoBehaviour
     {
         if (_username == "")
         {
-            warningRegisterText.text = "Please insert your username!";
+            warningRegisterText.text = "Please choose your username!";
+            yield return new WaitForSeconds(3);
+            warningRegisterText.text = "";
         }
         else if (passwordRegisteredField.text != passwordRegisterVerifyField.text)
         {
-            warningRegisterText.text = "Passwords do not match!!";
+            warningRegisterText.text = "Passwords do not match!";
+            yield return new WaitForSeconds(3);
+            warningRegisterText.text = "";
         }
         else
         {
