@@ -1,9 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Photon.Pun;
+using System.Collections;
 using UnityEngine;
-using Photon.Pun;
-using Photon.Realtime;
-using ExitGames.Client.Photon;
 
 public class CannonController : MonoBehaviourPun
 {
@@ -31,19 +28,19 @@ public class CannonController : MonoBehaviourPun
         Projection = GetComponent<DrawProjection>();
         PV = PhotonView.Get(this);
         gameManager = GameObject.Find("GameManager").GetComponent<TurnTracking>();
-      
+
         PV.RPC("DisableCannon", RpcTarget.All, "DISABLED CANNON -> GAME START");
 
-       if (photonView.IsMine)
-       {
-           this.gameObject.name = "FriendlyCannon";
-           StartCoroutine(ResetCannon());
-       }
-       else
-       {
-           this.gameObject.name = "EnemyCannon";
+        if (photonView.IsMine)
+        {
+            this.gameObject.name = "FriendlyCannon";
+            StartCoroutine(ResetCannon());
         }
-       
+        else
+        {
+            this.gameObject.name = "EnemyCannon";
+        }
+
     }
 
     public int GetDamage()
@@ -57,7 +54,7 @@ public class CannonController : MonoBehaviourPun
         verticalSet = false;
     }
 
-    public  IEnumerator ResetCannon()
+    public IEnumerator ResetCannon()
     {
         yield return new WaitForSeconds(1);
         Debug.Log("ResetCannon calling");
@@ -77,7 +74,7 @@ public class CannonController : MonoBehaviourPun
             horizontalSet = true;
             cannonEnterTrigger.SetCam("sideCamera");
         }
-        
+
     }
 
     public void setVertical(float VerticalRotation)
@@ -109,20 +106,21 @@ public class CannonController : MonoBehaviourPun
             return;
         }
 
-        if (projectiles != 1){
+        if (projectiles != 1)
+        {
             return;
         }
 
         float HorizontalRotation = Input.GetAxis("Fire1");
         float VerticalRotation = Input.GetAxis("Fire2");
 
-        
-        if(cannonEnterTrigger.entered == true && horizontalSet == false)
+
+        if (cannonEnterTrigger.entered == true && horizontalSet == false)
         {
             setHorizontal(HorizontalRotation);
         }
 
-        if(cannonEnterTrigger.entered == true && horizontalSet == true && verticalSet == false)
+        if (cannonEnterTrigger.entered == true && horizontalSet == true && verticalSet == false)
         {
             setVertical(VerticalRotation);
         }
@@ -132,12 +130,13 @@ public class CannonController : MonoBehaviourPun
 
         // transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles +
         // new Vector3(0, HorizontalRotation * rotationSpeed, VericalRotation * rotationSpeed));
-        fireCannon(); 
+        fireCannon();
 
     }
 
-    void fireCannon() {
- 
+    void fireCannon()
+    {
+
         if (Input.GetKeyDown(KeyCode.F) && projectiles == 1)
         {
             horizontalSet = false;
@@ -174,11 +173,11 @@ public class CannonController : MonoBehaviourPun
         {
             this.gameObject.transform.rotation = Quaternion.Euler(180, 270, 175);
         }
-        else 
+        else
         {
             this.gameObject.transform.rotation = Quaternion.Euler(0, 270, 0);
         }
-        
+
     }
 
     [PunRPC]
@@ -193,7 +192,7 @@ public class CannonController : MonoBehaviourPun
         {
             this.gameObject.transform.rotation = Quaternion.Euler(180, 270, 175);
         } //0 620 195
-        else 
+        else
         {
             this.gameObject.transform.rotation = Quaternion.Euler(0, 270, 0);
         }

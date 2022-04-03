@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Photon.Pun;
+using UnityEngine;
 public class CannonBall : MonoBehaviourPun
 {
     private WindSystem windSystem;
@@ -38,7 +36,7 @@ public class CannonBall : MonoBehaviourPun
             if (collision.gameObject.tag == "Base" && photonView.IsMine)
             {
                 currency.updateCurrency(300);
-            }  
+            }
             //Play explosion particle effect
             Destroy(PhotonNetwork.Instantiate(Explosion.name, this.transform.position, this.transform.rotation), 2);
             //destroy the ball from the scene

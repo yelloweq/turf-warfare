@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Photon.Pun;
+using UnityEngine;
 public class BaseSpawner : MonoBehaviour
-{   
+{
     [SerializeField]
     private GameObject Base;
 
@@ -19,7 +17,7 @@ public class BaseSpawner : MonoBehaviour
     {
         P1BaseLocation = GameObject.Find("BaseSpawnLocation");
         P2BaseLocation = GameObject.Find("BaseSpawnLocation2");
-        
+
         //Spawns in cannons when script is first executed
         SpawnBases();
     }
@@ -30,16 +28,16 @@ public class BaseSpawner : MonoBehaviour
         if (PhotonNetwork.IsMasterClient)
         {
             P1Base = PhotonNetwork.Instantiate(Base.name, P1BaseLocation.transform.position, Quaternion.identity, 0);
-            P1Base.transform.Rotate (0f, 180f, 0f);
-            
+            P1Base.transform.Rotate(0f, 180f, 0f);
+
 
         }
-        else 
+        else
         {
             P2Base = PhotonNetwork.Instantiate(Base.name, P2BaseLocation.transform.position, Quaternion.identity, 0);
-            
+
         }
     }
 
-    
+
 }

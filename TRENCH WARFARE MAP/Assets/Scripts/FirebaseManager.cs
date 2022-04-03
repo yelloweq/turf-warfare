@@ -1,14 +1,13 @@
-using System.Collections;
-using UnityEngine;
-using UnityEngine.UI;
 using Firebase;
 using Firebase.Auth;
-using TMPro;
+using Firebase.Database;
 using Photon.Pun;
 using Photon.Realtime;
-using Firebase.Database;
+using System.Collections;
 using System.Linq;
-using System.Text.RegularExpressions;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class FirebaseManager : MonoBehaviour
 {

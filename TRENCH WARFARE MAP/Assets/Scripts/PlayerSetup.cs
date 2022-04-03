@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using EasySurvivalScripts;
 
 
 public class PlayerSetup : MonoBehaviour
@@ -24,5 +21,5 @@ public class PlayerSetup : MonoBehaviour
 
     }
 
-    
+
 }

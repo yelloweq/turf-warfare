@@ -15,16 +15,17 @@ public class BaseTrigger : MonoBehaviour
     //responsible for activating the wall in front of the players base.
     public void activateWall()
     {
-      /* Checks if the player hasn't already bought the item and if they have
-         enough money. If true then subtract 500 and activate. Otherwise provide
-         error message.*/
+        /* Checks if the player hasn't already bought the item and if they have
+           enough money. If true then subtract 500 and activate. Otherwise provide
+           error message.*/
         if (bought == false &&
         money.GetComponent<Currency>().getCurrency() >= 500)
         {
             bought = true;
             wall.SetActive(true);
             money.GetComponent<Currency>().updateCurrency(-500);
-        } else
+        }
+        else
         {
             message.text = "Unavailable!";
             message.gameObject.SetActive(true);

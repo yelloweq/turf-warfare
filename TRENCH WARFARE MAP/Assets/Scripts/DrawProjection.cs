@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class DrawProjection : MonoBehaviour
@@ -32,12 +31,12 @@ public class DrawProjection : MonoBehaviour
         {
             /* An equation to calculte the vertical displacement
             s = ut + 0.5gt^2  s=  displacement t = time    u = inital velocity
-            g = accelaration due to gravity */ 
+            g = accelaration due to gravity */
             Vector3 newPoint = startingPosition + t * startingVelocity;
-            newPoint.y = startingPosition.y + startingVelocity.y * t + Physics.gravity.y/2f * t * t;
+            newPoint.y = startingPosition.y + startingVelocity.y * t + Physics.gravity.y / 2f * t * t;
             points.Add(newPoint);
 
-            if(Physics.OverlapSphere(newPoint, 2, CollidableLayers).Length > 0)
+            if (Physics.OverlapSphere(newPoint, 2, CollidableLayers).Length > 0)
             {
                 lineRenderer.positionCount = points.Count;
                 break;

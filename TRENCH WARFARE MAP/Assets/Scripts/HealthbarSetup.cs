@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
-using Photon.Pun;
 public class HealthbarSetup : MonoBehaviourPun
 {
     // Start is called before the first frame update
@@ -34,7 +32,7 @@ public class HealthbarSetup : MonoBehaviourPun
         {
             return P1Heathbar;
         }
-        else 
+        else
         {
             return P2Heathbar;
         }

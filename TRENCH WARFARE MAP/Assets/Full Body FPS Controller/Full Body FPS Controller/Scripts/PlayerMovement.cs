@@ -1,7 +1,7 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Pun;
 
 namespace EasySurvivalScripts
 {
@@ -24,11 +24,11 @@ namespace EasySurvivalScripts
         public string JumpInput = "Jump";
 
         [Header("Player Motor")]
-        [Range(1f,15f)]
+        [Range(1f, 15f)]
         public float walkSpeed;
-        [Range(1f,15f)]
+        [Range(1f, 15f)]
         public float runSpeed;
-        [Range(1f,15f)]
+        [Range(1f, 15f)]
         public float JumpForce;
         public Transform FootLocation;
 
@@ -102,7 +102,7 @@ namespace EasySurvivalScripts
                     else
                         playerStates = PlayerStates.Running;
 
-                    _footstepDelay = (2/_speed);
+                    _footstepDelay = (2 / _speed);
                 }
             }
             else

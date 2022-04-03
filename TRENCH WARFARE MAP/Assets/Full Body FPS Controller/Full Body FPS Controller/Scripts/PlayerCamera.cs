@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Photon.Pun;
 using UnityEngine;
-using Photon.Pun;
 
 namespace EasySurvivalScripts
 {
@@ -56,7 +54,8 @@ namespace EasySurvivalScripts
                 Add_TPSCamPositionHelper();
             }
 
-            if (!photonView.IsMine){
+            if (!photonView.IsMine)
+            {
                 Destroy(GetComponent<PlayerCamera>());
             }
         }
@@ -91,7 +90,7 @@ namespace EasySurvivalScripts
 
         void SwitchCameraPerspectiveInput()
         {
-            if(Input.GetButtonDown(SwitchPerspectiveInput))
+            if (Input.GetButtonDown(SwitchPerspectiveInput))
             {
                 if (cameraPerspective == CameraPerspective.FirstPerson)
                 {
@@ -149,7 +148,7 @@ namespace EasySurvivalScripts
 
             xClamp += mouseY;
 
-            if(cameraPerspective == CameraPerspective.FirstPerson)
+            if (cameraPerspective == CameraPerspective.FirstPerson)
                 xClamp = Mathf.Clamp(xClamp, FPS_MinMaxAngles.x, FPS_MinMaxAngles.y);
             else
                 xClamp = Mathf.Clamp(xClamp, TPS_MinMaxAngles.x, TPS_MinMaxAngles.y);

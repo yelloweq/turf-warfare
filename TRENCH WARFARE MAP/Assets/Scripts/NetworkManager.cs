@@ -1,12 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+using Firebase.Auth;
 using Photon.Pun;
 using Photon.Realtime;
+using System.Collections;
+using System.Collections.Generic;
 using TMPro;
-using Firebase;
-using Firebase.Auth;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
