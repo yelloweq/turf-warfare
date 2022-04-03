@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
 using Photon.Pun;
+using UnityEngine;
+using UnityEngine.UI;
 public class UI_Shop_Trigger_Collider : MonoBehaviour
 {
     public GameObject menuUI;
@@ -33,7 +30,7 @@ public class UI_Shop_Trigger_Collider : MonoBehaviour
             turnTracking = GameObject.Find("GameManager").GetComponent<TurnTracking>();
         }
 
-        if(Obj.gameObject.tag == "Player" && turnTracking.CheckTurn())
+        if (Obj.gameObject.tag == "Player" && turnTracking.CheckTurn())
         {
             menuUI.SetActive(true);
             Cursor.visible = true;
@@ -41,7 +38,7 @@ public class UI_Shop_Trigger_Collider : MonoBehaviour
             mouseLookScript.GetComponent<MouseLook>().enabled = false;
         }
     }
- 
+
     void OnTriggerExit(Collider Obj)
     {
         if (!PV)

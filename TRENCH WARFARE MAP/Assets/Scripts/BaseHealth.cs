@@ -1,16 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using Photon.Pun;
+using System.Collections;
+using UnityEngine;
 public class BaseHealth : MonoBehaviourPun
 {
-//     //Starting health when bases spawn
-    private int health = 100;
-    public const int maxHealth = 100;
+    //     //Starting health when bases spawn
+    private int health = 1000;
+    public const int maxHealth = 1000;
     [SerializeField]
     private GameObject Explosion;
-    
+
     private PhotonView PV;
     private TurnTracking gameManager;
 
@@ -21,12 +19,12 @@ public class BaseHealth : MonoBehaviourPun
 
     void Start()
     {
-        PV = PhotonView.Get(this); 
+        PV = PhotonView.Get(this);
         if (PV.IsMine)
         {
             healthbarScript = GameObject.Find("P1Healthbar").GetComponent<HealthbarScript>();
-        } 
-        else 
+        }
+        else
         {
             healthbarScript = GameObject.Find("P2Healthbar").GetComponent<HealthbarScript>();
         }
@@ -35,11 +33,11 @@ public class BaseHealth : MonoBehaviourPun
         {
             this.gameObject.name = "FriendlyBase";
         }
-        else 
+        else
         {
             this.gameObject.name = "EnemyBase";
         }
-       
+
         gameManager = GameObject.Find("GameManager").GetComponent<TurnTracking>();
     }
 
@@ -61,7 +59,7 @@ public class BaseHealth : MonoBehaviourPun
                 yield return new WaitForSeconds(2);
             }
         }
-        
+
     }
 
     private void TakeDamage()
@@ -71,7 +69,7 @@ public class BaseHealth : MonoBehaviourPun
         Debug.Log(damageTaken + " DAMAGE DEALT TO ENEMY BASE");
         // health -= damageTaken;
         PV.RPC("RPC_TakeDamage", RpcTarget.AllViaServer, damageTaken);
-        
+
     }
 
     public void increaseHealth(int hp)
@@ -114,7 +112,7 @@ public class BaseHealth : MonoBehaviourPun
         healthbarScript.damageTaken(dmg);
     }
 
-     [PunRPC]
+    [PunRPC]
     void RPC_IncreaseHealth(int amount)
     {
         if (healthbarScript)
@@ -123,10 +121,10 @@ public class BaseHealth : MonoBehaviourPun
             health += amount;
             healthbarScript.increaseHealth(amount);
         }
-        
+
     }
 
-     [PunRPC]
+    [PunRPC]
     void RPC_RestoreHealth()
     {
         Debug.Log("[RPC] BASE MAX HEALTH RESTORED");

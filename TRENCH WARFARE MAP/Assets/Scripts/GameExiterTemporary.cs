@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Photon;
-using Photon.Pun;
-using Firebase.Database;
 using Firebase;
 using Firebase.Auth;
+using Firebase.Database;
+using Photon.Pun;
+using System.Collections;
 using TMPro;
+using UnityEngine;
 
 
 public class GameExiterTemporary : MonoBehaviourPunCallbacks

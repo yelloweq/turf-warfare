@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
@@ -20,7 +18,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         Debug.Log("Connecting to server");
         PhotonNetwork.ConnectUsingSettings();
     }
-    
+
     public override void OnConnectedToMaster()
     {
         //Once connected, sync scene for both players
@@ -31,7 +29,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         //enable match search
         findMatchBtn.SetActive(true);
     }
-    
+
     public void FindMatch()
     {
         //show cancel button when looking for a match
@@ -53,7 +51,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         //use random game id, set game options to 2 players
         int randomRoom = Random.Range(0, 500);
-        RoomOptions roomOptions = 
+        RoomOptions roomOptions =
         new RoomOptions()
         {
             IsVisible = true,
@@ -74,7 +72,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             PhotonNetwork.LoadLevel(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
-    
+
     public void CancelSearch()
     {
         //leave lobby if already created, activate find match button

@@ -1,25 +1,23 @@
-using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
-using ExitGames.Client.Photon;
 using System.Collections;
 using System.Linq;
+using UnityEngine;
+using UnityEngine.UI;
 
 //TODO: GET CANNON CONTROLLER FOR MASTER AND CLIENT
 // USE RESETCANNON FUNC AFTER CALLING PLAYER SWITCH
 // DISABLE CANNON AFTER CHANGE OF TURN
 public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventCallback
 {
-    
+
     #region Constants
     // Event: remote player has shot the cannon
     private const byte END_TURN = 1;
     private const byte GAME_OVER = 2;
     #endregion
-    
+
     #region Variables
     public enum GameState { Player1Move = 0, Player2Move = 1, EMPTY = 3 };
 
@@ -32,10 +30,10 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
     private Text WinnerName;
 
     private GameExiterTemporary gameExiterTemporary;
-   
+
 
     #endregion
-    
+
     #region TurnGettingAndSetting
 
     public bool hasGameEnded()
@@ -46,11 +44,13 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
     {
         return (Winner == MyTurn);
     }
-    public GameState GetCurrentTurn(){
+    public GameState GetCurrentTurn()
+    {
         return Turn;
     }
 
-    public GameState GetMyTurn(){
+    public GameState GetMyTurn()
+    {
         return MyTurn;
     }
 
@@ -61,7 +61,7 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
 
     public void OnEnable()
     {
-        PhotonNetwork.AddCallbackTarget(this);        
+        PhotonNetwork.AddCallbackTarget(this);
     }
 
     public void OnDisable()
@@ -73,9 +73,9 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
     {
         yield return new WaitForSeconds(2);
 
-            cannonController = GameObject.Find("FriendlyCannon").GetComponent<CannonController>();
-            Debug.Log("Looking for CannonHost Controller");
-        
+        cannonController = GameObject.Find("FriendlyCannon").GetComponent<CannonController>();
+        Debug.Log("Looking for CannonHost Controller");
+
     }
 
 
@@ -96,7 +96,7 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
             MyTurn = GameState.Player2Move;
             Turn = GameState.Player1Move;
         }
-        
+
         WinScreen = GameObject.Find("WinScreen");
         WinnerName = GameObject.Find("WinnerName").GetComponent<Text>();
         WinScreen.SetActive(false);
@@ -114,12 +114,12 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
     {
         if (Input.GetKeyDown(KeyCode.Tab) && Turn == MyTurn)
         {
-            Debug.Log("MyTrun: " + MyTurn.ToString() + " Currently: " +  Turn.ToString() + "Winner: " + Winner.ToString());
+            Debug.Log("MyTrun: " + MyTurn.ToString() + " Currently: " + Turn.ToString() + "Winner: " + Winner.ToString());
             EndTurn();
-            Debug.Log("MyTrun: " + MyTurn.ToString() + " Currently: " +  Turn.ToString() + "Winner: " + Winner.ToString());
+            Debug.Log("MyTrun: " + MyTurn.ToString() + " Currently: " + Turn.ToString() + "Winner: " + Winner.ToString());
 
         }
-        
+
         //rely won game to local player
         if (Winner != GameState.EMPTY && !photonView.IsMine)
         {
@@ -132,7 +132,7 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
         //    //PhotonNetwork.LoadLevel(SceneManager.GetActiveScene().buildIndex);
         //    Debug.Log("RETURN TO LOBBY AFTER WINNER CHOSEN");
         //}
-        
+
     }
 
     #region EventTracking
@@ -164,7 +164,7 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
         else
         {
             Debug.Log(Winner);
-            object[] content = new object[] {GameState.Player2Move};
+            object[] content = new object[] { GameState.Player2Move };
             PhotonNetwork.RaiseEvent(END_TURN,
                 content,
                 RaiseEventOptions.Default,
@@ -172,7 +172,7 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
         }
     }
 
-    public void EndGame() 
+    public void EndGame()
     {
         Debug.Log(Winner);
         Debug.Log("============= GAME ENDED ============");
@@ -186,7 +186,7 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
         else
         {
             // player2 base destroyed, send winner to be set to player1
-            object[] content = new object[] {GameState.Player1Move};
+            object[] content = new object[] { GameState.Player1Move };
             PhotonNetwork.RaiseEvent(GAME_OVER,
                 content,
                 RaiseEventOptions.Default,
@@ -206,43 +206,44 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
             switch (photonEvent.Code)
             {
                 case END_TURN:
-                try
-                {
-                    if ((int)GameState.Player2Move == (int)data[0])
+                    try
                     {
-                        Turn = GameState.Player1Move;
-                        cannonController = GameObject.Find("EnemyCannon").GetComponent<CannonController>();
-                        StartCoroutine(cannonController.ResetCannon());
-                        Debug.Log("STARTING COROUTINE: RESET HOST CANNON");
+                        if ((int)GameState.Player2Move == (int)data[0])
+                        {
+                            Turn = GameState.Player1Move;
+                            cannonController = GameObject.Find("EnemyCannon").GetComponent<CannonController>();
+                            StartCoroutine(cannonController.ResetCannon());
+                            Debug.Log("STARTING COROUTINE: RESET HOST CANNON");
+                        }
+                        break;
                     }
-                    break;
-                }
-                catch (System.Exception ex)
-                {
-                     Debug.Log("END_TURN ERROR: " + ex);
-                     break;
-                }
+                    catch (System.Exception ex)
+                    {
+                        Debug.Log("END_TURN ERROR: " + ex);
+                        break;
+                    }
                 case GAME_OVER:
-                try
-                {
-                    if ((int)GameState.Player1Move == (int)data[0])
+                    try
                     {
-                        Debug.Log("=================HOST WINS!=========================");
-                        WinScreen.SetActive(true);
-                        WinnerName.text = "Player1";
-                        Winner = GameState.Player1Move;
-                       
+                        if ((int)GameState.Player1Move == (int)data[0])
+                        {
+                            Debug.Log("=================HOST WINS!=========================");
+                            WinScreen.SetActive(true);
+                            WinnerName.text = "Player1";
+                            Winner = GameState.Player1Move;
+
+                        }
                     }
-                }
-                catch (System.Exception ex){
-                    Debug.Log("GAME_OVER ERROR: " + ex);
-                }
-                    
+                    catch (System.Exception ex)
+                    {
+                        Debug.Log("GAME_OVER ERROR: " + ex);
+                    }
+
                     Debug.Log(Winner);
                     break;
             }
         }
-        
+
         //Debug.Log("MyTurn:   " + MyTurn.ToString() + "   Currently: " +  Turn.ToString() + "    Winner:     " + Winner.ToString());
     }
 
@@ -257,9 +258,9 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
             }
             catch (System.Exception ex)
             {
-                 Debug.Log("WRITING: " + ex);
+                Debug.Log("WRITING: " + ex);
             }
-            
+
 
         }
         if (stream.IsReading)
@@ -267,13 +268,13 @@ public class TurnTracking : MonoBehaviourPunCallbacks, IPunObservable, IOnEventC
             try
             {
                 this.Winner = (GameState)(stream.ReceiveNext());
-                this.Turn = (GameState)(stream.ReceiveNext()); 
+                this.Turn = (GameState)(stream.ReceiveNext());
             }
             catch (System.InvalidCastException ex)
             {
-                 Debug.Log("ERROR WHILE TRYING TO RECEIVE GAME TURN: " + ex);
+                Debug.Log("ERROR WHILE TRYING TO RECEIVE GAME TURN: " + ex);
             }
-            
+
 
         }
     }

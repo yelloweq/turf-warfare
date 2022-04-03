@@ -1,5 +1,5 @@
-using UnityEngine;
 using Photon.Pun;
+using UnityEngine;
 
 public class PlayerSpawner : MonoBehaviour
 {
@@ -18,7 +18,7 @@ public class PlayerSpawner : MonoBehaviour
         GameObject _localPlayer = PhotonNetwork.Instantiate(playerModel.name, spawnPoints[player].transform.position, Quaternion.identity, 0);
 
         //enable camera and movement for player
-        _localPlayer.GetComponent<PlayerSetup>().IsLocalPlayer();  
+        _localPlayer.GetComponent<PlayerSetup>().IsLocalPlayer();
     }
 
     void Start()
@@ -29,5 +29,5 @@ public class PlayerSpawner : MonoBehaviour
             SpawnPlayer();
         }
     }
-   
+
 }

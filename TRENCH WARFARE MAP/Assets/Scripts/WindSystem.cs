@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WindSystem : MonoBehaviour
@@ -21,7 +19,7 @@ public class WindSystem : MonoBehaviour
         {
             windUI.SetActive(true);
         }
-        else 
+        else
         {
             windUI.SetActive(false);
         }

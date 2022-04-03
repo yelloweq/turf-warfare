@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,23 +22,23 @@ public class GameManager1 : MonoBehaviour
         //Gets each player's original/first cannons' details when script is first executed
         p1Controller = p1Cannon.GetComponent<CannonController>();
         p1Projection = p1Cannon.GetComponent<DrawProjection>();
-        
+
         p2Controller = p2Cannon.GetComponent<CannonController>();
         p2Projection = p2Cannon.GetComponent<DrawProjection>();
 
         p1Turn = true;
         SetupBattle();
-        
+
     }
 
     void Update()
-    { 
+    {
         CheckIfGameOver(); //or put it into base script, which comes here for the end game method
         EndOfGame();
     }
 
     void SetupBattle()
-    {                
+    {
         PlayerTurn();
     }
 
@@ -110,6 +108,6 @@ public class GameManager1 : MonoBehaviour
         p2Camera.GetComponent<Camera>().enabled = true;
     }
 
-    void CheckIfGameOver(){}//TODO
-    void EndOfGame(){}//TODO
+    void CheckIfGameOver() { }//TODO
+    void EndOfGame() { }//TODO
 }

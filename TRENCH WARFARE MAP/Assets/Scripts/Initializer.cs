@@ -3,11 +3,11 @@ using UnityEngine.UI;
 
 public class Initializer : MonoBehaviour
 {
-  public Text playerName;
+    public Text playerName;
 
-  public void setUpName(string name)
-  {
-    playerName.text = name;
-  }
+    public void setUpName(string name)
+    {
+        playerName.text = name;
+    }
 
 }

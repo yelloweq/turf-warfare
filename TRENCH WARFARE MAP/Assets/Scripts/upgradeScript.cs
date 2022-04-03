@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
-using Photon.Pun;
 public class upgradeScript : MonoBehaviourPun
 {
 
@@ -41,7 +39,7 @@ public class upgradeScript : MonoBehaviourPun
         }
 
         Debug.Log("money " + money.getCurrency());
-        Debug.Log("health" + userBase.GetHealth()); 
+        Debug.Log("health" + userBase.GetHealth());
         if (money.getCurrency() >= 500 && userBase.GetHealth() < 1000)
         {
             message.text = successMessage;
@@ -76,7 +74,7 @@ public class upgradeScript : MonoBehaviourPun
 
             bought = true;
             money.updateCurrency(-500);
-            if(!PV)
+            if (!PV)
             {
                 PV = GameObject.Find("FriendlyBase").GetComponent<PhotonView>();
             }

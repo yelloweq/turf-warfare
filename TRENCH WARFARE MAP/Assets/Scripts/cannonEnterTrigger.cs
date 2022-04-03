@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
-using Photon.Pun;
 public class cannonEnterTrigger : MonoBehaviourPun, IUpgradeTrigger
 {
     public cameraSwitch cameraSwitch;
@@ -30,7 +28,7 @@ public class cannonEnterTrigger : MonoBehaviourPun, IUpgradeTrigger
        camera angles*/
     private void Update()
     {
-        if(canEnter == true)
+        if (canEnter == true)
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
@@ -61,7 +59,7 @@ public class cannonEnterTrigger : MonoBehaviourPun, IUpgradeTrigger
         cameraSwitch.changeCam("mainCamera");
         cannonBody.isTrigger = false;
     }
-    
+
     public void SetCam(string camName)
     {
         cameraSwitch.changeCam(camName);
